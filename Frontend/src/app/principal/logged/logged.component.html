@@ -1,0 +1,31 @@
+<div class="logged">
+    <div class="columnas">
+        <div class="col-80">
+            <div class="tablita1" style="margin-top: 20px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>Correo</th>
+                            <th>Nro. Celular</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of user_array">
+                            <td>{{ user.nom_user}}</td>
+                            <td>{{ user.a_pat_user }}</td>
+                            <td>{{ user.a_mat_user }}</td>
+                            <td>{{ user.correo_user }}</td>
+                            <td>{{ user.cel_user }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-20" style="display: flex; justify-content: center; align-items: start; padding-top: 20px;">
+            <button (click)="getUsuarios()" style="cursor: pointer;">Actualizar</button>
+        </div>
+    </div>
+</div>
