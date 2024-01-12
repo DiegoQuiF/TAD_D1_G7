@@ -1,4 +1,5 @@
 <div class="section">
+    <app-register class="cerrado" id="hojaRegister" (mensajeEnviadoVolver)="recibirMensaje($event)"></app-register>
     <app-login class="abierto" id="hojaLogin" (mensajeEnviado)="recibirMensaje($event)" (usuarioLogin)="recibirLog($event)"></app-login>
     <app-logged class="cerrado" id="hojaLogged" [user_input]="usuario_logeado"></app-logged>
 </div>

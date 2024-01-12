@@ -40,4 +40,8 @@ export class LoginComponent {
       console.error(error);
     }
   }
+
+  enviarMensaje(){
+    this.mensajeEnviado.emit('Abrir register')
+  }
 }

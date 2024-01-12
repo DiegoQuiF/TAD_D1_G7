@@ -22,6 +22,22 @@ export class PrincipalComponent {
       hojaLogged?.classList.remove('cerrado');
       hojaLogged?.classList.add('abierto');
     }
+    else if(mensaje == 'Abrir login') {
+      var hojaLogin = document.getElementById('hojaLogin');
+      var hojaRegister = document.getElementById('hojaRegister');
+      hojaRegister?.classList.remove('abierto');
+      hojaRegister?.classList.add('cerrado');
+      hojaLogin?.classList.remove('cerrado');
+      hojaLogin?.classList.add('abierto');
+    }
+    else if(mensaje == 'Abrir register'){
+      var hojaLogin = document.getElementById('hojaLogin');
+      var hojaRegister = document.getElementById('hojaRegister');
+      hojaLogin?.classList.remove('abierto');
+      hojaLogin?.classList.add('cerrado');
+      hojaRegister?.classList.remove('cerrado');
+      hojaRegister?.classList.add('abierto');
+    }
     else {
       alert("ERROR DEL SISTEMA");
     }
