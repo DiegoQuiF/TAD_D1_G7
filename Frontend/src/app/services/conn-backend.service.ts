@@ -7,10 +7,15 @@ import { Observable } from 'rxjs'
 })
 export class ConnBackendService {
 
-  private BASE_URL = 'https://paginatad01.onrender.com';
+  // private BASE_URL = 'https://paginatad01.onrender.com';
+  private BASE_URL = 'http://127.0.0.1:5000'
   constructor(private http:HttpClient) { }
 
   getUsuarios():Observable<any>{
-    return this.http.get(`${this.BASE_URL}/`);
+    return this.http.get(`${this.BASE_URL}/getUsuarios`);
+  }
+
+  getUsuario(correo:string, contra:string):Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getUsuario/${correo}/${contra}`)
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Usuario } from '../../models/usuario';
@@ -10,7 +10,7 @@ import { ConnBackendService } from '../../services/conn-backend.service';
   styleUrl: './logged.component.css'
 })
 export class LoggedComponent {
-  id_user: string = ''
+  @Input() user_input!: Usuario;
 
   user_array: Array<Usuario> = new Array<Usuario>();
 

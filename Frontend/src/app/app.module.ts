@@ -8,12 +8,14 @@ import { FormsModule } from '@angular/forms';
 
 import { PrincipalComponent } from './principal/principal.component';
 import { LoggedComponent } from './principal/logged/logged.component';
+import { LoginComponent } from './principal/login/login.component';
 
 @NgModule({
     declarations: [		
       AppComponent,
       PrincipalComponent,
-      LoggedComponent
+      LoggedComponent,
+      LoginComponent
     ],
     imports: [
       BrowserModule,
