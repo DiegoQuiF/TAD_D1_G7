@@ -7,7 +7,7 @@ import { Observable } from 'rxjs'
 })
 export class ConnBackendService {
 
-  private BASE_URL = 'http://127.0.0.1:5000';
+  private BASE_URL = 'https://paginatad01.onrender.com';
   constructor(private http:HttpClient) { }
 
   getUsuarios():Observable<any>{
