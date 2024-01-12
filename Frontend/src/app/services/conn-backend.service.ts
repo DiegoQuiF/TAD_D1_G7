@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
+import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,22 @@ export class ConnBackendService {
       celular: celular_u
     }
     return this.http.post(`${this.BASE_URL}/registrarUsuario`, data);
+  }
+
+  putUsuario(usuario: Usuario): Observable<any> {
+    const data = {
+      nombre: usuario.nom_user,
+      paterno: usuario.a_pat_user,
+      materno: usuario.a_mat_user,
+      correo: usuario.correo_user,
+      contra: usuario.contra_user,
+      celular: usuario.cel_user,
+      id: usuario.id_user
+    }
+    return this.http.put(`${this.BASE_URL}/guardarUsuario`, data);
+  }
+
+  deleteUsuario(id:string):Observable<any>{
+    return this.http.delete(`${this.BASE_URL}/eliminarUsuario/${id}`)
   }
 }

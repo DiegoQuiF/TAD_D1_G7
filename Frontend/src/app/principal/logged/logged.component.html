@@ -13,8 +13,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let user of user_array">
-                            <td>{{ user.nom_user}}</td>
+                        <tr *ngFor="let user of user_array" (click)="seleccionarUsuario(user)">
+                            <td>{{ user.nom_user }}</td>
                             <td>{{ user.a_pat_user }}</td>
                             <td>{{ user.a_mat_user }}</td>
                             <td>{{ user.correo_user }}</td>
@@ -25,7 +25,59 @@
             </div>
         </div>
         <div class="col-20" style="display: flex; justify-content: center; align-items: start; padding-top: 20px;">
-            <button (click)="getUsuarios()" style="cursor: pointer;">Actualizar</button>
+            <div class="clasesupsup">
+                <div class="clasesup">
+                    <div class="clase" style="display: flex; justify-content: center;">
+                        <button (click)="verUsuarios()" style="cursor: pointer;">Actualizar</button>
+                    </div>
+                    <br>
+                    <div class="clase1">
+                        <p><b>SELECCIONADO</b></p>
+                        <p>Nombre: {{ user_select.nom_user }}</p>
+                        <p>A. Paterno: {{ user_select.a_pat_user }} </p>
+                        <p>A. Materno: {{ user_select.a_mat_user }} </p>
+                        <p>Correo: {{ user_select.correo_user }} </p>
+                        <p>Nro. celular: {{ user_select.cel_user }} </p>
+                    </div>
+                    <br>
+                    <div class="clase" style="display: flex; justify-content: center;">
+                        <button (click)="guardado()" style="cursor: pointer;">Editar seleccionado</button>
+                    </div>
+                    <br>
+                    <div class="clase" style="display: flex; justify-content: center;">
+                        <button (click)="eliminado()" style="cursor: pointer;">Eliminar seleccionado</button>
+                    </div>
+                </div>
+                <br>
+                <div class="claseinf cerrado" id ="Guardado">
+                    <p><b>EDITAR</b></p><br>
+                    <p>Nombre:</p>
+                    <input type="text" id="nombre_input" [(ngModel)]="user_select.nom_user" name="nombre" placeholder="Nombre" required>
+                    <p>A. Paterno:</p>
+                    <input type="text" id="apellPat_input" [(ngModel)]="user_select.a_pat_user" name="apellidoPaterno" placeholder="Apellido paterno" required>
+                    <p>A. Materno:</p>
+                    <input type="text" id="apellMat_input" [(ngModel)]="user_select.a_mat_user" name="apellidoMaterno" placeholder="Apellido materno" required>
+                    <p>Correo:</p>
+                    <input type="text" id="correo_input" [(ngModel)]="user_select.correo_user" name="correo" placeholder="correo@dominio.ejem" required>
+                    <p>Contraseña:</p>
+                    <input type="password" id="contra_input" [(ngModel)]="user_select.contra_user" name="contrasenia" placeholder="********" required>
+                    <p>Nro. celular:</p>
+                    <input type="text" id="celular_input" [(ngModel)]="user_select.cel_user" name="celular" placeholder="xxxxxxxxx" required>
+                    <br><br>
+                    <div class="enviar1" style="display: flex; justify-content: center;">
+                        <input type="submit" id="guardar" value="Guardar"
+                            style="text-align: center; cursor: pointer;" (click)="regUpdateUsuario(user_select)">
+                    </div>
+                </div>
+                <br>
+                <div class="claseinf cerrado" id="Eliminado">
+                    <p><b>ELIMINAR</b></p><br>
+                    <div class="enviar2" style="display: flex; justify-content: center;">
+                        <input type="submit" id="eliminar" value="Eliminar"
+                            style="text-align: center; cursor: pointer;" (click)="eliminarUsuario(user_select)">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
