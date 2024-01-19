@@ -37,6 +37,7 @@ export class LoginRegisterComponent {
   @Output() usuarioLogin = new EventEmitter<Usuario>();
 
 
+  
   // Transiciones
   in_btn() {    // Tansición entre el formulario REGISTRARSE → INICIAR SESIÓN
     const container = document.getElementById("container-form");
@@ -47,6 +48,7 @@ export class LoginRegisterComponent {
     const container = document.getElementById("container-form");
     container?.classList.add("sign-up-mode");
   }
+
 
 
   // Login - Inicio Sesión
@@ -78,6 +80,7 @@ export class LoginRegisterComponent {
   }
 
 
+
   // Register - Registro
   async registrar_registro(nombre_input:string, aPat_input:string, aMat_input:string, celular_input:string, correo_input:string, contra_input:string) {    // Realiza una acción si se logra registrar al usuario o no
     if(await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input)) {
@@ -96,8 +99,7 @@ export class LoginRegisterComponent {
       this.in_btn();
     }
     else {
-      alert('Error en el registro de datos\nVerifique los campos asociados, puede que el número de celular y/o correo estén registrados\n'+
-      nombre_input + ' ' + aPat_input + ' ' + correo_input + ' ' + contra_input + ' ' + celular_input);
+      alert('Error en el registro de datos:\n- Verifique la sintaxis en los campos asociados.\n- Verifique el Nro de celular o correo, puede que estén en uso.');
     }
   }
 

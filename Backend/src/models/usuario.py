@@ -6,7 +6,7 @@ class Usuario(db.Model):
     aPatUser    = db.Column(db.String(50))
     aMatUser    = db.Column(db.String(50))
     correoUser  = db.Column(db.String(50))
-    contraUser  = db.Column(db.String(50))
+    contraUser  = db.Column(db.Text)
     celUser     = db.Column(db.Integer)
 
     def __init__(self, nom, aPat, aMat, correo, contra, cel):

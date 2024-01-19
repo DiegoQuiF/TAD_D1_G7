@@ -8,8 +8,8 @@ import { Usuario } from '../models/usuario';
 })
 export class ConnBackendService {
 
-  private BASE_URL = 'https://paginatad01.onrender.com';
-  //private BASE_URL = 'http://127.0.0.1:5000'
+  //private BASE_URL = 'https://paginatad01.onrender.com';
+  private BASE_URL = 'http://127.0.0.1:5000'
   constructor(private http:HttpClient) { }
 
   getUsuarios():Observable<any>{
@@ -17,7 +17,11 @@ export class ConnBackendService {
   }
 
   getUsuario(correo:string, contra:string):Observable<any>{
-    return this.http.get(`${this.BASE_URL}/getUsuario/${correo}/${contra}`)
+    const data = {
+      correo_user: correo,
+      contra_user: contra
+    }
+    return this.http.post(`${this.BASE_URL}/getUsuario`, data);
   }
 
 
@@ -47,6 +51,6 @@ export class ConnBackendService {
   }
 
   deleteUsuario(id:string):Observable<any>{
-    return this.http.delete(`${this.BASE_URL}/eliminarUsuario/${id}`)
+    return this.http.delete(`${this.BASE_URL}/eliminarUsuario/${id}`);
   }
 }

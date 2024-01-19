@@ -15,9 +15,8 @@ def connection():
 
     try:
         conn = psycopg2.connect(**db_config)
-        print("(SISTEMA)   Conexión exitosa")
         return conn
     
     except Exception as e:
-        print(f"(SISTEMA)   Error: {e}")
+        print('          -> Error:', e)
         return None
