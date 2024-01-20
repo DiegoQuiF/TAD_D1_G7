@@ -9,13 +9,15 @@ import { FormsModule } from '@angular/forms';
 import { PrincipalComponent } from './principal/principal.component';
 import { LoggedComponent } from './principal/logged/logged.component';
 import { LoginRegisterComponent } from './principal/login-register/login-register.component';
+import { LogueadoComponent } from './principal/logueado/logueado.component';
 
 @NgModule({
     declarations: [		
       AppComponent,
       PrincipalComponent,
       LoggedComponent,
-      LoginRegisterComponent
+      LoginRegisterComponent,
+      LogueadoComponent
     ],
     imports: [
       BrowserModule,

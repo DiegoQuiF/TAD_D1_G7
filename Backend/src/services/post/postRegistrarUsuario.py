@@ -13,11 +13,24 @@ def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
                 print('      [Registro] Realizando conexión con la base de datos...')
                 conn = connection()
                 print('      [Registro] Ejecutando inserción de nuevo usuario...')
-                inst = "INSERT INTO Usuario (nombreUsuario, apellidoPatUsuario, apellidoMatUsuario, correo, contrasenia, nroCelular) values (%(nombre)s, %(aPat)s, %(aMat)s, %(correo)s, %(contra)s, %(celular)s)"
+                print('      [Registro] Inserción de contacto...')
+                inst = "INSERT INTO Contacto(correo, contrasenia, nrocelular) VALUES(%(correo)s, %(contra)s, %(celular)s)"
                 with conn.cursor() as cursor:
-                    cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'correo': correo, 'contra': contra, 'celular': celular})
+                    cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular})
                     conn.commit()
-                conn.close()
+                print('      [Registro] Obtención de contacto...')
+                idContacto = ''
+                inst = "select idContacto from Contacto where correo = %(correo)s and contrasenia = %(contra)s and nrocelular = %(celular)s"
+                with conn.cursor() as cursor:
+                    cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular})
+                    for row in cursor.fetchall():
+                        idContacto = row[0]
+                    conn.commit()
+                print('      [Registro] Inserción de usuario...')
+                inst = "INSERT INTO Usuario (nombreUsuario, apellidoPatUsuario, apellidoMatUsuario, idcontacto) values (%(nombre)s, %(aPat)s, %(aMat)s, %(idContacto)s)"
+                with conn.cursor() as cursor:
+                    cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'idContacto':idContacto})
+                    conn.commit()
                 print('      [Registro] Inserción ejecutada correctamente...')
                 return True
             except Exception as e:
@@ -60,7 +73,7 @@ def correoCelularRegistrado(correo, celular):
         conn = connection()
         total = 0
         print('         [VerificadorCC] Ejecutando consulta de disponibilidad de correo y celular...')
-        inst = "SELECT COUNT(*) as total FROM Usuario WHERE correo = %(correo)s or nrocelular = %(celular)s;"
+        inst = "SELECT COUNT(*) as total FROM Contacto WHERE correo = %(correo)s or nrocelular = %(celular)s;"
         with conn.cursor() as cursor:
             cursor.execute(inst, {'correo': correo, 'celular': celular})
             for row in cursor.fetchall():

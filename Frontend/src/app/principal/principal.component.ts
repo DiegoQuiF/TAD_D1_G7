@@ -11,7 +11,7 @@ import { ConnBackendService } from '../services/conn-backend.service';
 export class PrincipalComponent {
   constructor( private connBackend: ConnBackendService) { }
 
-  usuario_logeado: any;
+  usuario_logueado: any;
 
   recibirMensaje(mensaje: string) {
     if(mensaje == 'Abrir logged'){
@@ -22,12 +22,20 @@ export class PrincipalComponent {
       hojaLogged?.classList.remove('cerrado');
       hojaLogged?.classList.add('abierto');
     }
+    else if(mensaje == 'Abrir login'){
+      var hojaLoginRegister = document.getElementById('hojaLoginRegister');
+      var hojaLogged = document.getElementById('hojaLogged');
+      hojaLogged?.classList.remove('abierto');
+      hojaLogged?.classList.add('cerrado');
+      hojaLoginRegister?.classList.remove('cerrado');
+      hojaLoginRegister?.classList.add('abierto');
+    }
     else {
       alert("ERROR DEL SISTEMA");
     }
   }
 
   async recibirLog(usuario: Usuario) {
-    this.usuario_logeado = usuario;
+    this.usuario_logueado = usuario;
   }
 }

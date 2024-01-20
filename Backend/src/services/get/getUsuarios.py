@@ -5,7 +5,7 @@ def getUsuarios():
     try:
         conn = connection()
         usuarios = []
-        inst = "SELECT * FROM Usuario;"
+        inst = "SELECT US.idusuario, US.nombreusuario, US.apellidopatusuario, US.apellidomatusuario, CO.correo, CO.contrasenia, CO.nrocelular FROM Usuario US, Contacto CO WHERE US.idContacto = CO.idContacto;"
         with conn.cursor() as cursor:
             cursor.execute(inst, )
             for row in cursor.fetchall():

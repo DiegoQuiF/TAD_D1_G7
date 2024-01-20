@@ -56,6 +56,8 @@ export class LoginRegisterComponent {
     if(await this.getUsuario_inicioSesion(correo_input, contra_input)) {
       this.usuarioLogin.emit(this.usuario_login[0]);
       this.mensajeEnviado.emit('Abrir logged');
+      this.correo_user = '';
+      this.contra_user = '';
     }
     else {
       alert('Usuario no encontrado');
