@@ -8,7 +8,12 @@ def getUsuario(correo, contra):
         print('      [Validación] Realizando conexión con la base de datos...')
         conn = connection()
         usuarios = []
-        inst = "SELECT US.idusuario, US.nombreusuario, US.apellidopatusuario, US.apellidomatusuario, CO.correo, CO.contrasenia, CO.nrocelular FROM Usuario US, Contacto CO WHERE US.idContacto = CO.idContacto and CO.correo = %(correo)s;"
+        inst =  '''
+                SELECT US.idUsuario, US.nombreUsuario, US.apellidoPatUsuario, US.apellidoMatUsuario,
+                        CO.correoContacto, CO.contraseniaContacto, CO.nroCelularContacto
+                        FROM Usuario US, Contacto CO
+                        WHERE US.idContacto = CO.idContacto AND CO.correoContacto = %(correo)s;
+                '''
         with conn.cursor() as cursor:
             print('      [Validación] Ejecutando consulta de validación...')
             cursor.execute(inst, {'correo': correo})

@@ -12,13 +12,24 @@ def putUsuario(nombre, aPat, aMat, correo, contra, celular, id):
                 contra = encriptar(contra)
                 print('      [Actualizar] Estableciendo conexión con la base de datos...')
                 conn = connection()
+
                 print('      [Actualizar] Realizando actualización de datos de Usuario...')
-                inst = "UPDATE Usuario U SET nombreUsuario = %(nombre)s, apellidoPatUsuario = %(aPat)s, apellidoMatUsuario = %(aMat)s FROM Contacto CO WHERE U.idUsuario = %(id)s AND U.idContacto = CO.idContacto;"
+                
+                inst =  '''
+                        UPDATE Usuario U
+                                SET nombreUsuario = %(nombre)s, apellidoPatUsuario = %(aPat)s, apellidoMatUsuario = %(aMat)s
+                                FROM Contacto CO WHERE U.idUsuario = %(id)s AND U.idContacto = CO.idContacto;
+                        '''
                 with conn.cursor() as cursor:
                     cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'id': id})
                     conn.commit()
+                
                 print('      [Actualizar] Realizando actualización de datos de Contacto...')
-                inst = "UPDATE Contacto SET correo = %(correo)s, contrasenia = %(contra)s, nroCelular = %(celular)s WHERE idContacto IN (SELECT idContacto FROM Usuario WHERE idUsuario = %(id)s);"
+                inst =  '''
+                        UPDATE Contacto
+                                SET correoContacto = %(correo)s, contraseniaContacto = %(contra)s, nroCelularContacto = %(celular)s
+                                WHERE idContacto IN (SELECT idContacto FROM Usuario WHERE idUsuario = %(id)s);
+                        '''
                 with conn.cursor() as cursor:
                     cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular, 'id': id})
                     conn.commit()
@@ -67,7 +78,9 @@ def correoCelularRegistrado(correo, celular):
         conn = connection()
         total = 0
         print('         [VerificadorCC] Ejecutando consulta de disponibilidad de correo y celular...')
-        inst = "SELECT COUNT(*) as total FROM Contacto WHERE correo = %(correo)s or nrocelular = %(celular)s;"
+        inst =  '''
+                SELECT COUNT(*) AS total FROM Contacto WHERE correoContacto = %(correo)s or nroCelularContacto = %(celular)s;
+                '''
         with conn.cursor() as cursor:
             cursor.execute(inst, {'correo': correo, 'celular': celular})
             for row in cursor.fetchall():

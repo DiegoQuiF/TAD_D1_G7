@@ -36,23 +36,4 @@ export class LogueadoComponent {
       return false;
     }
   }
-
-  async deleteUsuario() {
-    if (await this.eliminarUsuario(this.user_input)) {
-      alert("USUARIO ELIMINADO CORRECTAMENTE");
-    }
-    else {
-      alert("ERROR EN EL INGRESO DE DATOS");
-    }
-  }
-
-  async eliminarUsuario(usuario:Usuario) {
-    const data = await this.connBackend.deleteUsuario(usuario.id_user).toPromise();
-    if(data.usuario && data.usuario.length > 0){
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
 }

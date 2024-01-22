@@ -14,20 +14,32 @@ def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
                 conn = connection()
                 print('      [Registro] Ejecutando inserción de nuevo usuario...')
                 print('      [Registro] Inserción de contacto...')
-                inst = "INSERT INTO Contacto(correo, contrasenia, nrocelular) VALUES(%(correo)s, %(contra)s, %(celular)s)"
+                
+                inst =  '''
+                        INSERT INTO Contacto(correoContacto, contraseniaContacto, nroCelularContacto)
+	                            VALUES (%(correo)s, %(contra)s, %(celular)s);
+                        '''
                 with conn.cursor() as cursor:
                     cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular})
                     conn.commit()
+                
                 print('      [Registro] Obtención de contacto...')
                 idContacto = ''
-                inst = "select idContacto from Contacto where correo = %(correo)s and contrasenia = %(contra)s and nrocelular = %(celular)s"
+                inst =  '''
+                        SELECT idContacto FROM Contacto WHERE correoContacto = %(correo)s and contraseniaContacto = %(contra)s
+		                        and nroCelularContacto = %(celular)s;
+                        '''
                 with conn.cursor() as cursor:
                     cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular})
                     for row in cursor.fetchall():
                         idContacto = row[0]
                     conn.commit()
+                
                 print('      [Registro] Inserción de usuario...')
-                inst = "INSERT INTO Usuario (nombreUsuario, apellidoPatUsuario, apellidoMatUsuario, idcontacto) values (%(nombre)s, %(aPat)s, %(aMat)s, %(idContacto)s)"
+                inst =  '''
+                        INSERT INTO Usuario(nombreUsuario, apellidoPatUsuario, apellidoMatUsuario, idContacto)
+	                            VALUES (%(nombre)s, %(aPat)s, %(aMat)s, %(idContacto)s);
+                        '''
                 with conn.cursor() as cursor:
                     cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'idContacto':idContacto})
                     conn.commit()
@@ -73,7 +85,9 @@ def correoCelularRegistrado(correo, celular):
         conn = connection()
         total = 0
         print('         [VerificadorCC] Ejecutando consulta de disponibilidad de correo y celular...')
-        inst = "SELECT COUNT(*) as total FROM Contacto WHERE correo = %(correo)s or nrocelular = %(celular)s;"
+        inst =  '''
+                SELECT COUNT(*) AS total FROM Contacto WHERE correoContacto = %(correo)s or nroCelularContacto = %(celular)s;
+                '''
         with conn.cursor() as cursor:
             cursor.execute(inst, {'correo': correo, 'celular': celular})
             for row in cursor.fetchall():
