@@ -1,18 +1,18 @@
 from src.database.db import connection
 from src.models.usuario import Usuario
 
-# Esta función por el momento no se utilizará, almenos para los usuarios
-
-def delUsuario(id):
+def delColeccion(id):
     try:
         conn = connection()
-        inst = "DELETE FROM Usuario WHERE idusuario = %(id)s;"
+        inst =  """
+                DELETE FROM usuarioColeccion WHERE idColeccion = %(id)s;
+                DELETE FROM Coleccion WHERE idColeccion = %(id)s;
+                """
         with conn.cursor() as cursor:
-            cursor.execute(inst, {'id': id})
+            cursor.execute(inst, {'id':id, 'id':id})
             conn.commit()
         conn.close()
         return True
     except Exception as e:
         print("(SISTEMA)   Error: " + e)
         return False
-    

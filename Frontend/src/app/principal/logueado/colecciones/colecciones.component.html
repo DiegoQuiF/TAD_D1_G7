@@ -1,0 +1,67 @@
+<div class="contenido">
+    <div class="titulo">
+        <h2>> Mis Colecciones</h2>
+    </div>
+    <div class="subtitulo">
+        <h3>> Mis colecciones</h3>
+    </div>
+    <li>
+        <div class="columnas">
+            <div class="col-75" style="margin-right: 24px;">
+                <div class="table-data">
+                    <div class="order">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Fecha de ult. act.</th>
+                                    <th>Editar/Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let coleccion of coleccion_array">
+                                    <td>
+                                        <p>{{ coleccion.nombre_col }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ coleccion.tipo_col }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ coleccion.creacion_col }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{ coleccion.actu_col }}</p>
+                                    </td>
+                                    <td>
+                                        <form action="">
+                                            <button class="botones" type="submit" style="cursor: pointer; background: #e1a83d; width: 125px;" (click)="editarEliminarColeccion(coleccion)">Editar/Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-25">
+                <div class="columnas" style="justify-content: center; margin-top: 10px; margin-bottom: 10px;">
+                    <form action="">
+                        <button type="submit" style="cursor: pointer; background: #34c848;" (click)="abrirCrearColeccion()">{{mensajeCrear}}</button>
+                    </form>
+                </div>
+                <div class="columnas" style="justify-content: center;">
+                    <div class="formulario cerrado" id="formularioCrear">
+                        <app-crear-coleccion (mensaje)="recibirMensaje($event)" [user_input]="user_input"></app-crear-coleccion>
+                    </div>
+                </div>
+                <div class="columnas" style="justify-content: center;">
+                    <div class="formulario cerrado" id="formularioEditarEliminar" style="margin-top: 20px;">
+                        <app-editar-eliminar-coleccion (mensaje)="recibirMensaje($event)" [coleccion1]="coleccion_selected"></app-editar-eliminar-coleccion>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</div>

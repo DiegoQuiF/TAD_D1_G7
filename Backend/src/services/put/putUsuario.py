@@ -5,7 +5,6 @@ from src.auxiliar.encriptador import encriptar_contrasenia
 def putUsuario(nombre, aPat, aMat, correo, contra, celular, id):
     print('      [Actualizar] Verificando sintaxis de datos ingresados...')
     if verificarDatos(nombre, aPat, aMat, correo, contra, celular):
-        print('      [Actualizar] Verificando disponibilidad de correo y nro. de celular...')
         try:
             print('      [Actualizar] Solicitando encriptación de contraseña...')
             contra = encriptar(contra)

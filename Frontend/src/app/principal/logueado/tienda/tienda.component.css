@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+li {
+	list-style: none;
+}
+
+.icono {
+	display: flex;
+	height: 100%;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+}
+
+.superior {
+	height: 10px;
+	background: #F9F9F9;
+	padding: 0 24px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+	font-family: 'Lato', sans-serif;
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.superior::before{
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	bottom: -40px;
+	left: 0;
+	border-radius: 50%;
+	box-shadow: -20px -20px 0 #F9F9F9;
+}
+
+.contenido {
+	font-family: 'Poppins', sans-serif;
+	padding: 18px;
+    background-color: #EEEEEE;
+}
+
+.contenido .titulo {
+	margin-bottom: 20px;
+}
+
+.contenido .titulo h2{
+	font-size: 2rem;
+	font-weight: 600;
+	color: #342E37;
+}
+
+.contenido li {
+	padding: 24px;
+	background: #F9F9F9;
+	border-radius: 20px;
+	align-items: center;
+	grid-gap: 24px;
+}
+
+.contenido li form .input {
+	font-family: 'Poppins', sans-serif;
+	display: flex;
+	height: 45px;
+	align-items: center;
+}
+
+.contenido li form .input p {
+	color: #342E37;
+	width: 15%;
+}
+
+.contenido li form .input input {
+	padding: 0 16px;
+	height: 80%;
+	width: 400px;
+	border: none;
+	background: #eee;
+	border-radius: 36px 36px 36px 36px;
+	color: #342E37;
+}
+
+.contenido li form button {
+	height: 38px;
+	width: 100px;
+	margin-top: 20px;
+	border: none;
+	background: #3C91E6;
+	border-radius: 36px 36px 36px 36px;
+	color: #F9F9F9;
+	cursor: pointer;
+}
+
+.contenido .box-info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+	margin-top: 10px;
+}
+.contenido .box-info li {
+	padding: 24px;
+	background: #F9F9F9;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+}
+.contenido .box-info li .bx {
+	width: 80px;
+	height: 80px;
+	border-radius: 10px;
+	font-size: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.contenido .box-info li:nth-child(1) .bx {
+	background: #CFE8FF;
+	color: #3C91E6;
+}
+.contenido .box-info li:nth-child(2) .bx {
+	background: #CFE8FF;
+	color: #FFCE26;
+}
+.contenido .box-info li:nth-child(3) .bx {
+	background: #FFE0D3;
+	color: #FD7238;
+}
+.contenido .box-info li .text h3 {
+	font-size: 24px;
+	font-weight: 600;
+	color: #342E37;
+}
+.contenido .box-info li .text p {
+	color: #342E37;
+}
+
+.contenido .box-info li .icono {
+	border-radius: 10px;
+}
+
+.contenido .subtitulo {
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+
+.contenido .table-data {
+	display: flex;
+	flex-wrap: wrap;
+	grid-gap: 24px;
+	margin-top: 24px;
+	width: 100%;
+	color: #342E37;
+}
+.contenido .table-data > div {
+	border-radius: 20px;
+	background: #F9F9F9;
+	padding: 24px;
+	overflow-x: auto;
+}
+.contenido .table-data .head {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+	margin-bottom: 24px;
+}
+.contenido .table-data .head h3 {
+	margin-right: auto;
+	font-size: 24px;
+	font-weight: 600;
+}
+.contenido .table-data .head .bx {
+	cursor: pointer;
+}
+
+.contenido .table-data .order {
+	flex-grow: 1;
+	flex-basis: 500px;
+}
+.contenido .table-data .order table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.contenido .table-data .order table th {
+	padding-bottom: 12px;
+	font-size: 13px;
+	text-align: left;
+	border-bottom: 1px solid #eee;
+}
+.contenido .table-data .order table td {
+	padding: 16px 0;
+}
+.contenido .table-data .order table tr td:first-child {
+	display: flex;
+	align-items: center;
+	grid-gap: 12px;
+	padding-left: 6px;
+}
+.contenido .table-data .order table td img {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+.contenido .table-data .order table tbody tr:hover {
+	background: #eee;
+}
+.contenido .table-data .order table tr td .status {
+	font-size: 10px;
+	padding: 6px 16px;
+	color: #F9F9F9;
+	border-radius: 20px;
+	font-weight: 700;
+}
+.contenido .table-data .order table tr td .status.completed {
+	background: #3C91E6;
+}
+.contenido .table-data .order table tr td .status.process {
+	background: #FFCE26;
+}
+.contenido .table-data .order table tr td .status.pending {
+	background: #FD7238;
+}
