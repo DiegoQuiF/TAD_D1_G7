@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { Usuario } from '../models/usuario';
 import { Coleccion } from '../models/coleccion';
+import { Material } from '../models/material';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,13 @@ export class ConnBackendService {
       contra_user: contra
     }
     return this.http.post(`${this.BASE_URL}/getUsuario`, data);
+  }
+
+  getLibros(id:string):Observable<any>{
+    const data = {
+      id_coleccion: id
+    }
+    return this.http.post(`${this.BASE_URL}/getMaterial`, data);
   }
 
   getColeccion(id:string):Observable<any>{
@@ -60,6 +68,29 @@ export class ConnBackendService {
     return this.http.post(`${this.BASE_URL}/registrarColeccion`, data)
   }
 
+  postMaterial(material:Material, id:string): Observable<any>{
+    const hoy = new Date();
+    const dia = hoy.getDate().toString().padStart(2, '0');
+    const mes = (hoy.getMonth() + 1).toString().padStart(2, '0');
+    const anio = hoy.getFullYear().toString();
+
+    const data = {
+      titulo: material.titulo,
+      autor: material.autor,
+      hoy: `${dia}/${mes}/${anio}`,
+      idioma: material.idioma,
+      procedencia: material.procedencia,
+      fechaO: material.original,
+      electronico: material.electronico,
+      precioE: material.precioE,
+      fisico: material.fisico,
+      precioF: material.precioF,
+      stockF: material.stockF,
+      id_coleccion: id
+    }
+    return this.http.post(`${this.BASE_URL}/registrarLibro`, data)
+  }
+
   putUsuario(usuario: Usuario): Observable<any> {
     const data = {
       nombre: usuario.nom_user,
@@ -93,5 +124,9 @@ export class ConnBackendService {
 
   deleteColeccion(coleccion:Coleccion):Observable<any>{
     return this.http.delete(`${this.BASE_URL}/eliminarColeccion/${coleccion.id_col}`);
+  }
+
+  deleteLibro(id:string):Observable<any>{
+    return this.http.delete(`${this.BASE_URL}/eliminarMaterial/${id}`);
   }
 }

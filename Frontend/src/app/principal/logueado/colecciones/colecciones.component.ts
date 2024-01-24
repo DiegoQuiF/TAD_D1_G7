@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Coleccion } from '../../../models/coleccion';
 import { Usuario } from '../../../models/usuario';
 import { ConnBackendService } from '../../../services/conn-backend.service';
+import { Material } from '../../../models/material';
 
 @Component({
   selector: 'app-colecciones',
@@ -13,7 +14,9 @@ export class ColeccionesComponent {
   @Input() user_input!: Usuario;
   
   coleccion_selected: Coleccion = new Coleccion("-", "-", "Privada", "-", "-");
+  material_nuevo: Material = new Material('', '', '', '', '', '', '', '', '', '', '', '');
   mensajeCrear: string = 'Crear Coleccion';
+  libros_array!: Array<Material>;
 
   constructor(private connBackend: ConnBackendService) { }
 
@@ -62,6 +65,88 @@ export class ColeccionesComponent {
       this.coleccion_array = data.coleccion;
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  async abrirLibros(id:string){
+    var libros = document.getElementById(id);
+    if (libros?.classList.contains('oculto')){
+      await this.getLibros(id);
+      this.cerrarTodosLibros();
+      libros?.classList.toggle('oculto');
+    }
+    else {
+      this.cerrarTodosLibros();
+    }
+  }
+
+  cerrarTodosLibros(){
+    var libros = document.getElementsByClassName('libros');
+    for (var i = 0; i < libros.length; i++) {
+      var libro = libros[i];
+      if (libro.classList.contains('oculto')) {
+        //Listo
+      }
+      else {
+        libro.classList.toggle('oculto');
+      }
+    }
+  }
+
+  async getLibros(id:string){
+    try {
+      const data = await this.connBackend.getLibros(id).toPromise();
+      console.log(data);
+      this.libros_array = data.material;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async crearMaterial(material:Material, id:string){
+    if(await this.postMaterial(material, id)){
+      await this.getLibros(id);
+      alert("Material creado correctamente");
+      this.material_nuevo = new Material('', '', '', '', '', '', '', '', '', '', '', '');
+    }
+    else{
+      alert('Error en el registro de datos:\n- Verifique la sintaxis de los campos asociados.\n- Seleccione opciones válidas.');
+    }
+  }
+
+  async postMaterial(material:Material, id:string) {
+    try {
+      const data = await this.connBackend.postMaterial(material, id).toPromise();
+      console.log(data);
+      if(data.libro.length > 0 && data.libro){
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  async eliminarLibro(id_libro:string, id_coleccion:string){
+    if (await this.deleteLibro(id_libro)) {
+      alert("MATERIAL ELIMINADO CORRECTAMENTE");
+      await this.getLibros(id_coleccion);
+    }
+    else {
+      alert("ERROR");
+    }
+  }
+
+  async deleteLibro(id:string) {
+    const data = await this.connBackend.deleteLibro(id).toPromise();
+    if(data.libro && data.libro.length > 0){
+      return true;
+    }
+    else {
+      return false;
     }
   }
 }

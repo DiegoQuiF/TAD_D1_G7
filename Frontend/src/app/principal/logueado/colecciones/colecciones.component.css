@@ -231,9 +231,13 @@ li {
     width: 75%;
 }
 
+.col-60 {
+    width: 60%;
+}
+
 .col-25 {
     width: 25%;
-    border-left: 2px solid #000;
+    border-left: 1px solid #0000007f;
     padding-left: 24px;
 }
 
@@ -247,4 +251,101 @@ li {
 
 .cerrado {
     display: none;
+}
+
+li .encabezado {
+	display: flex;
+	background-color: rgba(119, 119, 119, 0.521);
+	padding: 15px 0px 15px 0px;
+	border-radius: 15px 15px 15px 15px;
+	font-weight: 600;
+}
+
+li .colecciones {
+	display: flex;
+}
+
+li .contenido .colecciones{
+	display: flex;
+	padding: 10px 0px 10px 0px;
+	border-radius: 15px 15px 15px 15px;
+	background-color: rgba(119, 119, 119, 0.115);
+	margin: 5px 0px 5px 0px;
+}
+
+.col-15 {
+	display: flex;
+	width: 15%;
+	padding: 0px 10px 0px 10px;
+	justify-content: center;
+	align-items: center;
+}
+
+.col-40 {
+	display: flex;
+	width: 40%;
+	padding: 0px 10px 0px 10px;
+	justify-content: center;
+	align-items: center;
+}
+
+.contenido-tabla {
+	max-height: 500px;
+	overflow-y: auto;
+}
+
+li .contenido .libros {
+	margin-left: 20px;
+	margin-bottom: 10px;
+	border-radius: 15px 15px 15px 15px;
+	padding: 10px;
+	background-color: rgba(119, 119, 119, 0.038);
+}
+
+.oculto {
+	display: none;
+}
+
+form .input {
+	font-family: 'Poppins', sans-serif;
+	display: flex;
+	height: 45px;
+	align-items: center;
+    margin-bottom: 5px;
+}
+
+form .input p {
+	color: #342E37;
+	width: 15%;
+}
+
+form .input input {
+	padding: 0 16px;
+	height: 80%;
+	width: 100%;
+	border: none;
+	background: #fff;
+	border-radius: 36px 36px 36px 36px;
+	color: #342E37;
+}
+
+form .input select {
+	padding: 0 16px;
+	height: 80%;
+	width: 100%;
+	border: none;
+	background: #fff;
+	border-radius: 36px 36px 36px 36px;
+	color: #342E37;
+}
+
+form button {
+	height: 38px;
+	width: 80px;
+	margin-top: 10px;
+	border: none;
+	background: #3C91E6;
+	border-radius: 36px 36px 36px 36px;
+	color: #F9F9F9;
+	cursor: pointer;
 }

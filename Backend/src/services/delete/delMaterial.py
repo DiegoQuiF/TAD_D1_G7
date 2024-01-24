@@ -1,11 +1,11 @@
 from src.database.db import connection
 
-def delColeccion(id):
+def delMaterial(id):
     try:
         conn = connection()
         inst =  """
-                DELETE FROM usuarioColeccion WHERE idColeccion = %(id)s;
-                DELETE FROM Coleccion WHERE idColeccion = %(id)s;
+                DELETE FROM coleccionMaterial WHERE idMaterial = %(id)s;
+                DELETE FROM MaterialBibliografico WHERE idMaterial = %(id)s;
                 """
         with conn.cursor() as cursor:
             cursor.execute(inst, {'id':id, 'id':id})

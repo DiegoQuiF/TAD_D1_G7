@@ -1,5 +1,4 @@
 from src.database.db import connection
-from src.models.usuario import Usuario
 
 # Esta función por el momento no se utilizará, almenos para los usuarios
 

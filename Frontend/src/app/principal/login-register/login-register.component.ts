@@ -20,8 +20,8 @@ export class LoginRegisterComponent {
   constructor( private connBackend: ConnBackendService) { }
 
   // Variables de inicio de sesión
-  correo_user = '';     // Correo ingresado por el usuario
-  contra_user = '';     // Contraseña ingresada por el usuario
+  correo_user = 'diego123@gmail.com';     // Correo ingresado por el usuario
+  contra_user = 'diego123';     // Contraseña ingresada por el usuario
   usuario_login: Array<Usuario> = new Array<Usuario>();
 
   // Variables de registro

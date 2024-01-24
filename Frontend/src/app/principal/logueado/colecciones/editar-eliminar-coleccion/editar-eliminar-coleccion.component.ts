@@ -45,7 +45,7 @@ export class EditarEliminarColeccionComponent {
       this.salir();
     }
     else {
-      alert("ERROR");
+      alert("ERROR\n- Es posible que tenga Libros dentro de la colección,\npor lo que no es posible eliminarla");
     }
   }
 
