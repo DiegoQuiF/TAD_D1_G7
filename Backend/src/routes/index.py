@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify, request
 from src.services.get.getUsuarios import getUsuarios
+from src.services.get.getMaterialCompleto import getMaterialesCompletos
 from src.services.post.getUsuario import getUsuario
 from src.services.post.getColeccion import getColeccion
 from src.services.post.getMaterial import getMaterial
 from src.services.post.postRegistrarUsuario import postRegistrarUsuario
 from src.services.post.postRegistrarColeccion import postRegistrarColeccion
 from src.services.post.postRegistrarLibro import postRegistrarLibro
+from src.services.post.postFactura import postRegistrarFactura
 from src.services.put.putUsuario import putUsuario
 from src.services.put.putColeccion import putColeccion
 from src.services.delete.delUsuario import delUsuario
@@ -25,7 +27,16 @@ def inicio():
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
 
-
+@main.route('/getMaterialesCompletos/<string:id>')
+def obtenerMaterialesCompletos(id):
+    try:
+        libros = getMaterialesCompletos(id)
+        if (len(libros)>0 and libros):
+            return jsonify({'materiales': libros, 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
 
 
 @main.route('/getUsuario', methods = ['POST'])
@@ -161,6 +172,29 @@ def registrarLibro():
         if (postRegistrarLibro(titulo, autor, hoy, idioma, procedencia, fechaO, electronico, precioE, fisico, precioF, stockF, idColeccion)):
             print('   [Backend] Registro exitoso...\n')
             return jsonify({'libro': libros, 'success':True})
+        else:
+            print('   [Backend] Registro fallido...\n')
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        print('   [Backend] Registro fallido...\n')
+        return jsonify({'message':'ERROR', 'success':False})
+
+@main.route('/registrarFactura', methods = ['POST'])
+def registrarFactura():
+    print('   [Backend] Servicio \'registrarFactura\' solicitado...')
+    try:
+        print('   [Backend] Recepcionando archivo JSON...')
+        data = request.get_json()
+        pagado = data['pagado']
+        fecha = data['fecha']
+        idMaterial = data['id_material']
+        idUsuario = data['id_usuario']
+        factura = []
+        factura.append(data)
+        print('   [Backend] Ejecutando solicitud de registro...')
+        if postRegistrarFactura(pagado, fecha, idMaterial, idUsuario):
+            print('   [Backend] Registro exitoso...\n')
+            return jsonify({'factura': factura, 'success':True})
         else:
             print('   [Backend] Registro fallido...\n')
             return jsonify({'message':"NOT FOUND", 'success':True})

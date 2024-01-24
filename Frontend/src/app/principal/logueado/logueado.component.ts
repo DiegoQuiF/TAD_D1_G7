@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Usuario } from '../../models/usuario';
 import { ConnBackendService } from '../../services/conn-backend.service';
 import { Coleccion } from '../../models/coleccion';
+import { MaterialCompleto } from '../../models/material-completo';
 
 @Component({
   selector: 'app-logueado',
@@ -13,6 +14,9 @@ export class LogueadoComponent {
   @Output() mensajeSalir = new EventEmitter<string>();
   
   coleccion_array: Array<Coleccion> = new Array<Coleccion>();
+  materiales_array: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  materialesFisicos: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  materialesDigitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
 
   constructor(private connBackend: ConnBackendService) { }
 
@@ -51,10 +55,17 @@ export class LogueadoComponent {
     hoja?.classList?.toggle('inactivo');
   }
 
-  abrirTienda() {
+  async abrirTienda() {
     var hoja = document.getElementById('hojaTienda');
     var lista = document.getElementById('listaTienda');
     this.cerrarHojas();
+    await this.obtenerMaterialesCompletos();
+    this.materialesFisicos = this.materiales_array.filter(
+      (material: MaterialCompleto) => material.fisicoMat === 'Si'
+    );
+    this.materialesDigitales = this.materiales_array.filter(
+      (material: MaterialCompleto) => material.electronicoMat === 'Si'
+    );
     lista?.classList.toggle('active');
     hoja?.classList?.toggle('inactivo');
   }
@@ -97,6 +108,16 @@ export class LogueadoComponent {
       const data = await this.connBackend.getColeccion(this.user_input.id_user).toPromise();
       console.log(data);
       this.coleccion_array = data.coleccion;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async obtenerMaterialesCompletos(){
+    try {
+      const data = await this.connBackend.getMaterialesCompletos(this.user_input.id_user).toPromise();
+      console.log(data);
+      this.materiales_array = data.materiales;
     } catch (error) {
       console.error(error);
     }

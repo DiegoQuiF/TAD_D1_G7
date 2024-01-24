@@ -18,6 +18,10 @@ export class ConnBackendService {
     return this.http.get(`${this.BASE_URL}/getUsuarios`);
   }
 
+  getMaterialesCompletos(id:string):Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getMaterialesCompletos/${id}`);
+  }
+
   getUsuario(correo:string, contra:string):Observable<any>{
     const data = {
       correo_user: correo,
@@ -89,6 +93,20 @@ export class ConnBackendService {
       id_coleccion: id
     }
     return this.http.post(`${this.BASE_URL}/registrarLibro`, data)
+  }
+
+  postFactura(idMaterial:string, idUsuario:string): Observable<any>{
+    const hoy = new Date();
+    const dia = hoy.getDate().toString().padStart(2, '0');
+    const mes = (hoy.getMonth() + 1).toString().padStart(2, '0');
+    const anio = hoy.getFullYear().toString();
+    const data = {
+      pagado: "No",
+      fecha: `${dia}/${mes}/${anio}`,
+      id_material: idMaterial,
+      id_usuario: idUsuario
+    }
+    return this.http.post(`${this.BASE_URL}/registrarFactura`, data)
   }
 
   putUsuario(usuario: Usuario): Observable<any> {
