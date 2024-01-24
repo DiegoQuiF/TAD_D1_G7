@@ -17,6 +17,11 @@ export class LogueadoComponent {
   constructor(private connBackend: ConnBackendService) { }
 
   salir() {
+    var hoja = document.getElementById('hojaPerfil');
+    var lista = document.getElementById('listaPerfil');
+    this.cerrarHojas();
+    hoja?.classList.toggle('inactivo');
+    lista?.classList.toggle('active');
     this.mensajeSalir.emit('Abrir login');
   }
 
