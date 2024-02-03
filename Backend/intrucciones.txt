@@ -1,6 +1,13 @@
-- Inicializar el programa
+- Iniciar el programa 
+    1       virtualenv venv
+    2       .\venv\Scripts\activate
+    3       flask run
+
+- Inicializar el programa por primera vez 
     1       virtualenv venv
     2       .\venv\Scripts\activate
     3       pip install -r requirements.txt
-- Adicionales
+    4       flask run
+
+- Actualizar los requirements 
     1       pip freeze > requirements.txt

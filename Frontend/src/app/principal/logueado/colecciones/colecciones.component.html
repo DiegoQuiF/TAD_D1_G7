@@ -8,142 +8,163 @@
     <li>
         <div class="columnas">
             <div class="col-75" style="margin-right: 24px;">
-                <li class="encabezado">
-                    <div class="col-40">
-                        <p>Nombre</p>
-                    </div>
-                    <div class="col-15">
-                        <p>Tipo</p>
-                    </div>
-                    <div class="col-15">
-                        <p>Fecha Cre.</p>
-                    </div>
-                    <div class="col-15">
-                        <p>Fecha Act.</p>
-                    </div>
-                    <div class="col-15">
-                        <p>Edit/Del.</p>
-                    </div>
-                </li>
-                <div class="contenido-tabla">
-                    <li class="contenido" *ngFor="let coleccion of coleccion_array" style="margin: 0px; padding: 0px;">
-                        <div class="colecciones">
-                            <div class="col-40" style="justify-content: left; cursor: pointer;" (click)="abrirLibros(coleccion.id_col)">
-                                <p>{{ coleccion.nombre_col }}</p>
-                            </div>
-                            <div class="col-15" style="cursor: pointer;" (click)="abrirLibros(coleccion.id_col)">
-                                <p>{{ coleccion.tipo_col }}</p>
-                            </div>
-                            <div class="col-15" style="cursor: pointer;" (click)="abrirLibros(coleccion.id_col)">
-                                <p>{{ coleccion.creacion_col }}</p>
-                            </div>
-                            <div class="col-15" style="cursor: pointer;" (click)="abrirLibros(coleccion.id_col)">
-                                <p>{{ coleccion.actu_col }}</p>
-                            </div>
-                            <div class="col-15">
-                                <form action="">
-                                    <button class="botones" type="submit" style="cursor: pointer; background: #e1a83d; width: 110px;" (click)="editarEliminarColeccion(coleccion)">Edit./Del.</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="libros oculto" [id]="coleccion.id_col">
-                            <p><b>Libros</b></p>
-                            <div class="columnas">
-                                <div class="col-60" style="padding-left: 20px; overflow-y: auto; max-height: 350px;">
-                                    <li class="contenido" *ngFor="let libro of libros_array" style="background-color: #ffffff; margin: 10px 10px 10px 0px; padding: 10px;">
-                                        <p><b>Título:</b> {{ libro.titulo }}</p>
-                                        <p><b>Autor:</b> {{ libro.autor }}</p>
-                                        <p><b>Publicación:</b> {{ libro.publicacion }}</p>
-                                        <p><b>Idioma:</b> {{ libro.idioma }}</p>
-                                        <p><b>Procedencia:</b> {{ libro.procedencia }}</p>
-                                        <p><b>Lanzamiento:</b> {{ libro.original }}</p>
-                                        <p><b>Disponibilidad digital:</b> {{ libro.electronico }}</p>
-                                        <p><b>Precio digital:</b> {{ libro.precioE }}</p>
-                                        <p><b>Disponibilidad física:</b> {{ libro.fisico }}</p>
-                                        <p><b>Precio físico:</b> {{ libro.precioF }}</p>
-                                        <p><b>Stock físico:</b> {{ libro.stockF }}</p>
-                                        <form action="">
-                                            <button type="submit" style="cursor: pointer; background: #e13d3d; width: 110px;" (click)="eliminarLibro(libro.idMat, coleccion.id_col)">Eliminar</button>
-                                        </form>
-                                    </li>
-                                </div>
-                                <div class="col-40" style="padding-left: 20px; padding-right: 20px; border-left: 1px solid #0000007f; display: block; overflow-y: auto; max-height: 350px;">
-                                    <div class="tituloCrear" style="display: flex; justify-content: center;">
-                                        <p><b>Registrar nuevo material</b></p>
-                                    </div>
-                                    <div class="cuerpoCrear" style="margin: 10px 0px;">
-                                        <form action="">
-                                            <div class="input">
-                                                <input style="background-color: #fff;" placeholder="Título" type="text" id="titulo" name="titulo" [(ngModel)]="material_nuevo.titulo" required>
-                                            </div>
-                                            <div class="input">
-                                                <input style="background-color: #fff;" placeholder="Autor" type="text" id="autor" name="autor" [(ngModel)]="material_nuevo.autor" required>
-                                            </div>
-                                            <div class="input">
-                                                <select id="idioma" name="idioma" [(ngModel)]="material_nuevo.idioma" required>
-                                                    <option value="" disabled selected>Seleccione un idioma</option>
-                                                    <option value="Espanol">Espanol</option>
-                                                    <option value="Ingles">Ingles</option>
-                                                    <option value="Portugues">Portugues</option>
-                                                </select>
-                                            </div>
-                                            <div class="input">
-                                                <input style="background-color: #fff;" placeholder="Lugar de procedencia" type="text" id="procedencia" name="procedencia" [(ngModel)]="material_nuevo.procedencia" required>
-                                            </div>
-                                            <div class="input">
-                                                <input style="background-color: #fff;" placeholder="Fecha de public. orig. (DD/MM/AAAA)" type="text" id="fecha" name="fecha" [(ngModel)]="material_nuevo.original" required>
-                                            </div>
-                                            <div class="input">
-                                                <select id="electronico" name="electronico" [(ngModel)]="material_nuevo.electronico" required>
-                                                    <option value="" disabled selected>¿Tiene disponibilidad digital?</option>
-                                                    <option value="Si">Si</option>
-                                                    <option value="No">No</option>
-                                                </select>
-                                            </div>
-                                            <div class="input">
-                                                <input style="background-color: #fff;" placeholder="Precio digital (xxx.xx)" type="text" id="precioE" name="precioE" [(ngModel)]="material_nuevo.precioE" required>
-                                            </div>
-                                            <div class="input">
-                                                <select id="fisico" name="fisico" [(ngModel)]="material_nuevo.fisico" required>
-                                                    <option value="" disabled selected>¿Tiene disponibilidad física?</option>
-                                                    <option value="Si">Si</option>
-                                                    <option value="No">No</option>
-                                                </select>
-                                            </div>
-                                            <div class="input">
-                                                <input style="background-color: #fff;" placeholder="Precio físico (xxx.xx)" type="text" id="precioF" name="precioF" [(ngModel)]="material_nuevo.precioF" required>
-                                            </div>
-                                            <div class="input">
-                                                <input style="background-color: #fff;" placeholder="Stock físico" type="text" id="stockF" name="stockF" [(ngModel)]="material_nuevo.stockF" required>
-                                            </div>
-                                            <div class="columnas" style="justify-content: center;">
-                                                <button type="submit" style="cursor: pointer; background: #34c848; width: 70px;" (click)="crearMaterial(material_nuevo, coleccion.id_col)">Crear</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </div>
-            </div>
-            <div class="col-25">
-                <div class="columnas" style="justify-content: center; margin-top: 10px; margin-bottom: 10px;">
-                    <form action="">
-                        <button type="submit" style="cursor: pointer; background: #34c848;" (click)="abrirCrearColeccion()">{{mensajeCrear}}</button>
-                    </form>
-                </div>
-                <div class="columnas" style="justify-content: center;">
-                    <div class="formulario cerrado" id="formularioCrear">
-                        <app-crear-coleccion (mensaje)="recibirMensaje($event)" [user_input]="user_input"></app-crear-coleccion>
-                    </div>
-                </div>
-                <div class="columnas" style="justify-content: center;">
-                    <div class="formulario cerrado" id="formularioEditarEliminar" style="margin-top: 20px;">
-                        <app-editar-eliminar-coleccion (mensaje)="recibirMensaje($event)" [coleccion1]="coleccion_selected"></app-editar-eliminar-coleccion>
-                    </div>
-                </div>
-            </div>
+    <li class="encabezado">
+        <div class="col-40">
+            <p>Nombre</p>
+        </div>
+        <div class="col-15">
+            <p>Tipo</p>
+        </div>
+        <div class="col-15">
+            <p>Fecha Cre.</p>
+        </div>
+        <div class="col-15">
+            <p>Fecha Act.</p>
+        </div>
+        <div class="col-15">
+            <p>Edit/Del.</p>
         </div>
     </li>
+    <div class="contenido-tabla">
+        <li class="contenido" *ngFor="let coleccion of coleccion_array" style="margin: 0px; padding: 0px;">
+            <div class="colecciones">
+                <div class="col-40" style="justify-content: left; cursor: pointer;"
+                    (click)="abrirLibros(coleccion.id_col)">
+                    <p>{{ coleccion.nombre_col }}</p>
+                </div>
+                <div class="col-15" style="cursor: pointer;" (click)="abrirLibros(coleccion.id_col)">
+                    <p>{{ coleccion.tipo_col }}</p>
+                </div>
+                <div class="col-15" style="cursor: pointer;" (click)="abrirLibros(coleccion.id_col)">
+                    <p>{{ coleccion.creacion_col }}</p>
+                </div>
+                <div class="col-15" style="cursor: pointer;" (click)="abrirLibros(coleccion.id_col)">
+                    <p>{{ coleccion.actu_col }}</p>
+                </div>
+                <div class="col-15">
+                    <form action="">
+                        <button class="botones" type="submit"
+                            style="cursor: pointer; background: #e1a83d; width: 110px;"
+                            (click)="editarEliminarColeccion(coleccion)">Edit./Del.</button>
+                    </form>
+                </div>
+            </div>
+            <div class="libros oculto" [id]="coleccion.id_col">
+                <p><b>Libros</b></p>
+                <div class="columnas">
+                    <div class="col-60" style="padding-left: 20px; overflow-y: auto; max-height: 350px;">
+        <li class="contenido" *ngFor="let libro of libros_array"
+            style="background-color: #ffffff; margin: 10px 10px 10px 0px; padding: 10px;">
+            <p><b>Título:</b> {{ libro.titulo }}</p>
+            <p><b>Autor:</b> {{ libro.autor }}</p>
+            <p><b>Publicación:</b> {{ libro.publicacion }}</p>
+            <p><b>Idioma:</b> {{ libro.idioma }}</p>
+            <p><b>Procedencia:</b> {{ libro.procedencia }}</p>
+            <p><b>Lanzamiento:</b> {{ libro.original }}</p>
+            <p><b>Disponibilidad digital:</b> {{ libro.electronico }}</p>
+            <p><b>Precio digital:</b> {{ libro.precioE }}</p>
+            <p><b>Disponibilidad física:</b> {{ libro.fisico }}</p>
+            <p><b>Precio físico:</b> {{ libro.precioF }}</p>
+            <p><b>Stock físico:</b> {{ libro.stockF }}</p>
+            <form action="">
+                <button type="submit" style="cursor: pointer; background: #e13d3d; width: 110px;"
+                    (click)="eliminarLibro(libro.idMat, coleccion.id_col)">Eliminar</button>
+            </form>
+        </li>
+    </div>
+    <div class="col-40"
+        style="padding-left: 20px; padding-right: 20px; border-left: 1px solid #0000007f; display: block; overflow-y: auto; max-height: 350px;">
+        <div class="tituloCrear" style="display: flex; justify-content: center;">
+            <p><b>Registrar nuevo material</b></p>
+        </div>
+        <div class="cuerpoCrear" style="margin: 10px 0px;">
+            <form action="">
+                <div class="input">
+                    <input style="background-color: #fff;" placeholder="Título" type="text" id="titulo" name="titulo"
+                        [(ngModel)]="material_nuevo.titulo" required>
+                </div>
+                <div class="input">
+                    <input style="background-color: #fff;" placeholder="Autor" type="text" id="autor" name="autor"
+                        [(ngModel)]="material_nuevo.autor" required>
+                </div>
+                <div class="input">
+                    <select id="idioma" name="idioma" [(ngModel)]="material_nuevo.idioma" required>
+                        <option value="" disabled selected>Seleccione un idioma</option>
+                        <option value="Espanol">Espanol</option>
+                        <option value="Ingles">Ingles</option>
+                        <option value="Portugues">Portugues</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <input style="background-color: #fff;" placeholder="Lugar de procedencia" type="text"
+                        id="procedencia" name="procedencia" [(ngModel)]="material_nuevo.procedencia" required>
+                </div>
+                <div class="input">
+                    <input style="background-color: #fff;" placeholder="Fecha de public. orig. (DD/MM/AAAA)" type="text"
+                        id="fecha" name="fecha" [(ngModel)]="material_nuevo.original" required>
+                </div>
+                <div class="input">
+                    <select id="electronico" name="electronico" [(ngModel)]="material_nuevo.electronico"
+                        (change)="bloquearPrecioElectronico()" required>
+                        <option value="" disabled selected>¿Tiene disponibilidad digital?</option>
+                        <option value="Si">Si</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <input style="background-color: #fff;" placeholder="Precio digital (xxx.xx)" type="text"
+                        id="precioE" name="precioE" [(ngModel)]="material_nuevo.precioE"
+                        [disabled]="material_nuevo.electronico === 'No'" required>
+                </div>
+                <div class="input">
+                    <select id="fisico" name="fisico" [(ngModel)]="material_nuevo.fisico"
+                        (change)="bloquearPrecioStockFisico()" required>
+                        <option value="" disabled selected>¿Tiene disponibilidad física?</option>
+                        <option value="Si">Si</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <input style="background-color: #fff;" placeholder="Precio físico (xxx.xx)" type="text" id="precioF"
+                        name="precioF" [(ngModel)]="material_nuevo.precioF" [disabled]="material_nuevo.fisico === 'No'"
+                        required>
+                </div>
+                <div class="input">
+                    <input style="background-color: #fff;" placeholder="Stock físico" type="text" id="stockF"
+                        name="stockF" [(ngModel)]="material_nuevo.stockF" [disabled]="material_nuevo.fisico === 'No'"
+                        required>
+                </div>
+                <div class="columnas" style="justify-content: center;">
+                    <button type="submit" style="cursor: pointer; background: #34c848; width: 70px;"
+                        (click)="crearMaterial(material_nuevo, coleccion.id_col)">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</li>
+</div>
+</div>
+<div class="col-25">
+    <div class="columnas" style="justify-content: center; margin-top: 10px; margin-bottom: 10px;">
+        <form action="">
+            <button type="submit" style="cursor: pointer; background: #34c848;"
+                (click)="abrirCrearColeccion()">{{mensajeCrear}}</button>
+        </form>
+    </div>
+    <div class="columnas" style="justify-content: center;">
+        <div class="formulario cerrado" id="formularioCrear">
+            <app-crear-coleccion (mensaje)="recibirMensaje($event)" [user_input]="user_input"></app-crear-coleccion>
+        </div>
+    </div>
+    <div class="columnas" style="justify-content: center;">
+        <div class="formulario cerrado" id="formularioEditarEliminar" style="margin-top: 20px;">
+            <app-editar-eliminar-coleccion (mensaje)="recibirMensaje($event)"
+                [coleccion1]="coleccion_selected"></app-editar-eliminar-coleccion>
+        </div>
+    </div>
+</div>
+</div>
+</li>
 </div>

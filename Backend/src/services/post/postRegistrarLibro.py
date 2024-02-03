@@ -38,11 +38,14 @@ def postRegistrarLibro(titulo, autor, hoy, idioma, procedencia, fechaO, electron
 
 def verificarDatos(titulo, autor, hoy, idioma, procedencia, fechaO, electronico, precioE, fisico, precioF, stockF):
     # Patrones de coincidencias
-    patronTitulo = r'^[A-Za-z]([A-Za-z]|\s|\d|\-|\_|[0-9])*$'
-    patronAutor = r'^[A-Za-z]([A-Za-z]|\s|\d|[0-9])*$'
+    #patronTitulo = r'^[A-Za-z]([A-Za-z]|\s|\d|\-|\_|[0-9])*$'
+    patronTitulo = r'^.*$'
+    #patronAutor = r'^[A-Za-z]([A-Za-z]|\s|\d|[0-9])*$'
+    patronAutor = r'^[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s,]+$'
     patronFechas = r'^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$'
     patronIdioma = r'^(Espanol|Ingles|Portugues)$'
-    patronProcedencia = r'^[A-Za-z]([A-Za-z]|\s|\d|[0-9])*$'
+    #patronProcedencia = r'^[A-Za-z]([A-Za-z]|\s|\d|[0-9])*$'
+    patronProcedencia = r'^[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s,]+$'
     patronSiNo = r'^(Si|No)$'
     patronNumReal = r'^\d+\.\d+$'
     patronNumEntero = r'^\d+$'

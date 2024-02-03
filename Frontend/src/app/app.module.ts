@@ -18,6 +18,7 @@ import { MensajesComponent } from './principal/logueado/mensajes/mensajes.compon
 import { CrearColeccionComponent } from './principal/logueado/colecciones/crear-coleccion/crear-coleccion.component';
 import { EditarEliminarColeccionComponent } from './principal/logueado/colecciones/editar-eliminar-coleccion/editar-eliminar-coleccion.component';
 
+
 @NgModule({
     declarations: [		
       AppComponent,

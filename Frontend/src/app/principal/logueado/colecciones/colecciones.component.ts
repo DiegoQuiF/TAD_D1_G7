@@ -4,6 +4,7 @@ import { Usuario } from '../../../models/usuario';
 import { ConnBackendService } from '../../../services/conn-backend.service';
 import { Material } from '../../../models/material';
 
+
 @Component({
   selector: 'app-colecciones',
   templateUrl: './colecciones.component.html',
@@ -17,6 +18,8 @@ export class ColeccionesComponent {
   material_nuevo: Material = new Material('', '', '', '', '', '', '', '', '', '', '', '');
   mensajeCrear: string = 'Crear Coleccion';
   libros_array!: Array<Material>;
+  
+
 
   constructor(private connBackend: ConnBackendService) { }
 
@@ -44,6 +47,24 @@ export class ColeccionesComponent {
     }
 
     formularioEditarEliminar?.classList.toggle('cerrado');
+  }
+
+  bloquearPrecioStockFisico() {
+    if (this.material_nuevo.fisico === 'No') {
+      this.material_nuevo.precioF = '0.0';
+      this.material_nuevo.stockF = '0';
+    } else {
+      this.material_nuevo.precioF  = ''; 
+      this.material_nuevo.stockF = ''; 
+    }
+  }
+  
+  bloquearPrecioElectronico() {
+    if (this.material_nuevo.electronico === 'No') {
+      this.material_nuevo.precioE = '0.0';
+    } else {
+      this.material_nuevo.precioE  = ''; 
+    }
   }
 
   async recibirMensaje(mensaje:string){

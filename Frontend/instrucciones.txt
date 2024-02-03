@@ -1,3 +1,5 @@
 - Inicializar el programa
+    1       ng serve
+- Inicializar el programa por primera vez
     1       npm install
     2       ng serve
