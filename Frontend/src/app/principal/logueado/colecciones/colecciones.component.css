@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 .input input[disabled] {
-	background-color: #929292e5 !important;
+	background-color: #b1b1b1e5 !important;
 	color: #ffffff !important;
 	cursor: not-allowed;
 }

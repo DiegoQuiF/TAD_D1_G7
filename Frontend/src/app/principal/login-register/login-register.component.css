@@ -6,6 +6,16 @@
   box-sizing: border-box;
 }
 
+/* Estilo para el ícono verde */
+.icono-verde {
+  color: green;
+}
+
+/* Estilo para el ícono rojo */
+.icono-rojo {
+  color: red;
+}
+
 body,
 input {
   font-family: "Poppins", sans-serif;

@@ -49,6 +49,7 @@ export class ColeccionesComponent {
     formularioEditarEliminar?.classList.toggle('cerrado');
   }
 
+  //Se ejecuta cuando se selecciono que no hay disponibilidad Fisica del material 
   bloquearPrecioStockFisico() {
     if (this.material_nuevo.fisico === 'No') {
       this.material_nuevo.precioF = '0.0';
@@ -59,6 +60,7 @@ export class ColeccionesComponent {
     }
   }
   
+  //Se ejecuta cuando se selecciono que no hay disponibilidad Electronica del material 
   bloquearPrecioElectronico() {
     if (this.material_nuevo.electronico === 'No') {
       this.material_nuevo.precioE = '0.0';

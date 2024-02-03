@@ -58,8 +58,9 @@ def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
 def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
     # Patrones de coincidencias
     patronNombresPropios = r'^[A-Z]([A-Z]|[a-z]|\s){0,49}$'
-    patronCorreo = r'^(([a-zA-Z0-9\.\_])+@([a-zA-Z0-9])+(\.([a-zA-Z])+)+)$'
-    patronCorreoLargo = r'^(.{1,50})$'
+    #patronCorreo = r'^(([a-zA-Z0-9\.\_])+@([a-zA-Z0-9])+(\.([a-zA-Z])+)+)$'
+    patronCorreo = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    patronCaracteresLibres = r'^(.{1,50})$'
     patronCelular = r'^(9)(\d{8})$'
 
     # Resultado de las comprobaciones
@@ -67,8 +68,8 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
     resultado2 = re.match(patronNombresPropios, aPat)
     resultado3 = re.match(patronNombresPropios, aMat)
     resultado4 = re.match(patronCorreo, correo)
-    resultado5 = re.match(patronCorreoLargo, correo)
-    resultado6 = re.match(patronCorreoLargo, contra)
+    resultado5 = re.match(patronCaracteresLibres, correo)
+    resultado6 = re.match(patronCaracteresLibres, contra)
     resultado7 = re.match(patronCelular, celular)
 
     print('         [VerificadorS] Ejecutando verificaciones de los datos...')

@@ -37,8 +37,10 @@ def postRegistrarLibro(titulo, autor, hoy, idioma, procedencia, fechaO, electron
         return False
 
 def verificarDatos(titulo, autor, hoy, idioma, procedencia, fechaO, electronico, precioE, fisico, precioF, stockF):
+    
     # Patrones de coincidencias
     #patronTitulo = r'^[A-Za-z]([A-Za-z]|\s|\d|\-|\_|[0-9])*$'
+    #Titulo ahora acepta cualquier combinación de caracteres
     patronTitulo = r'^.*$'
     #patronAutor = r'^[A-Za-z]([A-Za-z]|\s|\d|[0-9])*$'
     patronAutor = r'^[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s,]+$'

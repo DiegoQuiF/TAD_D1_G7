@@ -17,7 +17,7 @@ import { Usuario } from '../../models/usuario';
 
 export class LoginRegisterComponent {
 
-  constructor( private connBackend: ConnBackendService) { }
+  constructor(private connBackend: ConnBackendService) { }
 
   // Variables de inicio de sesión
   correo_user = 'pedrito@gmail.com';     // Correo ingresado por el usuario
@@ -37,7 +37,13 @@ export class LoginRegisterComponent {
   @Output() usuarioLogin = new EventEmitter<Usuario>();
 
 
-  
+  //Validar campos del register desde el front
+  patronNombresPropios = /^[A-Z]([A-Z]|[a-z]|\s){0,49}$/;
+  patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  patronCaracteresLibres = /^(.{1,50})$/;
+  patronCelular = /^(9)(\d{8})$/;
+
+
   // Transiciones
   in_btn() {    // Tansición entre el formulario REGISTRARSE → INICIAR SESIÓN
     const container = document.getElementById("container-form");
@@ -52,8 +58,8 @@ export class LoginRegisterComponent {
 
 
   // Login - Inicio Sesión
-  async validar_inicioSesion(correo_input:string, contra_input:string) {    // Realiza una acción si se encuentra o no al usuario
-    if(await this.getUsuario_inicioSesion(correo_input, contra_input)) {
+  async validar_inicioSesion(correo_input: string, contra_input: string) {    // Realiza una acción si se encuentra o no al usuario
+    if (await this.getUsuario_inicioSesion(correo_input, contra_input)) {
       this.usuarioLogin.emit(this.usuario_login[0]);
       this.mensajeEnviado.emit('Abrir logged');
       this.correo_user = '';
@@ -64,12 +70,12 @@ export class LoginRegisterComponent {
     }
   }
 
-  async getUsuario_inicioSesion(correo:string, contra:string) {   // Retorna true si el usuario existe, false si no existe u ocurre un error
+  async getUsuario_inicioSesion(correo: string, contra: string) {   // Retorna true si el usuario existe, false si no existe u ocurre un error
     try {
       const data = await this.connBackend.getUsuario(correo, contra).toPromise();   // Mediante servicio backend consulta la existencia del usuario
       console.log(data);
       this.usuario_login = data.usuario;    // Obtiene el campo usuario de la data obtenida, si no se encontró un usuario sera vacio
-      if(this.usuario_login.length > 0 && this.usuario_login){    // Si el usuario existe retorna true, si no se encontró retorna falso
+      if (this.usuario_login.length > 0 && this.usuario_login) {    // Si el usuario existe retorna true, si no se encontró retorna falso
         return true;
       }
       else {
@@ -84,8 +90,8 @@ export class LoginRegisterComponent {
 
 
   // Register - Registro
-  async registrar_registro(nombre_input:string, aPat_input:string, aMat_input:string, celular_input:string, correo_input:string, contra_input:string) {    // Realiza una acción si se logra registrar al usuario o no
-    if(await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input)) {
+  async registrar_registro(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string) {    // Realiza una acción si se logra registrar al usuario o no
+    if (await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input)) {
       alert("Usuario registrado correctamente");
       // Se autocompletan las credenciales del usuario recien registrado
       this.correo_user = this.correo_reg;
@@ -105,11 +111,11 @@ export class LoginRegisterComponent {
     }
   }
 
-  async postUsuario_registro(nombre:string, aPat:string, aMat:string, celular:string, correo:string, contra:string) {   // Retorna true si el usuario fue registrado, false si no se registro u ocurrio un error
+  async postUsuario_registro(nombre: string, aPat: string, aMat: string, celular: string, correo: string, contra: string) {   // Retorna true si el usuario fue registrado, false si no se registro u ocurrio un error
     try {
       const data = await this.connBackend.postUsuario(nombre, aPat, aMat, correo, contra, celular).toPromise();   // Mediante servicio backend se intenta registrar al usuario
       console.log(data);
-      if(data.usuario.length > 0 && data.usuario){    // Si el usuario se registro correctamente, el backend habría retornado un campo usuario por lo que retorna true, caso contrario retorna false
+      if (data.usuario.length > 0 && data.usuario) {    // Si el usuario se registro correctamente, el backend habría retornado un campo usuario por lo que retorna true, caso contrario retorna false
         return true;
       }
       else {
