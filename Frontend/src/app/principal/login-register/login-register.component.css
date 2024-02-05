@@ -8,12 +8,12 @@
 
 /* Estilo para el ícono verde */
 .icono-verde {
-  color: green;
+  color: rgb(140, 255, 140);
 }
 
 /* Estilo para el ícono rojo */
 .icono-rojo {
-  color: red;
+  color: rgb(255, 130, 130);
 }
 
 body,
@@ -33,7 +33,7 @@ input {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #aaa;
+    color: #9c9c9c;
 }
 
 .forms-container {
@@ -50,7 +50,7 @@ input {
   transform: translate(-50%, -50%);
   left: 75%;
   width: 50%;
-  transition: 1s 0.7s ease-in-out;
+  transition: 0.2s 0.1s ease-in-out;
   display: grid;
   grid-template-columns: 1fr;
   z-index: 5;
@@ -62,7 +62,7 @@ form {
   justify-content: center;
   flex-direction: column;
   padding: 0rem 5rem;
-  transition: all 0.2s 0.7s;
+  transition: all 0.2s 0.2s;
   overflow: hidden;
   grid-column: 1 / 2;
   grid-row: 1 / 2;
@@ -143,7 +143,7 @@ form.sign-in-form {
 
 .btn {
   width: 160px;
-  background-color: #5995fd;
+  background-color: #1130ff;
   border: none;
   outline: none;
   height: 49px;
@@ -153,11 +153,11 @@ form.sign-in-form {
   font-weight: 600;
   margin: 10px 0;
   cursor: pointer;
-  transition: 0.5s;
+  transition: 0s;
 }
 
 .btn:hover {
-  background-color: #4d84e2;
+  background-color: #3d57ff;
 }
 .panels-container {
   position: absolute;
@@ -177,15 +177,15 @@ form.sign-in-form {
   top: -10%;
   right: 48%;
   transform: translateY(-50%);
-  background-image: linear-gradient(-45deg, #4481eb 0%, #04befe 100%);
-  transition: 1.8s ease-in-out;
+  background-image: linear-gradient(-45deg, #1130ff 0%, #717bff 100%);
+  transition: 0.6s ease-in-out;
   border-radius: 50%;
   z-index: 6;
 }
 
 .image {
-  transition: transform 1.1s ease-in-out;
-  transition-delay: 0.4s;
+  transition: transform 0.3s ease-in-out;
+  transition-delay: 0s;
   width: 65%;
 }
 
@@ -210,8 +210,8 @@ form.sign-in-form {
 
 .panel .content {
   color: #fff;
-  transition: transform 0.9s ease-in-out;
-  transition-delay: 0.6s;
+  transition: transform 0.2s ease-in-out;
+  transition-delay: 0s;
 }
 
 .panel h3 {
@@ -406,4 +406,21 @@ form.sign-in-form {
     bottom: 28%;
     left: 50%;
   }
+}
+
+
+
+
+
+.mensaje-cargando {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.527);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }

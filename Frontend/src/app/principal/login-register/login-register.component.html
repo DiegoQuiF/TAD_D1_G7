@@ -1,109 +1,95 @@
+
+
 <div class="container" id="container-form">
     <!-- FORMULARIOS -->
     <div class="forms-container">
         <div class="signin-signup">
+            
             <!-- INICIAR SESIÓN -->
             <form class="sign-in-form">
                 <h2 class="title">Iniciar Sesión</h2>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor"
-                            class="bi bi-envelope-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
                         </svg>
                     </div>
-                    <input type="email" name="correo_user" placeholder="Correo" [(ngModel)]="correo_user" required />
+                    <input type="email" name="correo_user" placeholder="Correo" [(ngModel)]="correo_user" required/>
                 </div>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor"
-                            class="bi bi-lock-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
                         </svg>
                     </div>
-                    <input type="password" name="contra_user" placeholder="Contraseña" [(ngModel)]="contra_user"
-                        required />
+                    <input type="password" name="contra_user" placeholder="Contraseña" [(ngModel)]="contra_user" required/>
                 </div>
                 <br>
                 <input type="submit" value="Ingresar" class="btn solid"
-                    (click)="validar_inicioSesion(correo_user, contra_user)" />
+                    (click)="login(correo_user, contra_user)"/>
             </form>
+
             <!-- REGISTRARSE -->
             <form action="#" class="sign-up-form">
                 <h2 class="title">Registro</h2>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh"
-                            [ngClass]="{'icono-verde': nombre_reg.match(patronNombresPropios), 'icono-rojo': !nombre_reg.match(patronNombresPropios)}"
-                            fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"
+                            [ngClass]="{'icono-verde': nombre_reg.match(patronNombresPropios), 'icono-rojo': !nombre_reg.match(patronNombresPropios)}">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                         </svg>
                     </div>
                     <input type="text" placeholder="Nombres" name="nombre_reg" [(ngModel)]="nombre_reg" required />
                 </div>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3vh"
-                            [ngClass]="{'icono-verde': aPat_reg.match(patronNombresPropios), 'icono-rojo': !aPat_reg.match(patronNombresPropios)}"
-                            fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3vh" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"
+                            [ngClass]="{'icono-verde': aPat_reg.match(patronNombresPropios), 'icono-rojo': !aPat_reg.match(patronNombresPropios)}">
+                            <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/>
                         </svg>
                     </div>
                     <input type="text" placeholder="A. Paterno" name="aPat_reg" [(ngModel)]="aPat_reg" required />
                 </div>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3vh"
-                            [ngClass]="{'icono-verde': aMat_reg.match(patronNombresPropios), 'icono-rojo': !aMat_reg.match(patronNombresPropios)}"
-                            fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3vh" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"
+                            [ngClass]="{'icono-verde': aMat_reg.match(patronNombresPropios), 'icono-rojo': !aMat_reg.match(patronNombresPropios)}">
+                            <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/>
                         </svg>
                     </div>
-                    <input type="text" placeholder="A. Materno" name="aMat_reg" [(ngModel)]="aMat_reg" required />
+                    <input type="text" placeholder="A. Materno" name="aMat_reg" [(ngModel)]="aMat_reg" required/>
                 </div>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh"
-                            [ngClass]="{'icono-verde': celular_reg.match(patronCelular), 'icono-rojo': !celular_reg.match(patronCelular)}"
-                            fill="currentColor" class="bi bi-phone-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3 2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 11a1 1 0 1 0-2 0 1 1 0 0 0 2 0" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-phone-fill" viewBox="0 0 16 16"
+                            [ngClass]="{'icono-verde': celular_reg.match(patronCelular), 'icono-rojo': !celular_reg.match(patronCelular)}">
+                            <path d="M3 2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 11a1 1 0 1 0-2 0 1 1 0 0 0 2 0"/>
                         </svg>
                     </div>
-                    <input type="text" placeholder="Nro. Celular" name="celular_reg" [(ngModel)]="celular_reg"
-                        required />
+                    <input type="text" placeholder="Nro. Celular" name="celular_reg" [(ngModel)]="celular_reg" required/>
                 </div>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" class="bi bi-envelope-fill" viewBox="0 0 16 16"
                             [ngClass]="{'icono-verde': correo_reg.match(patronCorreo) && correo_reg.match(patronCaracteresLibres), 
-                                       'icono-rojo': !(correo_reg.match(patronCorreo) && correo_reg.match(patronCaracteresLibres))}" fill="currentColor"
-                            class="bi bi-envelope-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z" />
+                                       'icono-rojo': !(correo_reg.match(patronCorreo) && correo_reg.match(patronCaracteresLibres))}" fill="currentColor">
+                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
                         </svg>
                     </div>
-                    <input type="email" placeholder="Correo" name="correo_reg" [(ngModel)]="correo_reg" required />
+                    <input type="email" placeholder="Correo" name="correo_reg" [(ngModel)]="correo_reg" required/>
                 </div>
                 <div class="input-field">
                     <div class="icono">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh"
-                            [ngClass]="{'icono-verde': contra_reg.match(patronCaracteresLibres), 'icono-rojo': !contra_reg.match(patronCaracteresLibres)}"
-                            fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16"
+                            [ngClass]="{'icono-verde': contra_reg.match(patronCaracteresLibres), 'icono-rojo': !contra_reg.match(patronCaracteresLibres)}">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
                         </svg>
                     </div>
-                    <input type="password" placeholder="Contraseña" name="contra_reg" [(ngModel)]="contra_reg"
-                        required />
+                    <input type="password" placeholder="Contraseña" name="contra_reg" [(ngModel)]="contra_reg" required/>
                 </div>
                 <br>
                 <input type="submit" class="btn" value="Registrarse"
-                    (click)="registrar_registro(nombre_reg, aPat_reg, aMat_reg, celular_reg, correo_reg, contra_reg)" />
+                    (click)="register(nombre_reg, aPat_reg, aMat_reg, celular_reg, correo_reg, contra_reg)"/>
             </form>
         </div>
     </div>
@@ -117,7 +103,7 @@
                 <br>
                 <button class="btn transparent" id="sign-up-btn" (click)="up_btn()">Registrarme</button>
             </div>
-            <img src="../../../assets/images/biblio2.svg" class="image" alt="" />
+            <img src="../../../assets/images/biblio2.svg" class="image" alt=""/>
         </div>
         <!-- REGISTRARSE -->
         <div class="panel right-panel">
@@ -127,7 +113,11 @@
                 <br>
                 <button class="btn transparent" id="sign-in-btn" (click)="in_btn()">Ingresar</button>
             </div>
-            <img src="../../../assets/images/biblio1.svg" class="image" alt="" />
+            <img src="../../../assets/images/biblio1.svg" class="image" alt=""/>
         </div>
     </div>
+
+    <div *ngIf="isLoading" class="mensaje-cargando">
+        <p>Cargando...</p>
+      </div>
 </div>

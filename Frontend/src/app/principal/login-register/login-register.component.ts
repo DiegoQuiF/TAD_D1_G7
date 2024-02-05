@@ -20,8 +20,8 @@ export class LoginRegisterComponent {
   constructor(private connBackend: ConnBackendService) { }
 
   // Variables de inicio de sesión
-  correo_user = 'pedrito@gmail.com';     // Correo ingresado por el usuario
-  contra_user = 'pedrito';     // Contraseña ingresada por el usuario
+  correo_user = 'pedrito@gmail.com';      // Correo ingresado por el usuario
+  contra_user = 'pedrito';                // Contraseña ingresada por el usuario
   usuario_login: Array<Usuario> = new Array<Usuario>();
 
   // Variables de registro
@@ -36,12 +36,12 @@ export class LoginRegisterComponent {
   @Output() mensajeEnviado = new EventEmitter<string>();
   @Output() usuarioLogin = new EventEmitter<Usuario>();
 
-
   //Validar campos del register desde el front
   patronNombresPropios = /^[A-Z]([A-Z]|[a-z]|\s){0,49}$/;
   patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   patronCaracteresLibres = /^(.{1,50})$/;
   patronCelular = /^(9)(\d{8})$/;
+
 
 
   // Transiciones
@@ -124,6 +124,32 @@ export class LoginRegisterComponent {
     } catch (error) {   // Capta los errores durante ejecución
       console.error(error);
       return false;
+    }
+  }
+
+
+  // Lógica de carga asíncrona
+  isLoading: boolean = false;
+
+  async login(correo_input: string, contra_input: string) {
+    this.isLoading = true;
+    try {
+      await this.validar_inicioSesion(correo_input, contra_input);
+    } catch (error) {
+      alert('Hubo un error al iniciar sesión...')
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async register(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string) {
+    this.isLoading = true;
+    try {
+      await this.registrar_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input);
+    } catch (error) {
+      console.error('Hubo un error al registrarse...', error);
+    } finally {
+      this.isLoading = false;
     }
   }
 }

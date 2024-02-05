@@ -14,6 +14,7 @@ from src.services.delete.delUsuario import delUsuario
 from src.services.delete.delColeccion import delColeccion
 from src.services.delete.delMaterial import delMaterial
 
+
 main = Blueprint('index_blueprint', __name__)
 
 @main.route('/getUsuarios')
