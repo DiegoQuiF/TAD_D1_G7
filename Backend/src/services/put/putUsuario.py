@@ -3,51 +3,45 @@ from src.database.db import connection
 from src.auxiliar.encriptador import encriptar_contrasenia
 
 def putUsuario(nombre, aPat, aMat, correo, contra, celular, id):
-    print('      [Actualizar] Verificando sintaxis de datos ingresados...')
-    if verificarDatos(nombre, aPat, aMat, correo, contra, celular):
-        try:
-            print('      [Actualizar] Solicitando encriptación de contraseña...')
-            contra = encriptar(contra)
-            print('      [Actualizar] Estableciendo conexión con la base de datos...')
-            conn = connection()
-
-            print('      [Actualizar] Realizando actualización de datos de Usuario...')
-            
-            inst =  '''
-                    UPDATE Usuario U
-                            SET nombreUsuario = %(nombre)s, apellidoPatUsuario = %(aPat)s, apellidoMatUsuario = %(aMat)s
-                            FROM Contacto CO WHERE U.idUsuario = %(id)s AND U.idContacto = CO.idContacto;
-                    '''
-            with conn.cursor() as cursor:
-                cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'id': id})
-                conn.commit()
-            
-            print('      [Actualizar] Realizando actualización de datos de Contacto...')
-            inst =  '''
-                    UPDATE Contacto
-                            SET correoContacto = %(correo)s, contraseniaContacto = %(contra)s, nroCelularContacto = %(celular)s
-                            WHERE idContacto IN (SELECT idContacto FROM Usuario WHERE idUsuario = %(id)s);
-                    '''
-            with conn.cursor() as cursor:
-                cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular, 'id': id})
-                conn.commit()
-            conn.close()
-            print('      [Actualizar] Actualización completa...')
-            return True
-        except Exception as e:
-            print('      [Actualizar] Error de lógica interna:', e)
-            return False
+    result = verificarDatos(nombre, aPat, aMat, correo, contra, celular)
+    if result == 'COMPLETE':
+        result = correoCelularRegistrado(correo, celular, id)
+        if result == 'COMPLETE':    
+            try:
+                contra = encriptar(contra)
+                conn = connection()
+                inst =  '''
+                        UPDATE Usuario U
+                                SET nombreUsuario = %(nombre)s, apellidoPatUsuario = %(aPat)s, apellidoMatUsuario = %(aMat)s
+                                FROM Contacto CO WHERE U.idUsuario = %(id)s AND U.idContacto = CO.idContacto;
+                        '''
+                with conn.cursor() as cursor:
+                    cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'id': id})
+                    conn.commit()
+                inst =  '''
+                        UPDATE Contacto
+                                SET correoContacto = %(correo)s, contraseniaContacto = %(contra)s, nroCelularContacto = %(celular)s
+                                WHERE idContacto IN (SELECT idContacto FROM Usuario WHERE idUsuario = %(id)s);
+                        '''
+                with conn.cursor() as cursor:
+                    cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular, 'id': id})
+                    conn.commit()
+                conn.close()
+                return True
+            except:
+                return 'Hubo un error interno del sistema...'
+        else:
+            return result
     else:
-        print('      [Actualizar] Error: verificador de sintaxis...')
-        return False
+        return result
         
 
 
 def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
     # Patrones de coincidencias
     patronNombresPropios = r'^[A-Z]([A-Z]|[a-z]|\s){0,49}$'
-    patronCorreo = r'^(([a-zA-Z0-9\.\_])+@([a-zA-Z0-9])+(\.([a-zA-Z])+)+)$'
-    patronCorreoLargo = r'^(.{1,50})$'
+    patronCorreo = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    patronCaracteresLibres = r'^(.{1,50})$'
     patronCelular = r'^(9)(\d{8})$'
 
     # Resultado de las comprobaciones
@@ -55,20 +49,47 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
     resultado2 = re.match(patronNombresPropios, aPat)
     resultado3 = re.match(patronNombresPropios, aMat)
     resultado4 = re.match(patronCorreo, correo)
-    resultado5 = re.match(patronCorreoLargo, correo)
-    resultado6 = re.match(patronCorreoLargo, contra)
+    resultado5 = re.match(patronCaracteresLibres, correo)
+    resultado6 = re.match(patronCaracteresLibres, contra)
     resultado7 = re.match(patronCelular, celular)
 
-    print('         [VerificadorS] Ejecutando verificaciones de los datos...')
-    if resultado1 and resultado2 and resultado3 and resultado4 and resultado5 and resultado6 and resultado7:
-        print('         [VerificadorS] Sintaxis validada...')
-        return True
-    else:
-        print('         [VerificadorS] Error: sintaxis de datos errónea...')
-        return False
+    if not resultado1:
+        return 'Sintaxis de nombre incorrecto...'
+    if not resultado2:
+        return 'Sintaxis de apellido paterno incorrecto...'
+    if not resultado3:
+        return 'Sintaxis de apellido materno incorrecto...'
+    if not resultado4:
+        return 'Sintaxis de correo incorrecta...'
+    if not resultado5:
+        return 'Correo demasiado largo...'
+    if not resultado6:
+        return 'Contraseña demasiado larga...'
+    if not resultado7:
+        return 'Sintaxis de número de celular incorrecta...'
+    return 'COMPLETE'
+
+def correoCelularRegistrado(correo, celular, id):
+    try:
+        conn = connection()
+        total = 0
+        inst =  '''
+                SELECT COUNT(*) AS total FROM Contacto WHERE ((correoContacto = %(correo)s) or %(celular)s)) and idContacto not in (
+                    SELECT idContacto from Usuario where idUsuario = %(id)s);
+                '''
+        with conn.cursor() as cursor:
+            cursor.execute(inst, {'correo': correo, 'celular': celular, 'id': id})
+            for row in cursor.fetchall():
+                total = row[0]
+            conn.commit()
+        conn.close()
+        if total == 0:
+            return 'COMPLETE'
+        else:
+            return 'El correo o número de celular ya están registrados...'
+    except Exception as e:
+        return 'Hubo un error interno del sistema...'
 
 def encriptar(contra):
-    print("         [Encriptador] Encriptando contraseña...")
     texto = encriptar_contrasenia(contra)
-    print("         [Encriptador] Contraseña encriptada...")
     return texto

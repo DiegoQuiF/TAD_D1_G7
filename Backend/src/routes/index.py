@@ -100,11 +100,16 @@ def materiales():
         print('   [Backend] Consulta fallida...\n')
         return jsonify({'message':'ERROR', 'success':False})
 
+
+
+
+
+
+
+
 @main.route('/registrarUsuario', methods = ['POST'])
 def registrarUsuario():
-    print('   [Backend] Servicio \'registrarUsuario\' solicitado...')
     try:
-        print('   [Backend] Recepcionando archivo JSON...')
         data = request.get_json()
         nombre = data['nombre']
         paterno = data['paterno']
@@ -112,18 +117,18 @@ def registrarUsuario():
         correo = data['correo']
         contra = data['contra']
         celular = data['celular']
-        usuarios = []
-        usuarios.append(data)
-        print('   [Backend] Ejecutando solicitud de registro...')
-        if (postRegistrarUsuario(nombre, paterno, materno, correo, contra, celular)):
-            print('   [Backend] Registro exitoso...\n')
-            return jsonify({'usuario': usuarios, 'success':True})
-        else:
-            print('   [Backend] Registro fallido...\n')
-            return jsonify({'message':"NOT FOUND", 'success':True})
+        mensaje = postRegistrarUsuario(nombre, paterno, materno, correo, contra, celular)
+        return jsonify({'message':mensaje, 'success':True})
     except Exception as e:
-        print('   [Backend] Registro fallido...\n')
         return jsonify({'message':'ERROR', 'success':False})
+
+
+
+
+
+
+
+
 
 @main.route('/registrarColeccion', methods = ['POST'])
 def registrarColeccion():
@@ -205,6 +210,8 @@ def registrarFactura():
 
 
 
+
+
 @main.route('/guardarUsuario', methods = ['PUT'])
 def guardarUsuario():
     try:
@@ -216,14 +223,12 @@ def guardarUsuario():
         contra = data['contra']
         celular = data['celular']
         id = data['id']
-        usuarios = []
-        usuarios.append(data)
-        if (putUsuario(nombre, paterno, materno, correo, contra, celular, id)):
-            return jsonify({'usuario': usuarios, 'success':True})
-        else:
-            return jsonify({'message':"NOT FOUND", 'success':True})
+        mensaje = putUsuario(nombre, paterno, materno, correo, contra, celular, id)
+        return jsonify({'message':mensaje, 'success':True})
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
+
+
 
 @main.route('/guardarColeccion', methods = ['PUT'])
 def guardarColeccion():

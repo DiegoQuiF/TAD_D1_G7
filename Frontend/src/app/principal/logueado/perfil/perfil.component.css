@@ -224,3 +224,54 @@ li {
 .contenido .table-data .order table tr td .status.pending {
 	background: #FD7238;
 }
+
+
+.mensaje-cargando {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.527);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10;
+}
+  
+  
+.mensaje-alert {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(203, 203, 203, 0);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 11;
+}
+
+.alerta {
+	width: 350px;
+	border-radius: 25px;
+	background: #ffffff;
+	border: 1px solid #1130ff;
+	padding: 15px;
+}
+
+.btn {
+	width: 160px;
+	background-color: #1130ff;
+	border: none;
+	outline: none;
+	height: 49px;
+	border-radius: 49px;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: 600;
+	margin: 10px 0;
+	cursor: pointer;
+	transition: 0s;
+}

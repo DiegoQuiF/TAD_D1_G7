@@ -17,9 +17,7 @@ def connection():
 
     try:
         conn = psycopg2.connect(**db_config)
-        print('[Backend] Conexión con la base de datos exitosa'.ljust(120, '.'))
         return conn
     
     except Exception as e:
-        print('[Backend] No se pudo establecer conexión con la base de datos'.ljust(120, '.'))
         return None

@@ -19,6 +19,10 @@ export class LoginRegisterComponent {
 
   constructor(private connBackend: ConnBackendService) { }
 
+  // mostrar alerta
+  isAlert: boolean = false;
+  mensajeAlert: string = '';
+
   // Variables de inicio de sesión
   correo_user = 'pedrito@gmail.com';      // Correo ingresado por el usuario
   contra_user = 'pedrito';                // Contraseña ingresada por el usuario
@@ -66,7 +70,7 @@ export class LoginRegisterComponent {
       this.contra_user = '';
     }
     else {
-      alert('Usuario no encontrado');
+      this.alert('Usuario no encontrado...');
     }
   }
 
@@ -91,8 +95,9 @@ export class LoginRegisterComponent {
 
   // Register - Registro
   async registrar_registro(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string) {    // Realiza una acción si se logra registrar al usuario o no
-    if (await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input)) {
-      alert("Usuario registrado correctamente");
+    var result = await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input);
+    if (result === 'COMPLETE') {
+      this.alert('Usuario registrado correctamente...');
       // Se autocompletan las credenciales del usuario recien registrado
       this.correo_user = this.correo_reg;
       this.contra_user = this.contra_reg;
@@ -107,7 +112,7 @@ export class LoginRegisterComponent {
       this.in_btn();
     }
     else {
-      alert('Error en el registro de datos:\n- Verifique la sintaxis en los campos asociados.\n- Verifique el Nro de celular o correo, puede que estén en uso.');
+      this.alert('Error: '+result);
     }
   }
 
@@ -115,17 +120,18 @@ export class LoginRegisterComponent {
     try {
       const data = await this.connBackend.postUsuario(nombre, aPat, aMat, correo, contra, celular).toPromise();   // Mediante servicio backend se intenta registrar al usuario
       console.log(data);
-      if (data.usuario.length > 0 && data.usuario) {    // Si el usuario se registro correctamente, el backend habría retornado un campo usuario por lo que retorna true, caso contrario retorna false
-        return true;
+      if (data.success === true) {
+        return data.message;
       }
       else {
-        return false;
+        return 'Error interno del sistema...';
       }
     } catch (error) {   // Capta los errores durante ejecución
       console.error(error);
-      return false;
+      return 'Error interno del sistema...';
     }
   }
+
 
 
   // Lógica de carga asíncrona
@@ -136,7 +142,7 @@ export class LoginRegisterComponent {
     try {
       await this.validar_inicioSesion(correo_input, contra_input);
     } catch (error) {
-      alert('Hubo un error al iniciar sesión...')
+      this.alert('Hubo un error al iniciar sesión...');
     } finally {
       this.isLoading = false;
     }
@@ -151,5 +157,17 @@ export class LoginRegisterComponent {
     } finally {
       this.isLoading = false;
     }
+  }
+
+
+
+  // Lógica de mensaje asíncrono
+  async alert(mensaje:string) {
+    this.mensajeAlert = mensaje;
+    this.isAlert = true;
+  }
+
+  async continuar() {
+    this.isAlert = false;
   }
 }

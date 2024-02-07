@@ -3,27 +3,25 @@ from src.database.db import connection
 from src.auxiliar.encriptador import encriptar_contrasenia
 
 def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
-    print('      [Registro] Verificando sintaxis de datos ingresados...')
-    if verificarDatos(nombre, aPat, aMat, correo, contra, celular):
-        print('      [Registro] Verificando disponibilidad de correo y nro. de celular...')
-        if not correoCelularRegistrado(correo, celular):
+    print('    [Registrar] Verificando sintaxis de datos'.ljust(120, '.'))
+    result = verificarDatos(nombre, aPat, aMat, correo, contra, celular)
+    if result == 'COMPLETE':
+        print('    [Registrar] Verificando correo & nro. celular'.ljust(120, '.'))
+        result = correoCelularRegistrado(correo, celular)
+        if result == 'COMPLETE':
             try:
-                print('      [Registro] Solicitando encriptación de contraseña...')
+                print('    [Registrar] Encriptando contraseña'.ljust(120, '.'))
                 contra = encriptar(contra)
-                print('      [Registro] Realizando conexión con la base de datos...')
+                print('    [Registrar] Obteniendo conexión a la BD'.ljust(120, '.'))
                 conn = connection()
-                print('      [Registro] Ejecutando inserción de nuevo usuario...')
-                print('      [Registro] Inserción de contacto...')
-                
                 inst =  '''
                         INSERT INTO Contacto(correoContacto, contraseniaContacto, nroCelularContacto)
 	                            VALUES (%(correo)s, %(contra)s, %(celular)s);
                         '''
+                print('    [Registrar] Ejecutando instrucción de inserción'.ljust(120, '.'))
                 with conn.cursor() as cursor:
                     cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular})
                     conn.commit()
-                
-                print('      [Registro] Obtención de contacto...')
                 idContacto = ''
                 inst =  '''
                         SELECT idContacto FROM Contacto WHERE correoContacto = %(correo)s and contraseniaContacto = %(contra)s
@@ -34,8 +32,6 @@ def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
                     for row in cursor.fetchall():
                         idContacto = row[0]
                     conn.commit()
-                
-                print('      [Registro] Inserción de usuario...')
                 inst =  '''
                         INSERT INTO Usuario(nombreUsuario, apellidoPatUsuario, apellidoMatUsuario, idContacto)
 	                            VALUES (%(nombre)s, %(aPat)s, %(aMat)s, %(idContacto)s);
@@ -43,25 +39,26 @@ def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
                 with conn.cursor() as cursor:
                     cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'idContacto':idContacto})
                     conn.commit()
-                print('      [Registro] Inserción ejecutada correctamente...')
-                return True
+                print('    [Registrar] Registro completo'.ljust(120, '.'))
+                return 'COMPLETE'
             except Exception as e:
-                print('      [Registro] Error de lógica interna:', e)
-                return False
+                print('    [Registrar] Error interno del sistema'.ljust(120, '.'))
+                return 'Hubo un error interno del sistema...'
         else:
-            print('      [Registro] Error: verificador de disponibilidad de correo y celular...')
-            return False
+            print('    [Registrar] Error: Correo o celular registrados'.ljust(120, '.'))
+            return result
     else:
-        print('      [Registro] Error: verificador de sintaxis...')
-        return False
+        print('    [Registrar] Error: Sintaxis de datos'.ljust(120, '.'))
+        return result
 
 def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
     # Patrones de coincidencias
     patronNombresPropios = r'^[A-Z]([A-Z]|[a-z]|\s){0,49}$'
-    #patronCorreo = r'^(([a-zA-Z0-9\.\_])+@([a-zA-Z0-9])+(\.([a-zA-Z])+)+)$'
     patronCorreo = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     patronCaracteresLibres = r'^(.{1,50})$'
     patronCelular = r'^(9)(\d{8})$'
+
+    print('        [VerificadorS] Realizando verificación'.ljust(120, '.'))
 
     # Resultado de las comprobaciones
     resultado1 = re.match(patronNombresPropios, nombre)
@@ -72,23 +69,41 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
     resultado6 = re.match(patronCaracteresLibres, contra)
     resultado7 = re.match(patronCelular, celular)
 
-    print('         [VerificadorS] Ejecutando verificaciones de los datos...')
-    if resultado1 and resultado2 and resultado3 and resultado4 and resultado5 and resultado6 and resultado7:
-        print('         [VerificadorS] Sintaxis validada...')
-        return True
-    else:
-        print('         [VerificadorS] Error: sintaxis de datos errónea...')
-        return False
+    if not resultado1:
+        print('        [VerificadorS] Sintaxis de nombre incorrecto'.ljust(120, '.'))
+        return 'Sintaxis de nombre incorrecto...'
+    if not resultado2:
+        print('        [VerificadorS] Sintaxis de apellido paterno incorrecto'.ljust(120, '.'))
+        return 'Sintaxis de apellido paterno incorrecto...'
+    if not resultado3:
+        print('        [VerificadorS] Sintaxis de apellido materno incorrecto'.ljust(120, '.'))
+        return 'Sintaxis de apellido materno incorrecto...'
+    if not resultado4:
+        print('        [VerificadorS] Sintaxis de correo incorrecta'.ljust(120, '.'))
+        return 'Sintaxis de correo incorrecta...'
+    if not resultado5:
+        print('        [VerificadorS] Correo demasiado largo'.ljust(120, '.'))
+        return 'Correo demasiado largo...'
+    if not resultado6:
+        print('        [VerificadorS] Contraseña demasiado larga'.ljust(120, '.'))
+        return 'Contraseña demasiado larga...'
+    if not resultado7:
+        print('        [VerificadorS] Sintaxis de número de celular incorrecta'.ljust(120, '.'))
+        return 'Sintaxis de número de celular incorrecta...'
+    
+    print('        [VerificadorS] Verificación correcta'.ljust(120, '.'))
+    return 'COMPLETE'
+
 
 def correoCelularRegistrado(correo, celular):
     try:
-        print('         [VerificadorCC] Realizando conexión con la base de datos...')
+        print('        [VerificadorCC] Obteniendo conexión a la BD'.ljust(120, '.'))
         conn = connection()
         total = 0
-        print('         [VerificadorCC] Ejecutando consulta de disponibilidad de correo y celular...')
         inst =  '''
                 SELECT COUNT(*) AS total FROM Contacto WHERE correoContacto = %(correo)s or nroCelularContacto = %(celular)s;
                 '''
+        print('        [VerificadorCC] Ejecutando instrucción de verificación'.ljust(120, '.'))
         with conn.cursor() as cursor:
             cursor.execute(inst, {'correo': correo, 'celular': celular})
             for row in cursor.fetchall():
@@ -96,17 +111,17 @@ def correoCelularRegistrado(correo, celular):
             conn.commit()
         conn.close()
         if total == 0:
-            print('         [VerificadorCC] Correo y celular validados...')
-            return False
+            print('        [VerificadorCC] Verificación correcta'.ljust(120, '.'))
+            return 'COMPLETE'
         else:
-            print('         [VerificadorCC] Error: celular o correo ya registrados...')
-            return True
+            print('        [VerificadorCC] El correo o número de celular ya están registrados'.ljust(120, '.'))
+            return 'El correo o número de celular ya están registrados...'
     except Exception as e:
-        print("         [VerificadorCC] Error de lógica interna:", e)
-        return True
+        print('        [VerificadorCC] Hubo un error interno del sistema'.ljust(120, '.'))
+        return 'Hubo un error interno del sistema...'
 
 def encriptar(contra):
-    print("         [Encriptador] Encriptando contraseña...")
+    print('        [Encriptador] Encriptando contraseña'.ljust(120, '.'))
     texto = encriptar_contrasenia(contra)
-    print("         [Encriptador] Contraseña encriptada...")
+    print('        [VerificadorCC] Encriptación correcta'.ljust(120, '.'))
     return texto
