@@ -1,6 +1,6 @@
 import re
 from ...database.db import DatabaseManager
-from src.auxiliar.encriptador import encriptar_contrasenia
+from ...auxiliar.proxyEncriptador import Proxy
 
 db = DatabaseManager().getInstancia()
 
@@ -10,6 +10,7 @@ def putUsuario(nombre, aPat, aMat, correo, contra, celular, id):
         result = correoCelularRegistrado(correo, celular, id)
         if result == 'COMPLETE':    
             try:
+                encriptador = Proxy()
                 contra = encriptar(contra)
                 conn = db.connection()
                 inst =  '''
@@ -93,5 +94,6 @@ def correoCelularRegistrado(correo, celular, id):
         return 'Hubo un error interno del sistema...'
 
 def encriptar(contra):
-    texto = encriptar_contrasenia(contra)
+    encriptador = Proxy()
+    texto = encriptador.encriptar(contra)
     return texto

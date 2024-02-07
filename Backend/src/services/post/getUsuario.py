@@ -1,7 +1,6 @@
 from ...database.db import DatabaseManager
 from src.models.usuario import Usuario
-from src.auxiliar.encriptador import encriptar_contrasenia
-from src.auxiliar.encriptador import desencriptar_contrasenia
+from ...auxiliar.proxyEncriptador import Proxy
 
 db = DatabaseManager().getInstancia()
 
@@ -41,7 +40,8 @@ def getUsuario(correo, contra):
 
 def validarContrasenia(contrades, contraen):
     print("         [Encriptador] Validando...")
-    if contrades == desencriptar_contrasenia(contraen):
+    desencriptador = Proxy()
+    if contrades == desencriptador.desencriptar(contraen):
         print("         [Encriptador] Validación correcta...")
         return True
     else:

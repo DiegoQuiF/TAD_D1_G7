@@ -1,6 +1,6 @@
 import re
 from ...database.db import DatabaseManager
-from src.auxiliar.encriptador import encriptar_contrasenia
+from ...auxiliar.proxyEncriptador import Proxy
 
 db = DatabaseManager().getInstancia()
 
@@ -124,6 +124,7 @@ def correoCelularRegistrado(correo, celular):
 
 def encriptar(contra):
     print('        [Encriptador] Encriptando contraseña'.ljust(120, '.'))
-    texto = encriptar_contrasenia(contra)
+    encriptador = Proxy()
+    texto = encriptador.encriptar(contra)
     print('        [VerificadorCC] Encriptación correcta'.ljust(120, '.'))
     return texto
