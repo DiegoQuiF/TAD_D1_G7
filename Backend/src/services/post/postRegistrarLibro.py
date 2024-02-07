@@ -1,12 +1,14 @@
 import re
-from src.database.db import connection
+from ...database.db import DatabaseManager
+
+db = DatabaseManager().getInstancia()
 
 def postRegistrarLibro(titulo, autor, hoy, idioma, procedencia, fechaO, electronico, precioE, fisico, precioF, sotckF, idColeccion):
     print('      [Registro] Verificando sintaxis de datos ingresados...')
     if verificarDatos(titulo, autor, hoy, idioma, procedencia, fechaO, electronico, precioE, fisico, precioF, sotckF):
         try:
             print('      [Registro] Realizando conexión con la base de datos...')
-            conn = connection()
+            conn = db.connection()
             print('      [Registro] Ejecutando inserción de nuevo material bibliografico...')
             print('      [Registro] Inserción de material bibliografico...')
             

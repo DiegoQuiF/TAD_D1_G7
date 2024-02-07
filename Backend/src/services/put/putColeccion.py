@@ -1,12 +1,14 @@
 import re
-from src.database.db import connection
+from ...database.db import DatabaseManager
+
+db = DatabaseManager().getInstancia()
 
 def putColeccion(id, nombre, tipo, actu):
     print('      [Actualizar] Verificando sintaxis de datos ingresados...')
     if verificarDatos(nombre, tipo, actu):
         try:
             print('      [Actualizar] Estableciendo conexión con la base de datos...')
-            conn = connection()
+            conn = db.connection()
 
             print('      [Actualizar] Realizando actualización de datos de Coleccion...')
             

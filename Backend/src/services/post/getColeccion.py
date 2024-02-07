@@ -1,10 +1,12 @@
-from src.database.db import connection
+from ...database.db import DatabaseManager
 from src.models.coleccion import Coleccion
+
+db = DatabaseManager().getInstancia()
 
 def getColeccion(id):
     try:
         print('      [Solicitud] Realizando conexión con la base de datos...')
-        conn = connection()
+        conn = db.connection()
         colecciones = []
         inst =  '''
                 SELECT CO.idColeccion, CO.nombreColeccion, CO.tipoColeccion,

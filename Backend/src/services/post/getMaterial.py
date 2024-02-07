@@ -1,10 +1,12 @@
-from src.database.db import connection
+from ...database.db import DatabaseManager
 from src.models.material import Material
+
+db = DatabaseManager().getInstancia()
 
 def getMaterial(id):
     try:
         print('      [Solicitud] Realizando conexión con la base de datos...')
-        conn = connection()
+        conn = db.connection()
         materiales = []
         inst =  '''
                 SELECT idMaterial, nombreMaterial, autorMaterial, TO_CHAR(fechaPubMaterial, 'DD-MM-YYYY'), idiomaMaterial,

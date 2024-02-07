@@ -1,9 +1,11 @@
-from src.database.db import connection
+from ...database.db import DatabaseManager
 from src.models.materialCompleto import MaterialCompleto
+
+db = DatabaseManager().getInstancia()
 
 def getMaterialesCompletos(id):
     try:
-        conn = connection()
+        conn = db.connection()
         materialesCompletos = []
         inst =  '''
                 SELECT MB.idMaterial, MB.nombreMaterial, MB.autorMaterial, TO_CHAR(MB.FechaPubOrigMaterial, 'DD-MM-YYYY') as original, MB.idiomaMaterial,

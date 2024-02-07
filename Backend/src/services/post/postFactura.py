@@ -1,5 +1,7 @@
 import re
-from src.database.db import connection
+from ...database.db import DatabaseManager
+
+db = DatabaseManager().getInstancia()
 
 def postRegistrarFactura(pagado, fecha, idMaterial, idUsuario):
     print('      [Registro] Verificando sintaxis de datos ingresados...')
@@ -52,7 +54,7 @@ def verificarDatos(pagado, fecha):
 def verificarStock(idMaterial):
     try:
         print('         [VerificadorStock] Conectandose con la base de datos...')
-        conn = connection()
+        conn = db.connection()
         stock = ''
         inst =  '''
                 SELECT MB.stockMaterial FROM MaterialBibliografico MB WHERE idMaterial = %(idMaterial)s;
@@ -79,7 +81,7 @@ def verificarStock(idMaterial):
 def disminuirStock(idMaterial):
     try:
         print('         [ControlStock] Conectandose con la base de datos...')
-        conn = connection()
+        conn = db.connection()
         stock = ''
         inst =  '''
                 UPDATE MaterialBibliografico SET stockMaterial = stockMaterial-1 WHERE idMaterial = %(idMaterial)s;
@@ -98,7 +100,7 @@ def disminuirStock(idMaterial):
 def registrarFactura(pagado, fecha, idMaterial, idUsuario):
     try:
         print('         [RegistroFactura] Conectandose con la base de datos...')
-        conn = connection()
+        conn = db.connection()
         inst =  '''
                 DO $$ 
                 DECLARE 

@@ -1,12 +1,14 @@
-from src.database.db import connection
+from ...database.db import DatabaseManager
 from src.models.usuario import Usuario
 from src.auxiliar.encriptador import encriptar_contrasenia
 from src.auxiliar.encriptador import desencriptar_contrasenia
 
+db = DatabaseManager().getInstancia()
+
 def getUsuario(correo, contra):
     try:
         print('      [Validación] Realizando conexión con la base de datos...')
-        conn = connection()
+        conn = db.connection()
         usuarios = []
         inst =  '''
                 SELECT US.idUsuario, US.nombreUsuario, US.apellidoPatUsuario, US.apellidoMatUsuario,

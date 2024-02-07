@@ -1,6 +1,8 @@
 import re
-from src.database.db import connection
+from ...database.db import DatabaseManager
 from src.auxiliar.encriptador import encriptar_contrasenia
+
+db = DatabaseManager().getInstancia()
 
 def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
     print('    [Registrar] Verificando sintaxis de datos'.ljust(120, '.'))
@@ -13,7 +15,7 @@ def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
                 print('    [Registrar] Encriptando contraseña'.ljust(120, '.'))
                 contra = encriptar(contra)
                 print('    [Registrar] Obteniendo conexión a la BD'.ljust(120, '.'))
-                conn = connection()
+                conn = db.connection()
                 inst =  '''
                         INSERT INTO Contacto(correoContacto, contraseniaContacto, nroCelularContacto)
 	                            VALUES (%(correo)s, %(contra)s, %(celular)s);
@@ -98,7 +100,7 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
 def correoCelularRegistrado(correo, celular):
     try:
         print('        [VerificadorCC] Obteniendo conexión a la BD'.ljust(120, '.'))
-        conn = connection()
+        conn = db.connection()
         total = 0
         inst =  '''
                 SELECT COUNT(*) AS total FROM Contacto WHERE correoContacto = %(correo)s or nroCelularContacto = %(celular)s;

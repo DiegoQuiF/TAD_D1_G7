@@ -1,9 +1,11 @@
-from src.database.db import db
+from ..database.db import DatabaseManager
 
-class Factura(db.Model):
-    idFact          = db.Column(db.Integer, primary_key=True)
-    pagado          = db.Column(db.String(50))
-    fecha           = db.Column(db.String(50))
+db = DatabaseManager().getInstancia()
+
+class Factura(db.db.Model):
+    idFact          = db.db.Column(db.db.Integer, primary_key=True)
+    pagado          = db.db.Column(db.db.String(50))
+    fecha           = db.db.Column(db.db.String(50))
 
     def __init__(self, pag, fec):
         self.pagado     = pag

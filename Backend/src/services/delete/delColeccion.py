@@ -1,8 +1,10 @@
-from src.database.db import connection
+from ...database.db import DatabaseManager
+
+db = DatabaseManager().getInstancia()
 
 def delColeccion(id):
     try:
-        conn = connection()
+        conn = db.connection()
         inst =  """
                 DELETE FROM usuarioColeccion WHERE idColeccion = %(id)s;
                 DELETE FROM Coleccion WHERE idColeccion = %(id)s;

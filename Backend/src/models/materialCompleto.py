@@ -1,22 +1,24 @@
-from src.database.db import db
+from ..database.db import DatabaseManager
 
-class MaterialCompleto(db.Model):
-    idMat           = db.Column(db.Integer, primary_key=True)
-    tituloMat       = db.Column(db.String(100))
-    autorMat        = db.Column(db.String(120))
-    originalMat     = db.Column(db.String(50))
-    idiomaMat       = db.Column(db.String(50))
-    electronicoMat  = db.Column(db.String(50))
-    precioEMat      = db.Column(db.String(50))
-    fisicoMat       = db.Column(db.String(50))
-    precioFMat      = db.Column(db.String(50))
-    idCol           = db.Column(db.String(50))
-    nombreCol       = db.Column(db.String(50))
-    tipoCol         = db.Column(db.String(50))
-    idUsu           = db.Column(db.String(50))
-    nombreUsu       = db.Column(db.String(50))
-    aPatUsu         = db.Column(db.String(50))
-    aMatUsu         = db.Column(db.String(50))
+db = DatabaseManager().getInstancia()
+
+class MaterialCompleto(db.db.Model):
+    idMat           = db.db.Column(db.db.Integer, primary_key=True)
+    tituloMat       = db.db.Column(db.db.String(100))
+    autorMat        = db.db.Column(db.db.String(120))
+    originalMat     = db.db.Column(db.db.String(50))
+    idiomaMat       = db.db.Column(db.db.String(50))
+    electronicoMat  = db.db.Column(db.db.String(50))
+    precioEMat      = db.db.Column(db.db.String(50))
+    fisicoMat       = db.db.Column(db.db.String(50))
+    precioFMat      = db.db.Column(db.db.String(50))
+    idCol           = db.db.Column(db.db.String(50))
+    nombreCol       = db.db.Column(db.db.String(50))
+    tipoCol         = db.db.Column(db.db.String(50))
+    idUsu           = db.db.Column(db.db.String(50))
+    nombreUsu       = db.db.Column(db.db.String(50))
+    aPatUsu         = db.db.Column(db.db.String(50))
+    aMatUsu         = db.db.Column(db.db.String(50))
 
     def __init__(self, tituloMat, autorMat, originalMat, idiomaMat, electronicoMat, precioEMat, fisicoMat, precioFMat, idCol, nombreCol, tipoCol, idUsu, nombreUsu, aPatUsu, aMatUsu):
         self.tituloMat = tituloMat

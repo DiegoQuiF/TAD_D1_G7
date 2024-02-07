@@ -1,8 +1,10 @@
-from src.database.db import connection
+from ...database.db import DatabaseManager
+
+db = DatabaseManager().getInstancia()
 
 def delMaterial(id):
     try:
-        conn = connection()
+        conn = db.connection()
         inst =  """
                 DELETE FROM coleccionMaterial WHERE idMaterial = %(id)s;
                 DELETE FROM MaterialBibliografico WHERE idMaterial = %(id)s;

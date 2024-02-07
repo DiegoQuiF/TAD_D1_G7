@@ -1,12 +1,14 @@
 import re
-from src.database.db import connection
+from ...database.db import DatabaseManager
+
+db = DatabaseManager().getInstancia()
 
 def postRegistrarColeccion(id_user, nombre, tipo, creacion, actualizacion):
     print('      [Registro] Verificando sintaxis de datos ingresados...')
     if verificarDatos(nombre, tipo, creacion, actualizacion):
         try:
             print('      [Registro] Realizando conexión con la base de datos...')
-            conn = connection()
+            conn = db.connection()
             print('      [Registro] Ejecutando inserción de nueva colección...')
             print('      [Registro] Inserción de coleccion...')
             

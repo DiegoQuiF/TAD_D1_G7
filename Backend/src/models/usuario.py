@@ -1,13 +1,15 @@
-from src.database.db import db
+from ..database.db import DatabaseManager
 
-class Usuario(db.Model):
-    idUser      = db.Column(db.Integer, primary_key=True)
-    nomUser     = db.Column(db.String(50))
-    aPatUser    = db.Column(db.String(50))
-    aMatUser    = db.Column(db.String(50))
-    correoUser  = db.Column(db.String(50))
-    contraUser  = db.Column(db.Text)
-    celUser     = db.Column(db.Integer)
+db = DatabaseManager().getInstancia()
+
+class Usuario(db.db.Model):
+    idUser      = db.db.Column(db.db.Integer, primary_key=True)
+    nomUser     = db.db.Column(db.db.String(50))
+    aPatUser    = db.db.Column(db.db.String(50))
+    aMatUser    = db.db.Column(db.db.String(50))
+    correoUser  = db.db.Column(db.db.String(50))
+    contraUser  = db.db.Column(db.db.Text)
+    celUser     = db.db.Column(db.db.Integer)
 
     def __init__(self, nom, aPat, aMat, correo, contra, cel):
         self.nomUser    = nom

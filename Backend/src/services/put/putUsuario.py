@@ -1,6 +1,8 @@
 import re
-from src.database.db import connection
+from ...database.db import DatabaseManager
 from src.auxiliar.encriptador import encriptar_contrasenia
+
+db = DatabaseManager().getInstancia()
 
 def putUsuario(nombre, aPat, aMat, correo, contra, celular, id):
     result = verificarDatos(nombre, aPat, aMat, correo, contra, celular)
@@ -9,7 +11,7 @@ def putUsuario(nombre, aPat, aMat, correo, contra, celular, id):
         if result == 'COMPLETE':    
             try:
                 contra = encriptar(contra)
-                conn = connection()
+                conn = db.connection()
                 inst =  '''
                         UPDATE Usuario U
                                 SET nombreUsuario = %(nombre)s, apellidoPatUsuario = %(aPat)s, apellidoMatUsuario = %(aMat)s
@@ -71,7 +73,7 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
 
 def correoCelularRegistrado(correo, celular, id):
     try:
-        conn = connection()
+        conn = db.connection()
         total = 0
         inst =  '''
                 SELECT COUNT(*) AS total FROM Contacto WHERE ((correoContacto = %(correo)s) or %(celular)s)) and idContacto not in (

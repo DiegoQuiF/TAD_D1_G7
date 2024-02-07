@@ -1,9 +1,11 @@
-from src.database.db import connection
+from ...database.db import DatabaseManager
 from src.models.usuario import Usuario
+
+db = DatabaseManager().getInstancia()
 
 def getUsuarios():
     try:
-        conn = connection()
+        conn = db.connection()
         usuarios = []
         inst =  '''
                 SELECT US.idUsuario, US.nombreUsuario, US.apellidoPatUsuario, US.apellidoMatUsuario,
