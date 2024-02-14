@@ -50,7 +50,7 @@ li {
 .contenido .titulo h2{
 	font-size: 2rem;
 	font-weight: 600;
-	color: #342E37;
+	color: #182092;
 }
 
 .contenido li {
@@ -142,8 +142,15 @@ li {
 }
 
 .contenido .subtitulo {
-	margin-top: 40px;
-	margin-bottom: 20px;
+	margin: 10px 0px 10px 0px;
+	padding: 7px 10px 7px 10px;
+	border: rgb(255, 255, 255) 1px solid;
+	border-radius: 10px;
+	background-color: #4a91d7;
+	color: #fff;
+}
+.contenido .subtitulo:hover {
+	background-color: #50a3f6;
 }
 
 .contenido .table-data {
@@ -242,6 +249,7 @@ li {
 }
 
 .formulario {
+	font-family: 'Poppins', sans-serif;
     width: 95%;
     background: #eee;
     border-radius: 20px;
@@ -255,8 +263,8 @@ li {
 
 li .encabezado {
 	display: flex;
-	background-color: rgba(119, 119, 119, 0.521);
-	padding: 15px 0px 15px 0px;
+	background-color: #89cffa;
+	padding: 10px 0px 10px 0px;
 	border-radius: 15px 15px 15px 15px;
 	font-weight: 600;
 }
@@ -265,12 +273,16 @@ li .colecciones {
 	display: flex;
 }
 
-li .contenido .colecciones{
+li .contenido .colecciones {
 	display: flex;
-	padding: 10px 0px 10px 0px;
+	padding: 5px 0px 5px 0px;
 	border-radius: 15px 15px 15px 15px;
-	background-color: rgba(119, 119, 119, 0.115);
+	background-color: #cdecff;
 	margin: 5px 0px 5px 0px;
+}
+
+li .contenido .colecciones:hover {
+	background-color: #b9e4ff;
 }
 
 .col-15 {
@@ -315,7 +327,8 @@ li .contenido .libros {
 	margin-bottom: 10px;
 	border-radius: 15px 15px 15px 15px;
 	padding: 10px;
-	background-color: rgba(119, 119, 119, 0.038);
+	background-color: rgba(255, 255, 255);
+	border: 1px solid #1736a6;
 }
 
 .oculto {

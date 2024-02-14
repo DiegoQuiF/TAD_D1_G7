@@ -6,6 +6,7 @@ import { ConnBackendService } from '../../services/conn-backend.service';
 
 //Modelos
 import { Usuario } from '../../models/usuario';
+import { Tarjeta } from '../../models/tarjeta';
 
 
 @Component({
@@ -25,8 +26,9 @@ export class LoginRegisterComponent {
 
   // Variables de inicio de sesión
   correo_user = 'pedrito@gmail.com';      // Correo ingresado por el usuario
-  contra_user = 'pedrito';                // Contraseña ingresada por el usuario
+  contra_user = 'pedrito123';                // Contraseña ingresada por el usuario
   usuario_login: Array<Usuario> = new Array<Usuario>();
+  tarjetas_usuario: Array<Tarjeta> = new Array<Tarjeta>();
 
   // Variables de registro
   nombre_reg: string = '';
@@ -35,18 +37,21 @@ export class LoginRegisterComponent {
   celular_reg: string = '';
   correo_reg: string = '';
   contra_reg: string = '';
+  direccion_reg: string = '';
 
   // Variables globales
   @Output() mensajeEnviado = new EventEmitter<string>();
   @Output() usuarioLogin = new EventEmitter<Usuario>();
+  @Output() tarjetasLogin = new EventEmitter<Array<Tarjeta>>();
 
   //Validar campos del register desde el front
-  patronNombresPropios = /^[A-Z]([A-Z]|[a-z]|\s){0,49}$/;
-  patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  patronCaracteresLibres = /^(.{1,50})$/;
-  patronCelular = /^(9)(\d{8})$/;
-
-
+  patronLargo80 = /^(.){0,80}$/
+  patronLargo160 = /^(.){0,160}$/
+  patronContra = /^(.){8,80}$/
+  patronNombresPropios = /^[A-Z]([A-Z]|[a-z]|\s)*$/
+  patronCorreo = /^([a-z]|[A-Z]|\_|\.)+\@[a-zA-Z]+\.[a-zA-Z]+(\.([a-zA-Z])+)*$/
+  patronCelular = /^(9)(\d{8})$/
+  patronDireccion = /^([A-Z]|[a-z]|\s|\.|\d|\_)+$/
 
   // Transiciones
   in_btn() {    // Tansición entre el formulario REGISTRARSE → INICIAR SESIÓN
@@ -64,10 +69,16 @@ export class LoginRegisterComponent {
   // Login - Inicio Sesión
   async validar_inicioSesion(correo_input: string, contra_input: string) {    // Realiza una acción si se encuentra o no al usuario
     if (await this.getUsuario_inicioSesion(correo_input, contra_input)) {
-      this.usuarioLogin.emit(this.usuario_login[0]);
-      this.mensajeEnviado.emit('Abrir logged');
-      this.correo_user = '';
-      this.contra_user = '';
+      if (await this.getTarjetas_usuario(this.usuario_login[0].id_user)) {
+        this.usuarioLogin.emit(this.usuario_login[0]);
+        this.tarjetasLogin.emit(this.tarjetas_usuario);
+        this.mensajeEnviado.emit('Abrir logged');
+        this.correo_user = '';
+        this.contra_user = '';
+      }
+      else {
+        this.alert('Error al verificar tarjetas asociadas...');
+      }
     }
     else {
       this.alert('Usuario no encontrado...');
@@ -91,11 +102,28 @@ export class LoginRegisterComponent {
     }
   }
 
+  async getTarjetas_usuario(id_user:string) {
+    try {
+      const data = await this.connBackend.getTarjetas(id_user).toPromise();
+      console.log(data);
+      this.tarjetas_usuario = data.tarjetas;
+      if (data.success == true) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
 
 
   // Register - Registro
-  async registrar_registro(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string) {    // Realiza una acción si se logra registrar al usuario o no
-    var result = await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input);
+  async registrar_registro(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string, direccion_input:string) {    // Realiza una acción si se logra registrar al usuario o no
+    var result = await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input, direccion_input);
     if (result === 'COMPLETE') {
       this.alert('Usuario registrado correctamente...');
       // Se autocompletan las credenciales del usuario recien registrado
@@ -108,6 +136,7 @@ export class LoginRegisterComponent {
       this.celular_reg = '';
       this.correo_reg = '';
       this.contra_reg = '';
+      this.direccion_reg = '';
       // Se abre la ventana de login con las credenciales recien registradas
       this.in_btn();
     }
@@ -116,9 +145,9 @@ export class LoginRegisterComponent {
     }
   }
 
-  async postUsuario_registro(nombre: string, aPat: string, aMat: string, celular: string, correo: string, contra: string) {   // Retorna true si el usuario fue registrado, false si no se registro u ocurrio un error
+  async postUsuario_registro(nombre: string, aPat: string, aMat: string, celular: string, correo: string, contra: string, direccion:string) {   // Retorna true si el usuario fue registrado, false si no se registro u ocurrio un error
     try {
-      const data = await this.connBackend.postUsuario(nombre, aPat, aMat, correo, contra, celular).toPromise();   // Mediante servicio backend se intenta registrar al usuario
+      const data = await this.connBackend.postUsuario(nombre, aPat, aMat, correo, contra, celular, direccion).toPromise();   // Mediante servicio backend se intenta registrar al usuario
       console.log(data);
       if (data.success === true) {
         return data.message;
@@ -148,10 +177,10 @@ export class LoginRegisterComponent {
     }
   }
 
-  async register(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string) {
+  async register(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string, direccion_input:string) {
     this.isLoading = true;
     try {
-      await this.registrar_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input);
+      await this.registrar_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input, direccion_input);
     } catch (error) {
       console.error('Hubo un error al registrarse...', error);
     } finally {

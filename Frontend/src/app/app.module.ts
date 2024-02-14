@@ -7,7 +7,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { PrincipalComponent } from './principal/principal.component';
-import { LoggedComponent } from './principal/logged/logged.component';
 import { LoginRegisterComponent } from './principal/login-register/login-register.component';
 import { LogueadoComponent } from './principal/logueado/logueado.component';
 import { PerfilComponent } from './principal/logueado/perfil/perfil.component';
@@ -23,7 +22,6 @@ import { EditarEliminarColeccionComponent } from './principal/logueado/coleccion
     declarations: [		
       AppComponent,
       PrincipalComponent,
-      LoggedComponent,
       LoginRegisterComponent,
       LogueadoComponent,
       PerfilComponent,

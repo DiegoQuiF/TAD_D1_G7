@@ -14,8 +14,8 @@ def putColeccion(id, nombre, tipo, actu):
             
             inst =  """
                     UPDATE Coleccion CO
-                        SET nombreColeccion = %(nombre)s, tipoColeccion = %(tipo)s,
-                            fechaActColeccion = TO_DATE(%(actu)s, 'DD/MM/YYYY')
+                        SET nombre = %(nombre)s, tipo = %(tipo)s,
+                            actualizacion = TO_DATE(%(actu)s, 'DD/MM/YYYY')
                         WHERE CO.idColeccion = %(id)s;
                     """
             with conn.cursor() as cursor:

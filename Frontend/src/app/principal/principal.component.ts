@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Usuario } from '../models/usuario';
 import { ConnBackendService } from '../services/conn-backend.service';
+import { Tarjeta } from '../models/tarjeta';
 
 @Component({
   selector: 'app-principal',
@@ -12,6 +13,7 @@ export class PrincipalComponent {
   constructor( private connBackend: ConnBackendService) { }
 
   usuario_logueado: any;
+  tarjeta_usuario: any;
 
   recibirMensaje(mensaje: string) {
     if(mensaje == 'Abrir logged'){
@@ -37,5 +39,9 @@ export class PrincipalComponent {
 
   async recibirLog(usuario: Usuario) {
     this.usuario_logueado = usuario;
+  }
+
+  async recibirTarjetas(tarjetas: Array<Tarjeta>) {
+    this.tarjeta_usuario = tarjetas;
   }
 }

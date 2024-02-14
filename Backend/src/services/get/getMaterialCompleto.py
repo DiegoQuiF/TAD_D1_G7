@@ -8,13 +8,13 @@ def getMaterialesCompletos(id):
         conn = db.connection()
         materialesCompletos = []
         inst =  '''
-                SELECT MB.idMaterial, MB.nombreMaterial, MB.autorMaterial, TO_CHAR(MB.FechaPubOrigMaterial, 'DD-MM-YYYY') as original, MB.idiomaMaterial,
-                    MB.electronicoMaterial, MB.PrecioEMaterial, MB.fisicoMaterial, MB.precioFMaterial,
-                    CO.idColeccion, CO.nombreColeccion, CO.tipoColeccion,
-                    U.idUsuario, U.nombreUsuario, U.apellidoPatUsuario, U.apellidoMatUsuario
-                    FROM MaterialBibliografico MB, ColeccionMaterial CM, Coleccion CO, UsuarioColeccion UC, Usuario U
+                SELECT MB.idMaterial, MB.titulo, MB.autor, TO_CHAR(MB.fecha, 'DD-MM-YYYY') as original, MB.idioma,
+                    MB.dispElec, MB.precioElec, MB.dispFisico, MB.precioFisico,
+                    CO.idColeccion, CO.nombre, CO.tipo,
+                    U.idUsuario, U.nombre, U.aPaterno, U.aMaterno
+                    FROM Material MB, ColeccionMaterial CM, Coleccion CO, UsuarioColeccion UC, Usuario U
                     WHERE MB.idMaterial = CM.idMaterial and CM.idColeccion = CO.idColeccion and CO.idColeccion = UC.idColeccion and UC.idUsuario = U.idUsuario
-                        and U.idUsuario not in(%(id)s) and CO.tipoColeccion not in ('Privada');
+                        and U.idUsuario not in(%(id)s) and CO.tipo not in ('Privada');
                 '''
         with conn.cursor() as cursor:
             cursor.execute(inst, {'id': id})

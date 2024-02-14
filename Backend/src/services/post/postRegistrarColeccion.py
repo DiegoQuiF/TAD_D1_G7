@@ -14,7 +14,7 @@ def postRegistrarColeccion(id_user, nombre, tipo, creacion, actualizacion):
             
             inst =  '''
                     WITH nueva_coleccion AS (
-                        INSERT INTO Coleccion(nombreColeccion, tipoColeccion, fechaCreColeccion, fechaActColeccion)
+                        INSERT INTO Coleccion(nombre, tipo, creacion, actualizacion)
                         VALUES(%(nombre)s, %(tipo)s, TO_DATE(%(creacion)s, 'DD/MM/YYYY'), TO_DATE(%(actualizacion)s, 'DD/MM/YYYY'))
                         RETURNING idColeccion
                     )

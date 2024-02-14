@@ -10,7 +10,7 @@ class DatabaseManager:
             print(" [Backend] Creando instancia DatabaseManager".ljust(120, "."))
             self._instancia = super(DatabaseManager, self).__new__(self)
             self._instancia.db = SQLAlchemy()
-        print(" [Backend] Obteniendo instancia".ljust(120, "."))
+        print(" Obteniendo instancia de DatabaseManager ".center(120, "."))
         return self._instancia
     
     def getInstancia(self):

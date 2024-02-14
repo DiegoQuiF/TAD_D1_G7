@@ -3,44 +3,42 @@ from ..database.db import DatabaseManager
 db = DatabaseManager().getInstancia()
 
 class Material(db.db.Model):
-    idMat           = db.db.Column(db.db.Integer, primary_key=True)
-    titulo          = db.db.Column(db.db.String(100))
-    autor           = db.db.Column(db.db.String(120))
-    publicacion     = db.db.Column(db.db.String(50))
-    idioma          = db.db.Column(db.db.String(50))
-    procedencia     = db.db.Column(db.db.String(100))
-    original        = db.db.Column(db.db.String(50))
-    electronico     = db.db.Column(db.db.String(50))
-    precioE         = db.db.Column(db.db.String(50))
-    fisico          = db.db.Column(db.db.String(50))
-    precioF         = db.db.Column(db.db.String(50))
-    stockF          = db.db.Column(db.db.String(50))
+    idMaterial    = db.db.Column(db.db.Integer, primary_key=True)
+    titulo          = db.db.Column(db.db.String(160))
+    autor           = db.db.Column(db.db.String(160))
+    fecha           = db.db.Column(db.db.String(50))
+    idioma          = db.db.Column(db.db.String(80))
+    procedencia     = db.db.Column(db.db.String(80))
+    dispFisico      = db.db.Column(db.db.String(10))
+    precioFisico    = db.db.Column(db.db.Float)
+    stockFisico     = db.db.Column(db.db.Integer)
+    dispElec        = db.db.Column(db.db.String(10))
+    precioElec      = db.db.Column(db.db.Float)
 
-    def __init__(self, tit, aut, pub, idi, pro, ori, ele, pre, fis, prf, sto):
-        self.titulo     = tit
-        self.autor        = aut
-        self.publicacion= pub
-        self.idioma     = idi
-        self.procedencia= pro
-        self.original   = ori
-        self.electronico= ele
-        self.precioE    = pre
-        self.fisico     = fis
-        self.precioF    = prf
-        self.stockF     = sto
+
+    def __init__(self, tit, aut, pub, idi, pro, fis, prf, sto, ele, pre):
+        self.titulo         = tit
+        self.autor          = aut
+        self.fecha          = pub
+        self.idioma         = idi
+        self.procedencia    = pro
+        self.dispFisico     = fis
+        self.precioFisico   = prf
+        self.stockFisico    = sto
+        self.dispElec       = ele
+        self.precioElec     = pre
     
     def to_json(self):
         return {
-            'idMat'         : self.idMat,
+            'idMaterial'  : self.idMaterial,
             'titulo'        : self.titulo,
             'autor'         : self.autor,
-            'publicacion'           : self.publicacion,
+            'fecha'           : self.fecha,
             'idioma'        : self.idioma,
             'procedencia'   : self.procedencia,
-            'original'        : self.original,
-            'electronico'   : self.electronico,
-            'precioE'       : self.precioE,
-            'fisico'        : self.fisico,
-            'precioF'       : self.precioF,
-            'stockF'        : self.stockF
+            'dispFisico'        : self.dispFisico,
+            'precioFisico'   : self.precioFisico,
+            'stockFisico'       : self.stockFisico,
+            'dispElec'        : self.dispElec,
+            'precioElec'       : self.precioElec,
         }

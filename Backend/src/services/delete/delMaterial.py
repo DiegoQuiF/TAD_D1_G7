@@ -7,7 +7,7 @@ def delMaterial(id):
         conn = db.connection()
         inst =  """
                 DELETE FROM coleccionMaterial WHERE idMaterial = %(id)s;
-                DELETE FROM MaterialBibliografico WHERE idMaterial = %(id)s;
+                DELETE FROM Material WHERE idMaterial = %(id)s;
                 """
         with conn.cursor() as cursor:
             cursor.execute(inst, {'id':id, 'id':id})

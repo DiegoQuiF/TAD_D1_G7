@@ -3,6 +3,7 @@ import { Usuario } from '../../models/usuario';
 import { ConnBackendService } from '../../services/conn-backend.service';
 import { Coleccion } from '../../models/coleccion';
 import { MaterialCompleto } from '../../models/material-completo';
+import { Tarjeta } from '../../models/tarjeta';
 
 @Component({
   selector: 'app-logueado',
@@ -11,11 +12,13 @@ import { MaterialCompleto } from '../../models/material-completo';
 })
 export class LogueadoComponent {
   @Input() user_input!: Usuario;
+  @Input() tarjeta_input!: Array<Tarjeta>;
   @Output() mensajeSalir = new EventEmitter<string>();
   
   coleccion_array: Array<Coleccion> = new Array<Coleccion>();
   materiales_array: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   materialesFisicos: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  carrito: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   materialesDigitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
 
   constructor(private connBackend: ConnBackendService) { }
@@ -50,7 +53,7 @@ export class LogueadoComponent {
     var hoja = document.getElementById('hojaColecciones');
     var lista = document.getElementById('listaColecciones');
     this.cerrarHojas();
-    await this.obtenerColecciones();
+    await this.getColecciones();
     lista?.classList.toggle('active');
     hoja?.classList?.toggle('inactivo');
   }
@@ -66,6 +69,7 @@ export class LogueadoComponent {
     this.materialesDigitales = this.materiales_array.filter(
       (material: MaterialCompleto) => material.electronicoMat === 'Si'
     );
+    await this.getCarrito(this.user_input.id_user);
     lista?.classList.toggle('active');
     hoja?.classList?.toggle('inactivo');
   }
@@ -121,5 +125,48 @@ export class LogueadoComponent {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async getCarrito(idUser:string) {
+    try {
+      const data = await this.connBackend.getCarrito(idUser).toPromise();
+      console.log(data);
+      if(data.carrito.length > 0 && data.carrito){
+        this.carrito = data.carrito;
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+
+
+  isLoading: boolean = false;
+  isAlert: boolean = false;
+  mensajeAlert:string = '';
+
+  async getColecciones() {
+    this.isLoading = true;
+    try {
+      await this.obtenerColecciones();
+    } catch (error) {
+      this.alert('Error interno del sistema...');
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async alert(mensaje:string) {
+    this.mensajeAlert = mensaje;
+    this.isAlert = true;
+  }
+
+  async continuar() {
+    this.isAlert = false;
   }
 }

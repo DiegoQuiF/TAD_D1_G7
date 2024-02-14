@@ -9,18 +9,17 @@ def getMaterial(id):
         conn = db.connection()
         materiales = []
         inst =  '''
-                SELECT idMaterial, nombreMaterial, autorMaterial, TO_CHAR(fechaPubMaterial, 'DD-MM-YYYY'), idiomaMaterial,
-                        procedenciaMaterial, TO_CHAR(fechaPubOrigMaterial, 'DD-MM-YYYY'), electronicoMaterial, precioEMaterial,
-                        fisicoMaterial, precioFMaterial, stockMaterial
-                    FROM MaterialBibliografico
+                SELECT idMaterial, titulo, autor, TO_CHAR(fecha, 'DD-MM-YYYY'), idioma,
+                        procedencia, dispFisico, precioFisico, stockFisico, dispElec, precioElec
+                    FROM Material
                     WHERE idMaterial in (SELECT idMaterial FROM coleccionMaterial WHERE idColeccion = %(id)s)
                 '''
         with conn.cursor() as cursor:
             print('      [Validación] Ejecutando consulta...')
             cursor.execute(inst, {'id': id})
             for row in cursor.fetchall():
-                material = Material(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11])
-                material.idMat = row[0]
+                material = Material(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10])
+                material.idMaterial = row[0]
                 materiales.append(material.to_json())
             conn.commit()
             cursor.close()

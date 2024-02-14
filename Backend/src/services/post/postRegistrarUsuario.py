@@ -4,61 +4,68 @@ from ...auxiliar.proxyEncriptador import Proxy
 
 db = DatabaseManager().getInstancia()
 
-def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular):
+def postRegistrarUsuario(nombre, aPat, aMat, correo, contra, celular, direccion):
+    celular = str(celular)
+
     print('    [Registrar] Verificando sintaxis de datos'.ljust(120, '.'))
-    result = verificarDatos(nombre, aPat, aMat, correo, contra, celular)
+    result = verificarDatos(nombre, aPat, aMat, correo, contra, celular, direccion)
+
     if result == 'COMPLETE':
         print('    [Registrar] Verificando correo & nro. celular'.ljust(120, '.'))
         result = correoCelularRegistrado(correo, celular)
+
         if result == 'COMPLETE':
             try:
+
                 print('    [Registrar] Encriptando contraseña'.ljust(120, '.'))
                 contra = encriptar(contra)
+
                 print('    [Registrar] Obteniendo conexión a la BD'.ljust(120, '.'))
                 conn = db.connection()
+
                 inst =  '''
-                        INSERT INTO Contacto(correoContacto, contraseniaContacto, nroCelularContacto)
-	                            VALUES (%(correo)s, %(contra)s, %(celular)s);
+                        WITH nuevo_usuario AS (
+                            INSERT INTO Contacto(correo, contrasenia, nroCelular, direccion)
+                            VALUES(%(correo)s, %(contra)s, %(celular)s, %(direccion)s)
+                            RETURNING idContacto
+                        )
+                        INSERT INTO Usuario(nombre, aPaterno, aMaterno, idContacto)
+                            SELECT %(nombre)s, %(aPat)s, %(aMat)s, idContacto FROM nuevo_usuario;
                         '''
-                print('    [Registrar] Ejecutando instrucción de inserción'.ljust(120, '.'))
+                
+                print('    [Registrar] Ejecutando instrucción de creación de nuevo usuario'.ljust(120, '.'))
                 with conn.cursor() as cursor:
-                    cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular})
+                    cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'correo':correo, 'contra':contra, 'celular':celular, 'direccion':direccion})
                     conn.commit()
-                idContacto = ''
-                inst =  '''
-                        SELECT idContacto FROM Contacto WHERE correoContacto = %(correo)s and contraseniaContacto = %(contra)s
-		                        and nroCelularContacto = %(celular)s;
-                        '''
-                with conn.cursor() as cursor:
-                    cursor.execute(inst, {'correo': correo, 'contra': contra, 'celular': celular})
-                    for row in cursor.fetchall():
-                        idContacto = row[0]
-                    conn.commit()
-                inst =  '''
-                        INSERT INTO Usuario(nombreUsuario, apellidoPatUsuario, apellidoMatUsuario, idContacto)
-	                            VALUES (%(nombre)s, %(aPat)s, %(aMat)s, %(idContacto)s);
-                        '''
-                with conn.cursor() as cursor:
-                    cursor.execute(inst, {'nombre': nombre, 'aPat': aPat, 'aMat': aMat, 'idContacto':idContacto})
-                    conn.commit()
+                    cursor.close()
+                conn.close()
+                
                 print('    [Registrar] Registro completo'.ljust(120, '.'))
                 return 'COMPLETE'
+            
             except Exception as e:
+
                 print('    [Registrar] Error interno del sistema'.ljust(120, '.'))
                 return 'Hubo un error interno del sistema...'
+            
         else:
             print('    [Registrar] Error: Correo o celular registrados'.ljust(120, '.'))
             return result
+        
     else:
         print('    [Registrar] Error: Sintaxis de datos'.ljust(120, '.'))
         return result
 
-def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
+
+def verificarDatos(nombre, aPat, aMat, correo, contra, celular, direccion):
     # Patrones de coincidencias
-    patronNombresPropios = r'^[A-Z]([A-Z]|[a-z]|\s){0,49}$'
-    patronCorreo = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    patronCaracteresLibres = r'^(.{1,50})$'
+    patronLargo80 = r'^(.){0,80}$'
+    patronLargo160 = r'^(.){0,160}$'
+    patronContra = r'^(.){8,80}$'
+    patronNombresPropios = r'^[A-Z]([A-Z]|[a-z]|\s)*$'
+    patronCorreo = r'^([a-z]|[A-Z]|\_|\.)+\@[a-zA-Z]+\.[a-zA-Z]+(\.([a-zA-Z])+)*$'
     patronCelular = r'^(9)(\d{8})$'
+    patronDireccion = r'^([A-Z]|[a-z]|\s|\.|\d|\_)+$'
 
     print('        [VerificadorS] Realizando verificación'.ljust(120, '.'))
 
@@ -67,9 +74,14 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
     resultado2 = re.match(patronNombresPropios, aPat)
     resultado3 = re.match(patronNombresPropios, aMat)
     resultado4 = re.match(patronCorreo, correo)
-    resultado5 = re.match(patronCaracteresLibres, correo)
-    resultado6 = re.match(patronCaracteresLibres, contra)
-    resultado7 = re.match(patronCelular, celular)
+    resultado5 = re.match(patronLargo80, nombre)
+    resultado6 = re.match(patronLargo80, aPat)
+    resultado7 = re.match(patronLargo80, aMat)
+    resultado8 = re.match(patronLargo80, correo)
+    resultado9 = re.match(patronContra, contra)
+    resultado10 = re.match(patronCelular, celular)
+    resultado11 = re.match(patronDireccion, direccion)
+    resultado12 = re.match(patronLargo160, direccion)
 
     if not resultado1:
         print('        [VerificadorS] Sintaxis de nombre incorrecto'.ljust(120, '.'))
@@ -84,14 +96,29 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
         print('        [VerificadorS] Sintaxis de correo incorrecta'.ljust(120, '.'))
         return 'Sintaxis de correo incorrecta...'
     if not resultado5:
-        print('        [VerificadorS] Correo demasiado largo'.ljust(120, '.'))
-        return 'Correo demasiado largo...'
+        print('        [VerificadorS] El nombre es demasiado largo, debe ser menor a 80 caracteres'.ljust(120, '.'))
+        return 'El nombre es demasiado largo, debe ser menor a 80 caracteres...'
     if not resultado6:
-        print('        [VerificadorS] Contraseña demasiado larga'.ljust(120, '.'))
-        return 'Contraseña demasiado larga...'
+        print('        [VerificadorS] El apellido paterno es demasiado largo, debe ser menor a 80 caracteres'.ljust(120, '.'))
+        return 'El apellido paterno es demasiado largo, debe ser menor a 80 caracteres...'
     if not resultado7:
+        print('        [VerificadorS] El apellido materno es demasiado largo, debe ser menor a 80 caracteres'.ljust(120, '.'))
+        return 'El apellido materno es demasiado largo, debe ser menor a 80 caracteres...'
+    if not resultado8:
+        print('        [VerificadorS] El correo es demasiado largo, debe ser menor a 80 caracteres'.ljust(120, '.'))
+        return 'Sintaxis de correo incorrecta...'
+    if not resultado9:
+        print('        [VerificadorS] La contraseña es no debe ser menor que 8 caracteres ni mayor a 80'.ljust(120, '.'))
+        return 'La contraseña es no debe ser menor que 8 caracteres ni mayor a 80...'
+    if not resultado10:
         print('        [VerificadorS] Sintaxis de número de celular incorrecta'.ljust(120, '.'))
         return 'Sintaxis de número de celular incorrecta...'
+    if not resultado11:
+        print('        [VerificadorS] Sintaxis de dirección incorrecta'.ljust(120, '.'))
+        return 'Sintaxis de dirección incorrecta...'
+    if not resultado12:
+        print('        [VerificadorS] La direccion es demasiada larga, debe ser menor a 80 caracteres'.ljust(120, '.'))
+        return 'La direccion es demasiada larga, debe ser menor a 80 caracteres...'
     
     print('        [VerificadorS] Verificación correcta'.ljust(120, '.'))
     return 'COMPLETE'
@@ -99,32 +126,43 @@ def verificarDatos(nombre, aPat, aMat, correo, contra, celular):
 
 def correoCelularRegistrado(correo, celular):
     try:
+
         print('        [VerificadorCC] Obteniendo conexión a la BD'.ljust(120, '.'))
         conn = db.connection()
+
         total = 0
         inst =  '''
-                SELECT COUNT(*) AS total FROM Contacto WHERE correoContacto = %(correo)s or nroCelularContacto = %(celular)s;
+                SELECT COUNT(*) AS total FROM Contacto
+                    WHERE ((correo = %(correo)s) OR (nroCelular = %(celular)s));
                 '''
+        
         print('        [VerificadorCC] Ejecutando instrucción de verificación'.ljust(120, '.'))
         with conn.cursor() as cursor:
             cursor.execute(inst, {'correo': correo, 'celular': celular})
             for row in cursor.fetchall():
                 total = row[0]
             conn.commit()
+            cursor.close()
         conn.close()
+
         if total == 0:
             print('        [VerificadorCC] Verificación correcta'.ljust(120, '.'))
             return 'COMPLETE'
+        
         else:
             print('        [VerificadorCC] El correo o número de celular ya están registrados'.ljust(120, '.'))
             return 'El correo o número de celular ya están registrados...'
+        
     except Exception as e:
+
         print('        [VerificadorCC] Hubo un error interno del sistema'.ljust(120, '.'))
         return 'Hubo un error interno del sistema...'
+
 
 def encriptar(contra):
     print('        [Encriptador] Encriptando contraseña'.ljust(120, '.'))
     encriptador = Proxy()
     texto = encriptador.encriptar(contra)
-    print('        [VerificadorCC] Encriptación correcta'.ljust(120, '.'))
+
+    print('        [Encriptador] Encriptación correcta'.ljust(120, '.'))
     return texto

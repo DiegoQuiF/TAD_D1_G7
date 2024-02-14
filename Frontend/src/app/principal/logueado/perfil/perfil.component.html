@@ -2,173 +2,225 @@
     <div class="titulo">
         <h2>> Perfil</h2>
     </div>
-    <div class="subtitulo">
-        <h3>> Editar Perfil</h3>
+    <div class="subtitulo" style="cursor: pointer;" (click)="editarUsuario()">
+        <h3>> Datos personales</h3>
     </div>
-    <li>
+    <li class="inactivo" id="editarPerfil">
         <form>
             <div class="input">
-                <p>Nombres</p>
-                <input type="text" id="nombre" name="nombre" [(ngModel)]="user_input.nom_user" required>
+                <p>♦ Nombres</p>
+                <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre_user" required>
             </div>
             <div class="input">
-                <p>Apellido Paterno</p>
-                <input type="text" id="paterno" name="paterno" [(ngModel)]="user_input.a_pat_user" required>
+                <p>♦ Apellido Paterno</p>
+                <input type="text" id="paterno" name="paterno" [(ngModel)]="aPaterno_user" required>
             </div>
             <div class="input">
-                <p>Apellido Materno</p>
-                <input type="text" id="materno" name="materno" [(ngModel)]="user_input.a_mat_user" required>
+                <p>♦ Apellido Materno</p>
+                <input type="text" id="materno" name="materno" [(ngModel)]="aMaterno_user" required>
             </div>
             <div class="input">
-                <p>Nro. Celular</p>
-                <input type="text" id="celular" name="celular" [(ngModel)]="user_input.cel_user" required>
+                <p>♦ Nro. Celular</p>
+                <input type="text" id="celular" name="celular" [(ngModel)]="celular_user" required>
             </div>
             <div class="input">
-                <p>Correo</p>
-                <input type="email" id="correo" name="correo" [(ngModel)]="user_input.correo_user" required>
+                <p>♦ Dirección</p>
+                <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion_user" required>
             </div>
             <div class="input">
-                <p>Contraseña</p>
-                <input type="password" id="contra" name="contra" [(ngModel)]="user_input.contra_user" required>
+                <p>♦ Correo</p>
+                <input type="email" id="correo" name="correo" [(ngModel)]="correo_user" required>
             </div>
-            <button type="submit" style="cursor: pointer;" (click)="updateUsuario()">Guardar</button>
+            <div class="input">
+                <p>♦ Contraseña</p>
+                <input type="password" id="contra" name="contra" [(ngModel)]="contra_user" required>
+            </div>
+            <button type="submit" style="cursor: pointer; margin-right: 20px; background-color: rgb(79, 163, 236);" (click)="refreshUsuario()">Refresh</button>
+            <button type="submit" style="cursor: pointer; background-color: rgb(0, 221, 147);" (click)="update()">Guardar</button>
         </form>
     </li>
-    <div class="subtitulo">
+    <div class="subtitulo" style="cursor: pointer;" (click)="editarTarjetas()">
+        <h3>> Mis Tarjetas</h3>
+    </div>
+    <!--Poner "inactivo"-->
+    <li class="tarjetas" id="editarTarjetas">
+        <div class="contenidoTarjetas" *ngFor="let tarjeta of tarjeta_input">
+            <div class="tarjeta" style="cursor: pointer;" (click)="abrirDetalleTarjeta(tarjeta.id)">
+                <div class="icono">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-credit-card-2-back-fill" viewBox="0 0 16 16">
+                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5H0zm11.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1z"/>
+                    </svg>
+                </div>
+                <p>{{tarjeta.numero}}</p>
+                <div class="predeterminado" *ngIf="tarjeta.predeterminada === 'Si'" style="width: 85%; text-align: right; color: rgb(101, 125, 230);">
+                    <p> [PREDETERMINADO]</p>
+                </div>
+            </div>
+            <div class="detalleTarjeta inactivo" [id]="tarjeta.id">
+                <p>- Número: {{tarjeta.numero}}</p>
+                <p>- Fecha de vencimiento: {{tarjeta.caducidad}}</p>
+                <p>- cvv: {{tarjeta.cvv}}</p>
+                <p>- Saldo disponible: {{tarjeta.saldo}}</p>
+                <div class="botonesTarjeta" style="display: flex;">
+                    <button type="submit" style="cursor: pointer; background-color: rgb(236, 79, 79);" (click)="eliminarTarjeta(tarjeta.id)">Eliminar tarjeta</button>
+                    <div class="recargar" style="margin-left: 20px;">
+                        <p style="margin: 0px; padding: 0px 15px 0px 15px;">Indique el monto: </p>
+                        <input type="text" id="recarga" name="recarga" [(ngModel)]="monto_recarga" placeholder="XXX.XXX" required>
+                        <button type="submit" style="cursor: pointer; background-color: rgb(225, 193, 51); margin: 0px;" (click)="recargarTarjeta(tarjeta.id, monto_recarga)">Recargar</button>
+                    </div>
+                    <div class="predeterminado" *ngIf="tarjeta.predeterminada === 'No'">
+                        <button type="submit" style="cursor: pointer; background-color: rgb(129, 225, 51); margin-left: 20px;" (click)="cambiarPredeterminado(tarjeta.id)">Cambiar a predeterminado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="addTarjeta" style="display: flex; width: 100%; align-items: center; justify-content: center;">
+            <button type="submit" style="cursor: pointer; background-color: rgb(49, 34, 218);" (click)="registrarTarjeta()">Agregar nueva tarjeta</button>
+        </div>
+    </li>
+    <div class="subtitulo" style="cursor: pointer;" (click)="abrirPublicaciones()">
         <h3>> Mis publicaciones</h3>
     </div>
-    <ul class="box-info">
-        <li>
-            <div class="icono" style="width: 60px; background-color: rgb(90, 221, 221); color: rgb(219, 255, 255);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-earmark-bar-graph-fill" viewBox="0 0 16 16">
-                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m.5 10v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5m-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5z"/>
-                </svg>
-            </div>
-            <span class="text">
-                <h3>15</h3>
-                <p>Publicaciones el último mes</p>
-            </span>
-        </li>
-        <li>
-            <div class="icono" style="width: 60px; background-color: rgb(118, 221, 90); color: rgb(221, 255, 219);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-check-fill" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0m-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
-                </svg>
-            </div>
-            <span class="text">
-                <h3>150</h3>
-                <p>Compras el último mes</p>
-            </span>
-        </li>
-        <li>
-            <div class="icono" style="width: 60px; background-color: rgb(221, 90, 90); color: rgb(255, 219, 219)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-currency-exchange" viewBox="0 0 16 16">
-                    <path d="M0 5a5 5 0 0 0 4.027 4.905 6.5 6.5 0 0 1 .544-2.073C3.695 7.536 3.132 6.864 3 5.91h-.5v-.426h.466V5.05q-.001-.07.004-.135H2.5v-.427h.511C3.236 3.24 4.213 2.5 5.681 2.5c.316 0 .59.031.819.085v.733a3.5 3.5 0 0 0-.815-.082c-.919 0-1.538.466-1.734 1.252h1.917v.427h-1.98q-.004.07-.003.147v.422h1.983v.427H3.93c.118.602.468 1.03 1.005 1.229a6.5 6.5 0 0 1 4.97-3.113A5.002 5.002 0 0 0 0 5m16 5.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0m-7.75 1.322c.069.835.746 1.485 1.964 1.562V14h.54v-.62c1.259-.086 1.996-.74 1.996-1.69 0-.865-.563-1.31-1.57-1.54l-.426-.1V8.374c.54.06.884.347.966.745h.948c-.07-.804-.779-1.433-1.914-1.502V7h-.54v.629c-1.076.103-1.808.732-1.808 1.622 0 .787.544 1.288 1.45 1.493l.358.085v1.78c-.554-.08-.92-.376-1.003-.787zm1.96-1.895c-.532-.12-.82-.364-.82-.732 0-.41.311-.719.824-.809v1.54h-.005zm.622 1.044c.645.145.943.38.943.796 0 .474-.37.8-1.02.86v-1.674z"/>
-                </svg>
-            </div>
-            <span class="text">
-                <h3>S/. 340</h3>
-                <p>Total recaudado el último mes</p>
-            </span>
-        </li>
-    </ul>
-    <div class="subtitulo">
+    <div class="contenidosub1" id="abrirPublicaciones">
+        <ul class="box-info">
+            <li>
+                <div class="icono" style="width: 60px; background-color: rgb(90, 221, 221); color: rgb(219, 255, 255);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-earmark-bar-graph-fill" viewBox="0 0 16 16">
+                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m.5 10v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5m-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5z"/>
+                    </svg>
+                </div>
+                <span class="text">
+                    <h3>15</h3>
+                    <p>Publicaciones el último mes</p>
+                </span>
+            </li>
+            <li>
+                <div class="icono" style="width: 60px; background-color: rgb(118, 221, 90); color: rgb(221, 255, 219);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-check-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0m-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                    </svg>
+                </div>
+                <span class="text">
+                    <h3>150</h3>
+                    <p>Compras el último mes</p>
+                </span>
+            </li>
+            <li>
+                <div class="icono" style="width: 60px; background-color: rgb(221, 90, 90); color: rgb(255, 219, 219)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-currency-exchange" viewBox="0 0 16 16">
+                        <path d="M0 5a5 5 0 0 0 4.027 4.905 6.5 6.5 0 0 1 .544-2.073C3.695 7.536 3.132 6.864 3 5.91h-.5v-.426h.466V5.05q-.001-.07.004-.135H2.5v-.427h.511C3.236 3.24 4.213 2.5 5.681 2.5c.316 0 .59.031.819.085v.733a3.5 3.5 0 0 0-.815-.082c-.919 0-1.538.466-1.734 1.252h1.917v.427h-1.98q-.004.07-.003.147v.422h1.983v.427H3.93c.118.602.468 1.03 1.005 1.229a6.5 6.5 0 0 1 4.97-3.113A5.002 5.002 0 0 0 0 5m16 5.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0m-7.75 1.322c.069.835.746 1.485 1.964 1.562V14h.54v-.62c1.259-.086 1.996-.74 1.996-1.69 0-.865-.563-1.31-1.57-1.54l-.426-.1V8.374c.54.06.884.347.966.745h.948c-.07-.804-.779-1.433-1.914-1.502V7h-.54v.629c-1.076.103-1.808.732-1.808 1.622 0 .787.544 1.288 1.45 1.493l.358.085v1.78c-.554-.08-.92-.376-1.003-.787zm1.96-1.895c-.532-.12-.82-.364-.82-.732 0-.41.311-.719.824-.809v1.54h-.005zm.622 1.044c.645.145.943.38.943.796 0 .474-.37.8-1.02.86v-1.674z"/>
+                    </svg>
+                </div>
+                <span class="text">
+                    <h3>S/. 340</h3>
+                    <p>Total recaudado el último mes</p>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="subtitulo" style="cursor: pointer;" (click)="abrirTabla()">
         <h3>> Mis compradores</h3>
     </div>
-    <div class="table-data">
-        <div class="order">
-            <div class="head">
-                <h3>Órdenes recientes</h3>
+    <div class="tablita" id="abrirTabla">
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <h4>Órdenes recientes</h4>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Fecha de la orden</th>
+                            <th>Fecha de entrega</th>
+                            <th>Tipo de orden</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>Diego Quiñonez Flores</p>
+                            </td>
+                            <td>
+                                <p>01-10-2021</p>
+                            </td>
+                            <td>
+                                <p>01-10-2021</p>
+                            </td>
+                            <td>
+                                <p>Digital</p>
+                            </td>
+                            <td><span class="status completed">Completado</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Celeste Miranda Sanchez</p>
+                            </td>
+                            <td>
+                                <p>02-10-2021</p>
+                            </td>
+                            <td>
+                                <p>-</p>
+                            </td>
+                            <td>
+                                <p>Físico</p>
+                            </td>
+                            <td><span class="status pending">Pendiente</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Esteban Gonzales Soto</p>
+                            </td>
+                            <td>
+                                <p>02-10-2021</p>
+                            </td>
+                            <td>
+                                <p>-</p>
+                            </td>
+                            <td>
+                                <p>Físico</p>
+                            </td>
+                            <td><span class="status process">En Proceso</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Mary Bernaola Linares</p>
+                            </td>
+                            <td>
+                                <p>05-10-2021</p>
+                            </td>
+                            <td>
+                                <p>-</p>
+                            </td>
+                            <td>
+                                <p>Físico</p>
+                            </td>
+                            <td><span class="status pending">Pendiente</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Carlos Piedra Sotomayor</p>
+                            </td>
+                            <td>
+                                <p>20-10-2021</p>
+                            </td>
+                            <td>
+                                <p>01-10-2021</p>
+                            </td>
+                            <td>
+                                <p>Digital</p>
+                            </td>
+                            <td><span class="status completed">Completado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Fecha de la orden</th>
-                        <th>Fecha de entrega</th>
-                        <th>Tipo de orden</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <p>Diego Quiñonez Flores</p>
-                        </td>
-                        <td>
-                            <p>01-10-2021</p>
-                        </td>
-                        <td>
-                            <p>01-10-2021</p>
-                        </td>
-                        <td>
-                            <p>Digital</p>
-                        </td>
-                        <td><span class="status completed">Completado</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Celeste Miranda Sanchez</p>
-                        </td>
-                        <td>
-                            <p>02-10-2021</p>
-                        </td>
-                        <td>
-                            <p>-</p>
-                        </td>
-                        <td>
-                            <p>Físico</p>
-                        </td>
-                        <td><span class="status pending">Pendiente</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Esteban Gonzales Soto</p>
-                        </td>
-                        <td>
-                            <p>02-10-2021</p>
-                        </td>
-                        <td>
-                            <p>-</p>
-                        </td>
-                        <td>
-                            <p>Físico</p>
-                        </td>
-                        <td><span class="status process">En Proceso</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Mary Bernaola Linares</p>
-                        </td>
-                        <td>
-                            <p>05-10-2021</p>
-                        </td>
-                        <td>
-                            <p>-</p>
-                        </td>
-                        <td>
-                            <p>Físico</p>
-                        </td>
-                        <td><span class="status pending">Pendiente</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>Carlos Piedra Sotomayor</p>
-                        </td>
-                        <td>
-                            <p>20-10-2021</p>
-                        </td>
-                        <td>
-                            <p>01-10-2021</p>
-                        </td>
-                        <td>
-                            <p>Digital</p>
-                        </td>
-                        <td><span class="status completed">Completado</span></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
+    </div>
+
+    <div *ngIf="isLoading" class="mensaje-cargando">
+        <p>Cargando...</p>
     </div>
 
     <div *ngIf="isAlert" class="mensaje-alert">
@@ -177,6 +229,32 @@
             <div class="botonsito" style="display: flex; justify-content: center;">
                 <button class="btn" style="width: 110px; height: 25px; margin: 0px; padding: 0px; margin-top: 10px;" (click)="continuar()">Continuar</button>
             </div>
+        </div>
+    </div>
+
+    <div *ngIf="isRegister" class="mensaje-register">
+        <div class="alerta">
+            <form>
+                <h4 style="margin-bottom: 15px;">> Agregar nueva tarjeta</h4>
+                <div class="input">
+                    <p>♦ Numero</p>
+                    <input type="text" id="numero" name="numero" placeholder="XXXX-XXXX-XXXX-XXXX" [(ngModel)]="numero_input" required>
+                </div>
+                <div class="input">
+                    <p>♦ Caducidad</p>
+                    <input type="text" id="caducidad" name="caducidad" placeholder="DD/MM/AAAA" [(ngModel)]="caducidad_input" required>
+                </div>
+                <div class="input">
+                    <p>♦ cvv</p>
+                    <input type="text" id="cvv" name="cvv" placeholder="XXX" [(ngModel)]="cvv_input" required>
+                </div>
+                <div class="input">
+                    <p>♦ Saldo</p>
+                    <input type="text" id="saldo" name="saldo"  placeholder="XXX.XXX" [(ngModel)]="saldo_input" required>
+                </div>
+                <button type="submit" style="cursor: pointer; margin-right: 20px; background-color: rgb(79, 163, 236);" (click)="terminarRegistrarTarjeta()">Cancelar</button>
+                <button type="submit" style="cursor: pointer; background-color: rgb(0, 221, 147); width: auto; padding: 0px 20px 0px 20px;" (click)="agregarTarjeta()">Registrar tarjeta</button>
+            </form>
         </div>
     </div>
 </div>

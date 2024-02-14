@@ -1,19 +1,19 @@
 <form>
-    <div class="columnas" style="justify-content: center; margin-bottom: 15px;">
+    <div class="columnas" style="justify-content: center; margin-bottom: 15px; color: #1a0767;">
         <p><b>Crear Colección</b></p>
     </div>
     <p>Nombre</p>
     <div class="input">
-        <input type="text" placeholder="Nombre de la colección" id="nombre" name="nombre" [(ngModel)]="coleccion_nueva.nombre_col" required>
+        <input type="text" placeholder="Nombre de la colección" id="nombre" name="nombre" [(ngModel)]="coleccion_nueva.nombre" required>
     </div>
     <p>Tipo</p>
     <div class="input">
-        <select id="tipo" name="tipo" [(ngModel)]="coleccion_nueva.tipo_col" required>
+        <select id="tipo" name="tipo" [(ngModel)]="coleccion_nueva.tipo" required>
             <option value="Publica">Publica</option>
             <option value="Privada">Privada</option>
         </select>
     </div>
     <div class="columnas" style="justify-content: center;">
-        <button type="submit" style="cursor: pointer; background: #34c848;" (click)="crearColeccion(coleccion_nueva.nombre_col, coleccion_nueva.tipo_col)">Crear</button>
+        <button type="submit" style="cursor: pointer; background: #34c848;" (click)="crearColeccion(coleccion_nueva.nombre, coleccion_nueva.tipo)">Crear</button>
     </div>
 </form>

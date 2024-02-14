@@ -12,10 +12,10 @@
                     <p>ID</p>
                 </div>
                 <div class="col-20">
-                    <p>Titulo Material</p>
+                    <p>Titulo</p>
                 </div>
                 <div class="col-10">
-                    <p>Autor del Material</p>
+                    <p>Autor</p>
                 </div>
                 <div class="col-10">
                     <p>Publicación</p>
@@ -36,7 +36,7 @@
 
             <div class="contenido-tabla">
                 <li class="contenido" *ngFor="let materiales of materiales_fisicos" style="margin: 0px; padding: 0px; cursor: pointer;" (click)="abrirOpciones(materiales.idMat)">
-                    <div class="colecciones">
+                    <div class="colecciones" style="grid-gap: 24px;">
                         <div class="col-10">
                             <p>{{ materiales.idMat }}</p>
                         </div>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="comprar oculto" [id]="materiales.idMat">
                         <form action="">
-                            <button class="botones" type="submit" style="cursor: pointer; background: #27e1a9; width: 110px; margin-top: 0px; margin-bottom: 15px;" (click)="comprarMaterial(materiales.idMat, user_input.id_user)">Comprar</button>
+                            <button class="botones" type="submit" style="cursor: pointer; background: #27e1a9; width: 150px; margin-top: 0px; margin-bottom: 15px;" (click)="agregarAlCarrito(materiales.idMat)">Agregar al carrito</button>
                         </form>
                     </div>
                 </li>
@@ -72,7 +72,7 @@
         </div>
     </li>
     <div class="subtitulo">
-        <h3>> Libros digitales</h3>
+        <h3>> Mi carrito</h3>
     </div>
     <li>
         <div class="libroDigital">
@@ -84,7 +84,7 @@
                     <p>Titulo Material</p>
                 </div>
                 <div class="col-10">
-                    <p>Autor del Material</p>
+                    <p>Autor</p>
                 </div>
                 <div class="col-10">
                     <p>Publicación</p>
@@ -104,8 +104,8 @@
             </li>
 
             <div class="contenido-tabla">
-                <li class="contenido" *ngFor="let materiales of materiales_digitales" style="margin: 0px; padding: 0px; cursor: pointer;">
-                    <div class="colecciones">
+                <li class="contenido" *ngFor="let materiales of carrito_array" style="margin: 0px; padding: 0px; cursor: pointer;" (click)="abrirOpciones1(materiales.idMat)">
+                    <div class="colecciones" style="grid-gap: 24px;">
                         <div class="col-10">
                             <p>{{ materiales.idMat }}</p>
                         </div>
@@ -122,7 +122,7 @@
                             <p>{{ materiales.idiomaMat }}</p>
                         </div>
                         <div class="col-10">
-                            <p>{{ materiales.precioEMat }}</p>
+                            <p>{{ materiales.precioFMat }}</p>
                         </div>
                         <div class="col-10">
                             <p>{{ materiales.nombreUsu }} {{ materiales.aPatUsu }} {{ materiales.aMatUsu }}</p>
@@ -131,9 +131,9 @@
                             <p>{{ materiales.nombreCol }}</p>
                         </div>
                     </div>
-                    <div class="comprar oculto" [id]="materiales.idMat">
+                    <div class="comprar oculto" [id]="materiales.idMat+'C'">
                         <form action="">
-                            <button class="botones" type="submit" style="cursor: pointer; background: #27e1a9; width: 110px; margin-top: 0px; margin-bottom: 15px;" (click)="comprarMaterial(materiales.idMat, user_input.id_user)">Comprar</button>
+                            <button class="botones" type="submit" style="cursor: pointer; background: #27e1a9; width: 110px; margin-top: 0px; margin-bottom: 15px;" (click)="comprarMaterial(materiales.idMat)">Comprar</button>
                         </form>
                     </div>
                 </li>

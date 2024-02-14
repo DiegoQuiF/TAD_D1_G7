@@ -10,7 +10,7 @@ def delColeccion(id):
                 DELETE FROM Coleccion WHERE idColeccion = %(id)s;
                 """
         with conn.cursor() as cursor:
-            cursor.execute(inst, {'id':id, 'id':id})
+            cursor.execute(inst, {'id':id})
             conn.commit()
         conn.close()
         return True

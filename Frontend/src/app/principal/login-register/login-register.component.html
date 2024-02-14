@@ -33,7 +33,8 @@
                 <div class="input-field">
                     <div class="icono">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"
-                            [ngClass]="{'icono-verde': nombre_reg.match(patronNombresPropios), 'icono-rojo': !nombre_reg.match(patronNombresPropios)}">
+                            [ngClass]="{'icono-verde': nombre_reg.match(patronNombresPropios) && nombre_reg.match(patronLargo80), 
+                                        'icono-rojo': !(nombre_reg.match(patronNombresPropios) && nombre_reg.match(patronLargo80))}">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                         </svg>
                     </div>
@@ -42,7 +43,8 @@
                 <div class="input-field">
                     <div class="icono">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3vh" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"
-                            [ngClass]="{'icono-verde': aPat_reg.match(patronNombresPropios), 'icono-rojo': !aPat_reg.match(patronNombresPropios)}">
+                            [ngClass]="{'icono-verde': aPat_reg.match(patronNombresPropios) && aPat_reg.match(patronLargo80), 
+                                        'icono-rojo': !(aPat_reg.match(patronNombresPropios) && aPat_reg.match(patronLargo80))}">
                             <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/>
                         </svg>
                     </div>
@@ -51,7 +53,8 @@
                 <div class="input-field">
                     <div class="icono">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3vh" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"
-                            [ngClass]="{'icono-verde': aMat_reg.match(patronNombresPropios), 'icono-rojo': !aMat_reg.match(patronNombresPropios)}">
+                            [ngClass]="{'icono-verde': aMat_reg.match(patronNombresPropios) && aMat_reg.match(patronLargo80), 
+                                        'icono-rojo': !(aMat_reg.match(patronNombresPropios) && aMat_reg.match(patronLargo80))}">
                             <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/>
                         </svg>
                     </div>
@@ -68,9 +71,19 @@
                 </div>
                 <div class="input-field">
                     <div class="icono">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-map-fill" viewBox="0 0 16 16"
+                            [ngClass]="{'icono-verde': direccion_reg.match(patronDireccion) && direccion_reg.match(patronLargo160), 
+                                        'icono-rojo': !(direccion_reg.match(patronDireccion) && direccion_reg.match(patronLargo160))}">
+                            <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.598-.49L10.5.99 5.598.01a.5.5 0 0 0-.196 0l-5 1A.5.5 0 0 0 0 1.5v14a.5.5 0 0 0 .598.49l4.902-.98 4.902.98a.5.5 0 0 0 .196 0l5-1A.5.5 0 0 0 16 14.5zM5 14.09V1.11l.5-.1.5.1v12.98l-.402-.08a.5.5 0 0 0-.196 0zm5 .8V1.91l.402.08a.5.5 0 0 0 .196 0L11 1.91v12.98l-.5.1z"/>
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Dirección" name="direccion_reg" [(ngModel)]="direccion_reg" required/>
+                </div>
+                <div class="input-field">
+                    <div class="icono">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" class="bi bi-envelope-fill" viewBox="0 0 16 16"
-                            [ngClass]="{'icono-verde': correo_reg.match(patronCorreo) && correo_reg.match(patronCaracteresLibres), 
-                                       'icono-rojo': !(correo_reg.match(patronCorreo) && correo_reg.match(patronCaracteresLibres))}" fill="currentColor">
+                            [ngClass]="{'icono-verde': correo_reg.match(patronCorreo) && correo_reg.match(patronLargo80), 
+                                        'icono-rojo': !(correo_reg.match(patronCorreo) && correo_reg.match(patronLargo80))}" fill="currentColor">
                             <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
                         </svg>
                     </div>
@@ -79,7 +92,7 @@
                 <div class="input-field">
                     <div class="icono">
                         <svg xmlns="http://www.w3.org/2000/svg" width="3.5vh" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16"
-                            [ngClass]="{'icono-verde': contra_reg.match(patronCaracteresLibres), 'icono-rojo': !contra_reg.match(patronCaracteresLibres)}">
+                            [ngClass]="{'icono-verde': contra_reg.match(patronContra), 'icono-rojo': !contra_reg.match(patronContra)}">
                             <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
                         </svg>
                     </div>
@@ -87,7 +100,7 @@
                 </div>
                 <br>
                 <input type="submit" class="btn" value="Registrarse"
-                    (click)="register(nombre_reg, aPat_reg, aMat_reg, celular_reg, correo_reg, contra_reg)"/>
+                    (click)="register(nombre_reg, aPat_reg, aMat_reg, celular_reg, correo_reg, contra_reg, direccion_reg)"/>
             </form>
         </div>
     </div>

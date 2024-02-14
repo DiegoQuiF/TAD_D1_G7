@@ -15,7 +15,7 @@ export class ColeccionesComponent {
   @Input() user_input!: Usuario;
   
   coleccion_selected: Coleccion = new Coleccion("-", "-", "Privada", "-", "-");
-  material_nuevo: Material = new Material('', '', '', '', '', '', '', '', '', '', '', '');
+  material_nuevo: Material = new Material('', '', '', '', '', '', '', '', '', '', '');
   mensajeCrear: string = 'Crear Coleccion';
   libros_array!: Array<Material>;
   
@@ -27,7 +27,7 @@ export class ColeccionesComponent {
     var formularioCrear = document.getElementById('formularioCrear');
     formularioCrear?.classList.toggle('cerrado');
     if(this.mensajeCrear === 'Crear Coleccion') {
-      this.mensajeCrear = 'Cancelar';
+      this.mensajeCrear = 'Cancelar \'Crear\'';
     }
     else {
       this.mensajeCrear = 'Crear Coleccion';
@@ -51,21 +51,21 @@ export class ColeccionesComponent {
 
   //Se ejecuta cuando se selecciono que no hay disponibilidad Fisica del material 
   bloquearPrecioStockFisico() {
-    if (this.material_nuevo.fisico === 'No') {
-      this.material_nuevo.precioF = '0.0';
-      this.material_nuevo.stockF = '0';
+    if (this.material_nuevo.dispFisico === 'No') {
+      this.material_nuevo.precioFisico = '0.0';
+      this.material_nuevo.stockFisico = '0';
     } else {
-      this.material_nuevo.precioF  = ''; 
-      this.material_nuevo.stockF = ''; 
+      this.material_nuevo.precioFisico  = ''; 
+      this.material_nuevo.stockFisico = ''; 
     }
   }
   
   //Se ejecuta cuando se selecciono que no hay disponibilidad Electronica del material 
   bloquearPrecioElectronico() {
-    if (this.material_nuevo.electronico === 'No') {
-      this.material_nuevo.precioE = '0.0';
+    if (this.material_nuevo.dispElec === 'No') {
+      this.material_nuevo.precioElec = '0.0';
     } else {
-      this.material_nuevo.precioE  = ''; 
+      this.material_nuevo.precioElec  = ''; 
     }
   }
 
@@ -130,7 +130,7 @@ export class ColeccionesComponent {
     if(await this.postMaterial(material, id)){
       await this.getLibros(id);
       alert("Material creado correctamente");
-      this.material_nuevo = new Material('', '', '', '', '', '', '', '', '', '', '', '');
+      this.material_nuevo = new Material('', '', '', '', '', '', '', '', '', '', '');
     }
     else{
       alert('Error en el registro de datos:\n- Verifique la sintaxis de los campos asociados.\n- Seleccione opciones válidas.');
@@ -171,5 +171,10 @@ export class ColeccionesComponent {
     else {
       return false;
     }
+  }
+
+  async abrirColecciones() {
+    var hoja = document.getElementById('abrirColecciones');
+    hoja?.classList.toggle('inactivo');
   }
 }
