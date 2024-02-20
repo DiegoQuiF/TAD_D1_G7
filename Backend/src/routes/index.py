@@ -510,22 +510,6 @@ def obtenerMaterialesPorUsuario():
         return jsonify({'message':'ERROR', 'success':False})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @main.route('/getUsuarios')
 def inicio():
     try:
@@ -536,20 +520,6 @@ def inicio():
             return jsonify({'message':"NOT FOUND", 'success':True})
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
 
 @main.route('/eliminarUsuario/<string:id>', methods = ['DELETE'])
 def eliminarUsuario(id):
@@ -563,6 +533,4 @@ def eliminarUsuario(id):
             return jsonify({'message':"NOT FOUND", 'success':True})
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
-
-
 
