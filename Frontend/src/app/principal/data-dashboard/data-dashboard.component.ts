@@ -4,7 +4,6 @@ import Highcharts from 'highcharts';
 
 @Component({
   selector: 'data-dashboard',
-  standalone: false,
   templateUrl: './data-dashboard.component.html',
   styleUrl: './data-dashboard.component.css'
 })

@@ -1,6 +1,4 @@
 <div class="section">
-    <!--<app-register class="cerrado" id="hojaRegister" (mensajeEnviadoVolver)="recibirMensaje($event)"></app-register>
-    <app-login class="abierto" id="hojaLogin" (mensajeEnviado)="recibirMensaje($event)" (usuarioLogin)="recibirLog($event)"></app-login>-->
     <app-login-register class="abierto" id="hojaLoginRegister" (mensajeEnviado)="recibirMensaje($event)" (usuarioLogin)="recibirLog($event)" (tarjetasLogin)="recibirTarjetas($event)"></app-login-register>
     <app-logueado class="cerrado" id="hojaLogged" [user_input]="usuario_logueado" [tarjeta_input]="tarjeta_usuario" (mensajeSalir)="recibirMensaje($event)"></app-logueado>
 </div>
