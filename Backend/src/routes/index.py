@@ -486,7 +486,6 @@ def obtenerMaterialesPorAnio():
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
 
-
 @main.route('/getFacturasPorFecha')
 def obtenerFacturasPorFecha():
     try:
