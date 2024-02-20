@@ -1,4 +1,7 @@
 from flask import Blueprint, jsonify, request
+from src.services.get.getFacturasPorFecha import getFacturasPorFecha
+from src.services.get.getMaterialesPorAnio import getMaterialesPorAnio
+from src.services.get.getMaterialesPorUsuario import getMaterialesPorUsuario
 from src.services.get.getUsuarios import getUsuarios
 from src.services.get.getMaterialCompleto import getMaterialesCompletos
 from src.services.get.getCarritoCompleto import getCarritoCompleto
@@ -472,9 +475,39 @@ def registrarFactura():
         print('   [Backend] Registro fallido...\n')
         return jsonify({'message':'ERROR', 'success':False})
 
+@main.route('/getMaterialesPorAnio')
+def obtenerMaterialesPorAnio():
+    try:
+        materialesPorAnio = getMaterialesPorAnio()
+        if len(materialesPorAnio)>0 :
+            return jsonify({'materialesPorAnio':materialesPorAnio, 'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
+
+@main.route('/getFacturasPorFecha')
+def obtenerFacturasPorFecha():
+    try:
+        facturasPorFecha = getFacturasPorFecha()
+        if len(facturasPorFecha)>0 :
+            return jsonify({'facturasPorFecha':facturasPorFecha, 'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
 
 
-
+@main.route('/getMaterialesPorUsuario')
+def obtenerMaterialesPorUsuario():
+    try:
+        materialesPorUsuario = getMaterialesPorUsuario()
+        if len(materialesPorUsuario)>0 :
+            return jsonify({'materialesPorUsuario':materialesPorUsuario, 'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
 
 
 

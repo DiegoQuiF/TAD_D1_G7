@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <title>Admin panel</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="logo">
+                <h2>Informe de datos</h2>
+            </div>
+
+            <i class="fas fa-bell"></i>
+            <div class="user">
+                <img src="../../../assets/images/admin-icon.png" alt="">
+            </div>
+        </div>
+        <div class="sidebar">
+            <ul>
+                <li *ngFor="let item of menuItems; let i = index" (click)="cambiarGrafico(i, $event)">
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i>
+                        <div>{{ item.label }}</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="main">
+            <div class="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">1217</div>
+                        <div class="card-name">Usuarios</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">42</div>
+                        <div class="card-name">Materiales</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">68</div>
+                        <div class="card-name">Numero de ventas</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">$4500</div>
+                        <div class="card-name">Movimientos</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+            </div>
+            <highcharts-chart [Highcharts]="matPorFecha" [options]="graficoActual"
+                style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+        </div>
+    </div>
+</body>
+
+</html>

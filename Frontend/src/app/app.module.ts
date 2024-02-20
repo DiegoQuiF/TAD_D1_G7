@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ChartModule } from 'angular-highcharts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +17,8 @@ import { TiendaComponent } from './principal/logueado/tienda/tienda.component';
 import { MensajesComponent } from './principal/logueado/mensajes/mensajes.component';
 import { CrearColeccionComponent } from './principal/logueado/colecciones/crear-coleccion/crear-coleccion.component';
 import { EditarEliminarColeccionComponent } from './principal/logueado/colecciones/editar-eliminar-coleccion/editar-eliminar-coleccion.component';
-
+import { DataDashboardComponent } from './principal/data-dashboard/data-dashboard.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
     declarations: [		
@@ -30,13 +32,15 @@ import { EditarEliminarColeccionComponent } from './principal/logueado/coleccion
       TiendaComponent,
       MensajesComponent,
       CrearColeccionComponent,
-      EditarEliminarColeccionComponent
+      EditarEliminarColeccionComponent,
+      DataDashboardComponent
     ],
     imports: [
       BrowserModule,
       AppRoutingModule,
       HttpClientModule,
-      FormsModule
+      FormsModule,
+      HighchartsChartModule
     ],
     providers: [],
     bootstrap: [AppComponent]

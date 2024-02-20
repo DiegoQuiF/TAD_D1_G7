@@ -10,8 +10,8 @@ import { Material } from '../models/material';
 })
 export class ConnBackendService {
 
-  private BASE_URL = 'https://paginatad01.onrender.com';
-  //private BASE_URL = 'http://127.0.0.1:5000'
+  //private BASE_URL = 'https://paginatad01.onrender.com';
+  private BASE_URL = 'http://127.0.0.1:5000'
 
   constructor(private http:HttpClient) { }
 
@@ -204,4 +204,17 @@ export class ConnBackendService {
   deleteLibro(id:string):Observable<any>{
     return this.http.delete(`${this.BASE_URL}/eliminarMaterial/${id}`);
   }
+
+  getMaterialesPorAnio():Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getMaterialesPorAnio`);
+  }
+
+  getFacturasPorFecha():Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getFacturasPorFecha`);
+  }
+
+  getMaterialesPorUsuario():Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getMaterialesPorUsuario`);
+  }
+
 }
