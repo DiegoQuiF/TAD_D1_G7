@@ -29,7 +29,7 @@ export class LogueadoComponent {
     this.cerrarHojas();
     hoja?.classList.toggle('inactivo');
     lista?.classList.toggle('active');
-    this.mensajeSalir.emit('Abrir login');
+    this.mensajeSalir.emit('Salir');
   }
 
   abrirPerfil() {

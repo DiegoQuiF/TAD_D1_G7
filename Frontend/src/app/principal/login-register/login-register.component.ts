@@ -1,13 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-// Servicios
 import { ConnBackendService } from '../../services/conn-backend.service';
-
-//Modelos
 import { Usuario } from '../../models/usuario';
 import { Tarjeta } from '../../models/tarjeta';
-
+import { Coleccion } from '../../models/coleccion';
 
 @Component({
   selector: 'app-login-register',
@@ -15,22 +11,146 @@ import { Tarjeta } from '../../models/tarjeta';
   styleUrl: './login-register.component.css'
 })
 
-
 export class LoginRegisterComponent {
 
-  constructor(private connBackend: ConnBackendService) { }
+  constructor( private connBackend: ConnBackendService ) { }
 
-  // mostrar alerta
-  isAlert: boolean = false;
-  mensajeAlert: string = '';
+  // VARIABLES EXTERNAS
+  @Output() user_log = new EventEmitter<Usuario>();
+  @Output() user_tarjetas_log = new EventEmitter<Array<Tarjeta>>();
+  @Output() user_colecciones_log = new EventEmitter<Array<Coleccion>>();
+  @Output() mensaje_log = new EventEmitter<string>();
 
-  // Variables de inicio de sesión
-  correo_user = 'pedrito@gmail.com';      // Correo ingresado por el usuario
-  contra_user = 'pedrito123';                // Contraseña ingresada por el usuario
-  usuario_login: Array<Usuario> = new Array<Usuario>();
-  tarjetas_usuario: Array<Tarjeta> = new Array<Tarjeta>();
+  // CARGA DE LA PÁGINA
+  cargando: boolean = false;
 
-  // Variables de registro
+
+  // ALERTA DE LA PÁGINA
+  mostrarAlerta: boolean = false;
+  mensajeAlerta: string = '';
+
+  async alerta( mensaje:string ) {
+    this.mensajeAlerta = mensaje;
+    this.mostrarAlerta = true;
+  }
+  async continuar() {
+    this.mensajeAlerta = '';
+    this.mostrarAlerta = false;
+  }
+
+
+  // TRANSICIÓN ENTRE INICIO DE SESIÓN Y REGISTRO
+  in_btn() {    // REGISTRARSE → INICIAR SESIÓN
+    const container = document.getElementById("container-form");
+    container?.classList.remove("sign-up-mode");
+  }
+
+  up_btn() {    // INICIAR SESIÓN → REGISTRARSE
+    const container = document.getElementById("container-form");
+    container?.classList.add("sign-up-mode");
+  }
+
+
+  // INICIO DE SESIÓN (CREDENCIALES POR DEFECTO)
+  user_correo = 'pedrito@gmail.com';
+  user_contra = 'pedrito123';
+  user: undefined | Usuario;
+  user_tarjetas: undefined | Array<Tarjeta>;
+  user_colecciones: undefined | Array<Coleccion>;
+
+  async login( correo: string, contra: string ) {
+    this.cargando = true;
+    try {
+      await this.iniciarSesion(correo, contra);
+    } catch (error) {
+      console.error(error);
+      this.alerta('Hubo un error al intentar iniciar sesión...');
+    } finally {
+      this.cargando = false;
+    }
+  }
+  async iniciarSesion( correo: string, contra: string ) {
+    if ((correo === 'ADMIN') && (contra === 'ADMIN')) {
+      this.mensaje_log.emit('Admin');
+    }
+    else {
+      this.user = await this.getUsuario(correo, contra);
+
+      if (this.user !== undefined) {
+        this.user_tarjetas = await this.getTarjetas(this.user.id_user);
+        this.user_colecciones = await this.getColecciones(this.user.id_user);
+        this.user_correo = '';
+        this.user_contra = '';
+        this.user_log.emit(this.user);
+        this.user_tarjetas_log.emit(this.user_tarjetas);
+        this.user_colecciones_log.emit(this.user_colecciones);
+        this.mensaje_log.emit('Logueado');
+      } else {
+        this.alerta('No se ha encontrado al usuario con las credenciales proporcionadas...');
+      }
+    }
+  }
+  async getUsuario( correo:string, contra: string ) {
+    try {
+      const data = await this.connBackend.getUsuario(correo, contra).toPromise();
+      console.log(data);
+      var usuarios: Array<Usuario> = data.usuario;
+      if ((usuarios.length > 0) && usuarios) {
+        return usuarios[0];
+      }
+      else {
+        return undefined;
+      }
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  }
+  async getTarjetas( id:string ) {
+    try {
+      const data = await this.connBackend.getTarjetas(id).toPromise();
+      console.log(data);
+      var tarjetas: Array<Tarjeta> = data.tarjetas;
+      if ( data.success == true ) {
+        if ( tarjetas.length > 0 && tarjetas ) {
+          return tarjetas;
+        }
+        else {
+          return undefined;
+        }
+      }
+      else {
+        return undefined;
+      }
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  }
+  async getColecciones( id:string ) {
+    try {
+      const data = await this.connBackend.getColeccion(id).toPromise();
+      console.log(data);
+      var colecciones: Array<Coleccion> = data.coleccion;
+      if ( data.success == true ) {
+        if ( colecciones.length > 0 && colecciones ) {
+          return colecciones;
+        }
+        else {
+          return undefined;
+        }
+      }
+      else {
+        return undefined;
+      }
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  }
+
+
+  // REGISTRARSE
   nombre_reg: string = '';
   aPat_reg: string = '';
   aMat_reg: string = '';
@@ -39,96 +159,34 @@ export class LoginRegisterComponent {
   contra_reg: string = '';
   direccion_reg: string = '';
 
-  // Variables globales
-  @Output() mensajeEnviado = new EventEmitter<string>();
-  @Output() usuarioLogin = new EventEmitter<Usuario>();
-  @Output() tarjetasLogin = new EventEmitter<Array<Tarjeta>>();
+  patronLargo80 = /^(.){0,80}$/;
+  patronLargo160 = /^(.){0,160}$/;
+  patronContra = /^(.){8,80}$/;
+  patronNombresPropios = /^[A-Z]([A-Z]|[a-z]|\s)*$/;
+  patronCorreo = /^([a-z]|[A-Z]|\_|\.)+\@[a-zA-Z]+\.[a-zA-Z]+(\.([a-zA-Z])+)*$/;
+  patronCelular = /^(9)(\d{8})$/;
+  patronDireccion = /^([A-Z]|[a-z]|\s|\.|\d|\_)+$/;
 
-  //Validar campos del register desde el front
-  patronLargo80 = /^(.){0,80}$/
-  patronLargo160 = /^(.){0,160}$/
-  patronContra = /^(.){8,80}$/
-  patronNombresPropios = /^[A-Z]([A-Z]|[a-z]|\s)*$/
-  patronCorreo = /^([a-z]|[A-Z]|\_|\.)+\@[a-zA-Z]+\.[a-zA-Z]+(\.([a-zA-Z])+)*$/
-  patronCelular = /^(9)(\d{8})$/
-  patronDireccion = /^([A-Z]|[a-z]|\s|\.|\d|\_)+$/
-
-  // Transiciones
-  in_btn() {    // Tansición entre el formulario REGISTRARSE → INICIAR SESIÓN
-    const container = document.getElementById("container-form");
-    container?.classList.remove("sign-up-mode");
-  }
-
-  up_btn() {    // Transición entre el formulario INICIAR SESIÓN → REGISTRARSE
-    const container = document.getElementById("container-form");
-    container?.classList.add("sign-up-mode");
-  }
-
-
-
-  // Login - Inicio Sesión
-  async validar_inicioSesion(correo_input: string, contra_input: string) {    // Realiza una acción si se encuentra o no al usuario
-    if (await this.getUsuario_inicioSesion(correo_input, contra_input)) {
-      if (await this.getTarjetas_usuario(this.usuario_login[0].id_user)) {
-        this.usuarioLogin.emit(this.usuario_login[0]);
-        this.tarjetasLogin.emit(this.tarjetas_usuario);
-        this.mensajeEnviado.emit('Abrir logged');
-        this.correo_user = '';
-        this.contra_user = '';
-      }
-      else {
-        this.alert('Error al verificar tarjetas asociadas...');
-      }
-    }
-    else {
-      this.alert('Usuario no encontrado...');
-    }
-  }
-
-  async getUsuario_inicioSesion(correo: string, contra: string) {   // Retorna true si el usuario existe, false si no existe u ocurre un error
+  async register(nombre: string, aPat: string, aMat: string, celular: string, correo: string,
+    contra: string, direccion:string) {
+    this.cargando = true;
     try {
-      const data = await this.connBackend.getUsuario(correo, contra).toPromise();   // Mediante servicio backend consulta la existencia del usuario
-      console.log(data);
-      this.usuario_login = data.usuario;    // Obtiene el campo usuario de la data obtenida, si no se encontró un usuario sera vacio
-      if (this.usuario_login.length > 0 && this.usuario_login) {    // Si el usuario existe retorna true, si no se encontró retorna falso
-        return true;
-      }
-      else {
-        return false;
-      }
-    } catch (error) {   // Capta los errores durante ejecución
-      console.error(error);
-      return false;
-    }
-  }
-
-  async getTarjetas_usuario(id_user:string) {
-    try {
-      const data = await this.connBackend.getTarjetas(id_user).toPromise();
-      console.log(data);
-      this.tarjetas_usuario = data.tarjetas;
-      if (data.success == true) {
-        return true;
-      }
-      else {
-        return false;
-      }
+      await this.registrarse(nombre, aPat, aMat, celular, correo, contra, direccion);
     } catch (error) {
       console.error(error);
-      return false;
+      this.alerta('Hubo un error al intentar registrarse en la aplicación...');
+    } finally {
+      this.cargando = false;
     }
   }
-
-
-
-  // Register - Registro
-  async registrar_registro(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string, direccion_input:string) {    // Realiza una acción si se logra registrar al usuario o no
-    var result = await this.postUsuario_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input, direccion_input);
+  async registrarse(nombre: string, aPat: string, aMat: string, celular: string, correo:string,
+    contra: string, direccion:string) {
+    var result = await this.postUsuario(nombre, aPat, aMat, celular, correo, contra, direccion);
     if (result === 'COMPLETE') {
-      this.alert('Usuario registrado correctamente...');
+      this.alerta('Usuario registrado correctamente...');
       // Se autocompletan las credenciales del usuario recien registrado
-      this.correo_user = this.correo_reg;
-      this.contra_user = this.contra_reg;
+      this.user_correo = this.correo_reg;
+      this.user_contra = this.contra_reg;
       // Se limpia todos los datos de registro
       this.nombre_reg = '';
       this.aPat_reg = '';
@@ -141,13 +199,13 @@ export class LoginRegisterComponent {
       this.in_btn();
     }
     else {
-      this.alert('Error: '+result);
+      this.alerta(result);
     }
   }
-
-  async postUsuario_registro(nombre: string, aPat: string, aMat: string, celular: string, correo: string, contra: string, direccion:string) {   // Retorna true si el usuario fue registrado, false si no se registro u ocurrio un error
+  async postUsuario(nombre: string, aPat: string, aMat: string, celular: string, correo: string,
+    contra: string, direccion:string) {
     try {
-      const data = await this.connBackend.postUsuario(nombre, aPat, aMat, correo, contra, celular, direccion).toPromise();   // Mediante servicio backend se intenta registrar al usuario
+      const data = await this.connBackend.postUsuario(nombre, aPat, aMat, correo, contra, celular, direccion).toPromise();
       console.log(data);
       if (data.success === true) {
         return data.message;
@@ -155,48 +213,9 @@ export class LoginRegisterComponent {
       else {
         return 'Error interno del sistema...';
       }
-    } catch (error) {   // Capta los errores durante ejecución
+    } catch (error) {
       console.error(error);
       return 'Error interno del sistema...';
     }
-  }
-
-
-
-  // Lógica de carga asíncrona
-  isLoading: boolean = false;
-
-  async login(correo_input: string, contra_input: string) {
-    this.isLoading = true;
-    try {
-      await this.validar_inicioSesion(correo_input, contra_input);
-    } catch (error) {
-      this.alert('Hubo un error al iniciar sesión...');
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async register(nombre_input: string, aPat_input: string, aMat_input: string, celular_input: string, correo_input: string, contra_input: string, direccion_input:string) {
-    this.isLoading = true;
-    try {
-      await this.registrar_registro(nombre_input, aPat_input, aMat_input, celular_input, correo_input, contra_input, direccion_input);
-    } catch (error) {
-      console.error('Hubo un error al registrarse...', error);
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-
-
-  // Lógica de mensaje asíncrono
-  async alert(mensaje:string) {
-    this.mensajeAlert = mensaje;
-    this.isAlert = true;
-  }
-
-  async continuar() {
-    this.isAlert = false;
   }
 }

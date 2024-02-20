@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Usuario } from '../models/usuario';
 import { ConnBackendService } from '../services/conn-backend.service';
 import { Tarjeta } from '../models/tarjeta';
+import { Coleccion } from '../models/coleccion';
 
 @Component({
   selector: 'app-principal',
@@ -12,36 +13,40 @@ import { Tarjeta } from '../models/tarjeta';
 export class PrincipalComponent {
   constructor( private connBackend: ConnBackendService) { }
 
-  usuario_logueado: any;
-  tarjeta_usuario: any;
-
-  recibirMensaje(mensaje: string) {
-    if(mensaje == 'Abrir logged'){
+  user_log: any;
+  user_tarjetas_log: any;
+  user_colecciones_log: any;
+  
+  async recibirUserLog(usuario: Usuario) {
+    this.user_log = usuario;
+  }
+  async recibirUserTarjetasLog(tarjetas: Array<Tarjeta>) {
+    this.user_tarjetas_log = tarjetas;
+  }
+  async recibirUserColeccionesLog(colecciones: Array<Coleccion>) {
+    this.user_colecciones_log = colecciones;
+  }
+  async recibirMensajes(mensaje: string) {
+    if(mensaje == 'Logueado'){
       var hojaLoginRegister = document.getElementById('hojaLoginRegister');
-      var hojaLogged = document.getElementById('hojaLogged');
-      hojaLoginRegister?.classList.remove('abierto');
-      hojaLoginRegister?.classList.add('cerrado');
-      hojaLogged?.classList.remove('cerrado');
-      hojaLogged?.classList.add('abierto');
+      var hojaLogueado = document.getElementById('hojaLogueado');
+      hojaLoginRegister?.classList.toggle('cerrado');
+      hojaLogueado?.classList.toggle('cerrado');
     }
-    else if(mensaje == 'Abrir login'){
+    else if(mensaje == 'Admin'){
       var hojaLoginRegister = document.getElementById('hojaLoginRegister');
-      var hojaLogged = document.getElementById('hojaLogged');
-      hojaLogged?.classList.remove('abierto');
-      hojaLogged?.classList.add('cerrado');
-      hojaLoginRegister?.classList.remove('cerrado');
-      hojaLoginRegister?.classList.add('abierto');
+      var hojaAdmin = document.getElementById('hojaAdmin');
+      hojaLoginRegister?.classList.toggle('cerrado');
+      hojaAdmin?.classList.toggle('cerrado');
+    }
+    else if(mensaje == 'Salir'){
+      var hojaLoginRegister = document.getElementById('hojaLoginRegister');
+      var hojaLogueado = document.getElementById('hojaLogueado');
+      hojaLogueado?.classList.toggle('cerrado');
+      hojaLoginRegister?.classList.toggle('cerrado');
     }
     else {
       alert("ERROR DEL SISTEMA");
     }
-  }
-
-  async recibirLog(usuario: Usuario) {
-    this.usuario_logueado = usuario;
-  }
-
-  async recibirTarjetas(tarjetas: Array<Tarjeta>) {
-    this.tarjeta_usuario = tarjetas;
   }
 }
