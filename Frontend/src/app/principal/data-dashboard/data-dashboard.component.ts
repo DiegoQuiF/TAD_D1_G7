@@ -85,7 +85,6 @@ export class DataDashboardComponent {
       //Se actualiza el grafico actual por el creado 
       this.graficoActual = graficoMatSubPorFecha;
 
-      
       console.log(datosGrafico);
     } catch (error) {
       console.error(error);
