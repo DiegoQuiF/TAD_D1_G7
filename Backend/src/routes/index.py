@@ -9,6 +9,8 @@ from src.services.post.getUsuario import getUsuario
 from src.services.post.getTarjetas import getTarjetas
 from src.services.post.getColeccion import getColeccion
 from src.services.post.getMaterial import getMaterial
+from src.services.post.getTransacciones import getTransacciones
+from src.services.post.getCompradores import getCompradores
 from src.services.post.postRegistrarUsuario import postRegistrarUsuario
 from src.services.post.postRegistrarColeccion import postRegistrarColeccion
 from src.services.post.postRegistrarLibro import postRegistrarLibro
@@ -534,3 +536,42 @@ def eliminarUsuario(id):
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
 
+@main.route('/getTransacciones', methods = ['POST'])
+def getTransaccion():
+    print('   [Backend] Servicio \'getTransacciones\' solicitado'.ljust(120, '.'))
+    try:
+        print('   [Backend] Recepcionando archivo JSON'.ljust(120, '.'))
+        data = request.get_json()
+        id = data['id_user']
+        print('   [Backend] Ejecutando solicitud'.ljust(120, '.'))
+        transaccion = getTransacciones(id)
+        if len(transaccion)>0:
+            print('   [Backend] Solicitud exitosa'.ljust(120, '.'))
+            return jsonify({'transaccion':transaccion, 'message':'COMPLETE', 'success':True})
+        else:
+            print('   [Backend] Solicitud fallida: NOT FOUND'.ljust(120, '.'))
+            return jsonify({'message':"NOT FOUND", 'success':True})
+
+    except Exception as e:
+        print('   [Backend] Solicitud fallida: ERROR'.ljust(120, '.'))
+        return jsonify({'message':'ERROR', 'success':False})
+
+@main.route('/getCompradores', methods = ['POST'])
+def getComprador():
+    print('   [Backend] Servicio \'getCompradores\' solicitado'.ljust(120, '.'))
+    try:
+        print('   [Backend] Recepcionando archivo JSON'.ljust(120, '.'))
+        data = request.get_json()
+        id = data['id_user']
+        print('   [Backend] Ejecutando solicitud'.ljust(120, '.'))
+        compradores = getCompradores(id)
+        if len(compradores)>0:
+            print('   [Backend] Solicitud exitosa'.ljust(120, '.'))
+            return jsonify({'compradores':compradores, 'message':'COMPLETE', 'success':True})
+        else:
+            print('   [Backend] Solicitud fallida: NOT FOUND'.ljust(120, '.'))
+            return jsonify({'message':"NOT FOUND", 'success':True})
+
+    except Exception as e:
+        print('   [Backend] Solicitud fallida: ERROR'.ljust(120, '.'))
+        return jsonify({'message':'ERROR', 'success':False})

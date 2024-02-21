@@ -4,6 +4,8 @@ import { ConnBackendService } from '../../services/conn-backend.service';
 import { Usuario } from '../../models/usuario';
 import { Tarjeta } from '../../models/tarjeta';
 import { Coleccion } from '../../models/coleccion';
+import { Transaccion } from '../../models/transaccion';
+import { Comprador } from '../../models/comprador';
 
 @Component({
   selector: 'app-login-register',
@@ -18,6 +20,8 @@ export class LoginRegisterComponent {
   // VARIABLES EXTERNAS
   @Output() user_log = new EventEmitter<Usuario>();
   @Output() user_tarjetas_log = new EventEmitter<Array<Tarjeta>>();
+  @Output() user_transacciones_log = new EventEmitter<Transaccion>();
+  @Output() user_compradores_log = new EventEmitter<Array<Comprador>>();
   @Output() user_colecciones_log = new EventEmitter<Array<Coleccion>>();
   @Output() mensaje_log = new EventEmitter<string>();
 
@@ -56,7 +60,9 @@ export class LoginRegisterComponent {
   user_contra = 'pedrito123';
   user: undefined | Usuario;
   user_tarjetas: undefined | Array<Tarjeta>;
+  user_transacciones: undefined | Transaccion;
   user_colecciones: undefined | Array<Coleccion>;
+  user_compradores: undefined | Array<Comprador>;
 
   async login( correo: string, contra: string ) {
     this.cargando = true;
@@ -75,15 +81,18 @@ export class LoginRegisterComponent {
     }
     else {
       this.user = await this.getUsuario(correo, contra);
-
       if (this.user !== undefined) {
         this.user_tarjetas = await this.getTarjetas(this.user.id_user);
         this.user_colecciones = await this.getColecciones(this.user.id_user);
+        this.user_transacciones = await this.getTransacciones(this.user.id_user);
+        this.user_compradores = await this.getCompradores(this.user.id_user);
         this.user_correo = '';
         this.user_contra = '';
         this.user_log.emit(this.user);
         this.user_tarjetas_log.emit(this.user_tarjetas);
+        this.user_transacciones_log.emit(this.user_transacciones);
         this.user_colecciones_log.emit(this.user_colecciones);
+        this.user_compradores_log.emit(this.user_compradores);
         this.mensaje_log.emit('Logueado');
       } else {
         this.alerta('No se ha encontrado al usuario con las credenciales proporcionadas...');
@@ -116,15 +125,15 @@ export class LoginRegisterComponent {
           return tarjetas;
         }
         else {
-          return undefined;
+          return new Array<Tarjeta>();
         }
       }
       else {
-        return undefined;
+        return new Array<Tarjeta>();
       }
     } catch (error) {
       console.error(error);
-      return undefined;
+      return new Array<Tarjeta>();
     }
   }
   async getColecciones( id:string ) {
@@ -137,15 +146,47 @@ export class LoginRegisterComponent {
           return colecciones;
         }
         else {
-          return undefined;
+          return new Array<Coleccion>();
         }
       }
       else {
-        return undefined;
+        return new Array<Coleccion>();
       }
     } catch (error) {
       console.error(error);
-      return undefined;
+      return new Array<Coleccion>();
+    }
+  }
+  async getTransacciones( id:string ) {
+    try {
+      const data = await this.connBackend.getTransaccion(id).toPromise();
+      console.log(data);
+      var transaccion: Array<Transaccion> = data.transaccion;
+      if ((transaccion.length > 0) && transaccion) {
+        return transaccion[0];
+      }
+      else {
+        return new Transaccion('0', '0', '0');
+      }
+    } catch (error) {
+      console.error(error);
+      return new Transaccion('0', '0', '0');
+    }
+  }
+  async getCompradores( id:string ) {
+    try {
+      const data = await this.connBackend.getCompradores(id).toPromise();
+      console.log(data);
+      var compradores: Array<Comprador> = data.compradores;
+      if ((compradores.length > 0) && compradores) {
+        return compradores;
+      }
+      else {
+        return new Array<Comprador>;
+      }
+    } catch (error) {
+      console.error(error);
+      return new Array<Comprador>;
     }
   }
 

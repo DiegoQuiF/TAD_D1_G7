@@ -11,8 +11,8 @@ import { Material } from '../../../models/material';
   styleUrl: './colecciones.component.css'
 })
 export class ColeccionesComponent {
-  @Input() coleccion_array: Array<Coleccion> = new Array<Coleccion>();
   @Input() user_input!: Usuario;
+  @Input() user_colecciones_input: Array<Coleccion> = new Array<Coleccion>();
   
   coleccion_selected: Coleccion = new Coleccion("-", "-", "Privada", "-", "-");
   material_nuevo: Material = new Material('', '', '', '', '', '', '', '', '', '', '');
@@ -85,7 +85,7 @@ export class ColeccionesComponent {
     try {
       const data = await this.connBackend.getColeccion(this.user_input.id_user).toPromise();
       console.log(data);
-      this.coleccion_array = data.coleccion;
+      this.user_colecciones_input = data.coleccion;
     } catch (error) {
       console.error(error);
     }

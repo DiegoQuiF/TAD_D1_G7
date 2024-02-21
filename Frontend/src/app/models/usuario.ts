@@ -10,13 +10,13 @@ export class Usuario {
 
     constructor(id:string, nom:string, a_pat:string, a_mat:string, correo:string,
         contra:string, cel:string, direccion:string){
-            this.id_user = id;
-            this.nom_user = nom;
-            this.a_pat_user = a_pat;
-            this.a_mat_user = a_mat;
-            this.correo_user = correo;
-            this.contra_user = contra;
-            this.cel_user = cel;
-            this.direc_user = direccion;
-        }
+        this.id_user = id;
+        this.nom_user = nom;
+        this.a_pat_user = a_pat;
+        this.a_mat_user = a_mat;
+        this.correo_user = correo;
+        this.contra_user = contra;
+        this.cel_user = cel;
+        this.direc_user = direccion;
+    }
 }

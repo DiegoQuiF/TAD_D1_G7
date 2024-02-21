@@ -44,7 +44,7 @@
     </div>
     <!--Poner "inactivo"-->
     <li class="tarjetas" id="editarTarjetas">
-        <div class="contenidoTarjetas" *ngFor="let tarjeta of tarjeta_input">
+        <div class="contenidoTarjetas" *ngFor="let tarjeta of user_tarjetas_input">
             <div class="tarjeta" style="cursor: pointer;" (click)="abrirDetalleTarjeta(tarjeta.id)">
                 <div class="icono">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-credit-card-2-back-fill" viewBox="0 0 16 16">
@@ -90,8 +90,8 @@
                     </svg>
                 </div>
                 <span class="text">
-                    <h3>15</h3>
-                    <p>Publicaciones el último mes</p>
+                    <h3>{{ user_transacciones_input.nro_publicaciones }}</h3>
+                    <p>Total de publicaciones</p>
                 </span>
             </li>
             <li>
@@ -101,8 +101,8 @@
                     </svg>
                 </div>
                 <span class="text">
-                    <h3>150</h3>
-                    <p>Compras el último mes</p>
+                    <h3>{{ user_transacciones_input.nro_compras }}</h3>
+                    <p>Total de ventas</p>
                 </span>
             </li>
             <li>
@@ -112,8 +112,8 @@
                     </svg>
                 </div>
                 <span class="text">
-                    <h3>S/. 340</h3>
-                    <p>Total recaudado el último mes</p>
+                    <h3>{{ user_transacciones_input.recaudado }}</h3>
+                    <p>Total recaudado</p>
                 </span>
             </li>
         </ul>
@@ -130,88 +130,34 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Usuario</th>
-                            <th>Fecha de la orden</th>
-                            <th>Fecha de entrega</th>
-                            <th>Tipo de orden</th>
-                            <th>Estado</th>
+                            <th>Comprador</th>
+                            <th>Titulo del material</th>
+                            <th>Coleccion del material</th>
+                            <th>Fecha de orden (DD-MM-AAAA)</th>
+                            <th>Fecha de entrega (DD-MM-AAAA)</th>
+                            <th>Subtotal (S/.)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr *ngFor="let comprador of user_compradores_input">
                             <td>
-                                <p>Diego Quiñonez Flores</p>
+                                <p>{{ comprador.comprador }}</p>
                             </td>
                             <td>
-                                <p>01-10-2021</p>
+                                <p>{{ comprador.titulo }}</p>
                             </td>
                             <td>
-                                <p>01-10-2021</p>
+                                <p>{{ comprador.catalogo }}</p>
                             </td>
                             <td>
-                                <p>Digital</p>
-                            </td>
-                            <td><span class="status completed">Completado</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Celeste Miranda Sanchez</p>
+                                <p>{{ comprador.fechaCompra }}</p>
                             </td>
                             <td>
-                                <p>02-10-2021</p>
+                                <p>{{ comprador.fechaEntrega }}</p>
                             </td>
                             <td>
-                                <p>-</p>
+                                <p>{{ comprador.subtotal }}</p>
                             </td>
-                            <td>
-                                <p>Físico</p>
-                            </td>
-                            <td><span class="status pending">Pendiente</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Esteban Gonzales Soto</p>
-                            </td>
-                            <td>
-                                <p>02-10-2021</p>
-                            </td>
-                            <td>
-                                <p>-</p>
-                            </td>
-                            <td>
-                                <p>Físico</p>
-                            </td>
-                            <td><span class="status process">En Proceso</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Mary Bernaola Linares</p>
-                            </td>
-                            <td>
-                                <p>05-10-2021</p>
-                            </td>
-                            <td>
-                                <p>-</p>
-                            </td>
-                            <td>
-                                <p>Físico</p>
-                            </td>
-                            <td><span class="status pending">Pendiente</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Carlos Piedra Sotomayor</p>
-                            </td>
-                            <td>
-                                <p>20-10-2021</p>
-                            </td>
-                            <td>
-                                <p>01-10-2021</p>
-                            </td>
-                            <td>
-                                <p>Digital</p>
-                            </td>
-                            <td><span class="status completed">Completado</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -219,20 +165,21 @@
         </div>
     </div>
 
-    <div *ngIf="isLoading" class="mensaje-cargando">
+    <!-- CARGANDO - ALERTA -->
+    <div *ngIf="cargando" class="mensaje-cargando">
         <p>Cargando...</p>
     </div>
 
-    <div *ngIf="isAlert" class="mensaje-alert">
+    <div *ngIf="mostrarAlerta" class="mensaje-alert">
         <div class="alerta">
-            {{ mensajeAlert }}
+            {{ mensajeAlerta }}
             <div class="botonsito" style="display: flex; justify-content: center;">
                 <button class="btn" style="width: 110px; height: 25px; margin: 0px; padding: 0px; margin-top: 10px;" (click)="continuar()">Continuar</button>
             </div>
         </div>
     </div>
 
-    <div *ngIf="isRegister" class="mensaje-register">
+    <div *ngIf="mostrarRegistro" class="mensaje-register">
         <div class="alerta">
             <form>
                 <h4 style="margin-bottom: 15px;">> Agregar nueva tarjeta</h4>

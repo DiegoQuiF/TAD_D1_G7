@@ -4,6 +4,9 @@ import { ConnBackendService } from '../../services/conn-backend.service';
 import { Coleccion } from '../../models/coleccion';
 import { MaterialCompleto } from '../../models/material-completo';
 import { Tarjeta } from '../../models/tarjeta';
+import { Material } from '../../models/material';
+import { Transaccion } from '../../models/transaccion';
+import { Comprador } from '../../models/comprador';
 
 @Component({
   selector: 'app-logueado',
@@ -11,57 +14,47 @@ import { Tarjeta } from '../../models/tarjeta';
   styleUrl: './logueado.component.css'
 })
 export class LogueadoComponent {
-  @Input() user_input!: Usuario;
-  @Input() tarjeta_input!: Array<Tarjeta>;
-  @Output() mensajeSalir = new EventEmitter<string>();
-  
-  coleccion_array: Array<Coleccion> = new Array<Coleccion>();
-  materiales_array: Array<MaterialCompleto> = new Array<MaterialCompleto>();
-  materialesFisicos: Array<MaterialCompleto> = new Array<MaterialCompleto>();
-  carrito: Array<MaterialCompleto> = new Array<MaterialCompleto>();
-  materialesDigitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
 
   constructor(private connBackend: ConnBackendService) { }
 
-  salir() {
+
+  // VARIABLES EXTERNAS
+  @Input() user_input!: Usuario;
+  @Input() user_tarjetas_input!: Array<Tarjeta>;
+  @Input() user_transacciones_input!: Transaccion;
+  @Input() user_colecciones_input!: Array<Coleccion>;
+  @Input() user_materiales_input!: Array<Material>;
+  @Input() user_compradores_input!: Array<Comprador>;
+
+  @Output() mensajeSalir = new EventEmitter<string>();
+  
+
+  // ABRIR VENTANAS
+  async abrirPerfil() {
     var hoja = document.getElementById('hojaPerfil');
     var lista = document.getElementById('listaPerfil');
-    this.cerrarHojas();
-    hoja?.classList.toggle('inactivo');
+    await this.cerrarHojas();
     lista?.classList.toggle('active');
-    this.mensajeSalir.emit('Salir');
+    hoja?.classList?.toggle('cerrado');
   }
-
-  abrirPerfil() {
-    var hoja = document.getElementById('hojaPerfil');
-    var lista = document.getElementById('listaPerfil');
-    this.cerrarHojas();
-    lista?.classList.toggle('active');
-    hoja?.classList?.toggle('inactivo');
-  }
-
-  abrirComunidad() {
+  async abrirComunidad() {
     var hoja = document.getElementById('hojaComunidad');
     var lista = document.getElementById('listaComunidad');
-    this.cerrarHojas();
+    await this.cerrarHojas();
     lista?.classList.toggle('active');
-    hoja?.classList?.toggle('inactivo');
-    
+    hoja?.classList?.toggle('cerrado');
   }
-
   async abrirColecciones() {
     var hoja = document.getElementById('hojaColecciones');
     var lista = document.getElementById('listaColecciones');
-    this.cerrarHojas();
-    await this.getColecciones();
+    await this.cerrarHojas();
     lista?.classList.toggle('active');
-    hoja?.classList?.toggle('inactivo');
+    hoja?.classList?.toggle('cerrado');
   }
-
   async abrirTienda() {
     var hoja = document.getElementById('hojaTienda');
     var lista = document.getElementById('listaTienda');
-    this.cerrarHojas();
+    await this.cerrarHojas();
     await this.obtenerMaterialesCompletos();
     this.materialesFisicos = this.materiales_array.filter(
       (material: MaterialCompleto) => material.fisicoMat === 'Si'
@@ -71,26 +64,24 @@ export class LogueadoComponent {
     );
     await this.getCarrito(this.user_input.id_user);
     lista?.classList.toggle('active');
-    hoja?.classList?.toggle('inactivo');
+    hoja?.classList?.toggle('cerrado');
   }
-
-  abrirMensajes() {
+  async abrirMensajes() {
     var hoja = document.getElementById('hojaMensajes');
     var lista = document.getElementById('listaMensajes');
-    this.cerrarHojas();
+    await this.cerrarHojas();
     lista?.classList.toggle('active');
-    hoja?.classList?.toggle('inactivo');
+    hoja?.classList?.toggle('cerrado');
   }
-
-  cerrarHojas() {
+  async cerrarHojas() {
     var hojas = document.getElementsByClassName("hojas");
     for (var i = 0; i < hojas.length; i++) {
       var hoja = hojas[i];
-      if (hoja.classList.contains('inactivo')) {
+      if (hoja.classList.contains('cerrado')) {
         //Listo
       }
       else {
-        hoja.classList.add('inactivo');
+        hoja.classList.toggle('cerrado');
       }
     }
     var listas = document.getElementsByClassName("listas");
@@ -106,12 +97,49 @@ export class LogueadoComponent {
   }
 
 
+  // SALIR AL INICIO DE SESIÓN
+  async salir() {
+    var hoja = document.getElementById('hojaPerfil');
+    var lista = document.getElementById('listaPerfil');
+    await this.cerrarHojas();
+    hoja?.classList.toggle('cerrado');
+    lista?.classList.toggle('active');
+    this.mensajeSalir.emit('Salir');
+  }
+  
+
+  // CARGA DE LA PÁGINA
+  cargando: boolean = false;
+
+
+  // ALERTA DE LA PÁGINA
+  mostrarAlerta: boolean = false;
+  mensajeAlerta: string = '';
+
+  async alerta( mensaje:string ) {
+    this.mensajeAlerta = mensaje;
+    this.mostrarAlerta = true;
+  }
+  async continuar() {
+    this.mensajeAlerta = '';
+    this.mostrarAlerta = false;
+  }
+
+
+  // COLECCIONES
+  user_colecciones: Array<Coleccion> = new Array<Coleccion>();
+  materiales_array: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  materialesFisicos: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  carrito: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  materialesDigitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+
+
 
   async obtenerColecciones(){
     try {
       const data = await this.connBackend.getColeccion(this.user_input.id_user).toPromise();
       console.log(data);
-      this.coleccion_array = data.coleccion;
+      this.user_colecciones = data.coleccion;
     } catch (error) {
       console.error(error);
     }
@@ -144,29 +172,14 @@ export class LogueadoComponent {
     }
   }
 
-
-
-  isLoading: boolean = false;
-  isAlert: boolean = false;
-  mensajeAlert:string = '';
-
   async getColecciones() {
-    this.isLoading = true;
+    this.cargando = true;
     try {
       await this.obtenerColecciones();
     } catch (error) {
-      this.alert('Error interno del sistema...');
+      this.alerta('Error interno del sistema...');
     } finally {
-      this.isLoading = false;
+      this.cargando = false;
     }
-  }
-
-  async alert(mensaje:string) {
-    this.mensajeAlert = mensaje;
-    this.isAlert = true;
-  }
-
-  async continuar() {
-    this.isAlert = false;
   }
 }

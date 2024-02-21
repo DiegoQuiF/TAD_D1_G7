@@ -217,4 +217,17 @@ export class ConnBackendService {
     return this.http.get(`${this.BASE_URL}/getMaterialesPorUsuario`);
   }
 
+  getTransaccion(id:String):Observable<any>{
+    const data = {
+      id_user: id
+    }
+    return this.http.post(`${this.BASE_URL}/getTransacciones`, data);
+  }
+
+  getCompradores(id:String):Observable<any>{
+    const data = {
+      id_user: id
+    }
+    return this.http.post(`${this.BASE_URL}/getCompradores`, data);
+  }
 }

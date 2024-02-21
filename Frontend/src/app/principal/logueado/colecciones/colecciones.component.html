@@ -27,7 +27,7 @@
                         </div>
                     </li>
                     <div class="contenido-tabla">
-                        <li class="contenido" *ngFor="let coleccion of coleccion_array" style="margin: 0px; padding: 0px;">
+                        <li class="contenido" *ngFor="let coleccion of user_colecciones_input" style="margin: 0px; padding: 0px;">
                             <div class="colecciones" style="grid-gap:24px">
                                 <div class="col-40" style="justify-content: left; cursor: pointer;"
                                     (click)="abrirLibros(coleccion.id_coleccion)">

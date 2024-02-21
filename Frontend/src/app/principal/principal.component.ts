@@ -4,6 +4,8 @@ import { Usuario } from '../models/usuario';
 import { ConnBackendService } from '../services/conn-backend.service';
 import { Tarjeta } from '../models/tarjeta';
 import { Coleccion } from '../models/coleccion';
+import { Transaccion } from '../models/transaccion';
+import { Comprador } from '../models/comprador';
 
 @Component({
   selector: 'app-principal',
@@ -13,9 +15,11 @@ import { Coleccion } from '../models/coleccion';
 export class PrincipalComponent {
   constructor( private connBackend: ConnBackendService) { }
 
-  user_log: any;
-  user_tarjetas_log: any;
-  user_colecciones_log: any;
+  user_log!: Usuario;
+  user_tarjetas_log!: Array<Tarjeta>;
+  user_transacciones_log!: Transaccion;
+  user_colecciones_log!: Array<Coleccion>;
+  user_compradores_log!: Array<Comprador>;
   
   async recibirUserLog(usuario: Usuario) {
     this.user_log = usuario;
@@ -23,9 +27,16 @@ export class PrincipalComponent {
   async recibirUserTarjetasLog(tarjetas: Array<Tarjeta>) {
     this.user_tarjetas_log = tarjetas;
   }
+  async recibirUserTransaccionesLog(transaccion: Transaccion) {
+    this.user_transacciones_log = transaccion;
+  }
+  async recibirUserCompradoresLog(compradores: Array<Comprador>) {
+    this.user_compradores_log = compradores;
+  }
   async recibirUserColeccionesLog(colecciones: Array<Coleccion>) {
     this.user_colecciones_log = colecciones;
   }
+
   async recibirMensajes(mensaje: string) {
     if(mensaje == 'Logueado'){
       var hojaLoginRegister = document.getElementById('hojaLoginRegister');

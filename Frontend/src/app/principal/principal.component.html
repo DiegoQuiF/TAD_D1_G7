@@ -2,13 +2,18 @@
     <app-login-register id="hojaLoginRegister"
         (user_log)="recibirUserLog($event)"
         (user_tarjetas_log)="recibirUserTarjetasLog($event)"
+        (user_transacciones_log)="recibirUserTransaccionesLog($event)"
+        (user_compradores_log)="recibirUserCompradoresLog($event)"
         (user_colecciones_log)="recibirUserColeccionesLog($event)"
         (mensaje_log)="recibirMensajes($event)"
     ></app-login-register>
 
     <app-logueado class="cerrado" id="hojaLogueado"
         [user_input]="user_log"
-        [tarjeta_input]="user_tarjetas_log"
+        [user_tarjetas_input]="user_tarjetas_log"
+        [user_transacciones_input]="user_transacciones_log"
+        [user_colecciones_input]="user_colecciones_log"
+        [user_compradores_input]="user_compradores_log"
         (mensajeSalir)="recibirMensajes($event)"
     ></app-logueado>
     
