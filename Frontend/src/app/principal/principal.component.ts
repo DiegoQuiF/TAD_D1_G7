@@ -15,11 +15,11 @@ import { Comprador } from '../models/comprador';
 export class PrincipalComponent {
   constructor( private connBackend: ConnBackendService) { }
 
-  user_log!: Usuario;
-  user_tarjetas_log!: Array<Tarjeta>;
-  user_transacciones_log!: Transaccion;
-  user_colecciones_log!: Array<Coleccion>;
-  user_compradores_log!: Array<Comprador>;
+  user_log: Usuario = new Usuario('', '', '', '', '', '', '', '');
+  user_tarjetas_log: Array<Tarjeta> = new Array<Tarjeta>();
+  user_transacciones_log: Transaccion = new Transaccion('0', '0', '0');
+  user_colecciones_log: Array<Coleccion> = new Array<Coleccion>();
+  user_compradores_log: Array<Comprador> = new Array<Comprador>();
   
   async recibirUserLog(usuario: Usuario) {
     this.user_log = usuario;

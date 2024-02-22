@@ -4,8 +4,7 @@ import { DataDashboardComponent } from './principal/data-dashboard/data-dashboar
 import { PrincipalComponent } from './principal/principal.component';
 
 const routes: Routes = [
-  { path: '', component: PrincipalComponent },
-  { path: 'datos', component: DataDashboardComponent }
+  { path: '', component: PrincipalComponent }
 ];
 
 @NgModule({

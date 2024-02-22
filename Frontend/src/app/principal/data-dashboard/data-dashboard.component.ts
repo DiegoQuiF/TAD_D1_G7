@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConnBackendService } from '../../services/conn-backend.service';
 import Highcharts from 'highcharts';
 
@@ -9,7 +9,7 @@ import Highcharts from 'highcharts';
 })
 export class DataDashboardComponent {
 
-  //Los titulos de lso graficos de la izquierda
+  //Los titulos de los graficos de la izquierda
   menuItems = [
     { label: 'Materiales subidos \n por año de publicación', method: 'crearGraficoMatSubidosPorAnioPublic' },
     { label: 'Facturas por fecha', method: 'crearGraficoFacturasPorFecha' },
@@ -49,7 +49,6 @@ export class DataDashboardComponent {
       const datosParseados = JSON.parse(data.materialesPorAnio);
 
       //Transformamos los datos a una estructura adecueda para el grafico
-
       // Eje Y
       const datosGrafico = datosParseados.map((item: { anio: number; cantidad_materiales: number }) => ({
         name: item.anio.toString(),
@@ -58,7 +57,6 @@ export class DataDashboardComponent {
 
       // Eje X 
       const years = datosParseados.map((item: { anio: number }) => item.anio.toString());
-
       //Creación del grafico y colocación de los datos 
       const graficoMatSubPorFecha: Highcharts.Options = {
         title: {
@@ -83,7 +81,6 @@ export class DataDashboardComponent {
 
       //Se actualiza el grafico actual por el creado 
       this.graficoActual = graficoMatSubPorFecha;
-
       console.log(datosGrafico);
     } catch (error) {
       console.error(error);

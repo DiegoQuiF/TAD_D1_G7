@@ -58,11 +58,11 @@ export class LoginRegisterComponent {
   // INICIO DE SESIÓN (CREDENCIALES POR DEFECTO)
   user_correo = 'pedrito@gmail.com';
   user_contra = 'pedrito123';
-  user: undefined | Usuario;
-  user_tarjetas: undefined | Array<Tarjeta>;
-  user_transacciones: undefined | Transaccion;
-  user_colecciones: undefined | Array<Coleccion>;
-  user_compradores: undefined | Array<Comprador>;
+  user: Usuario = new Usuario('', '', '', '', '', '', '', '');
+  user_tarjetas: Array<Tarjeta> = new Array<Tarjeta>();
+  user_transacciones: Transaccion = new Transaccion('0', '0', '0');
+  user_colecciones: Array<Coleccion> = new Array<Coleccion>();
+  user_compradores: Array<Comprador> = new Array<Comprador>();
 
   async login( correo: string, contra: string ) {
     this.cargando = true;
@@ -81,7 +81,7 @@ export class LoginRegisterComponent {
     }
     else {
       this.user = await this.getUsuario(correo, contra);
-      if (this.user !== undefined) {
+      if (this.user.id_user !== '') {
         this.user_tarjetas = await this.getTarjetas(this.user.id_user);
         this.user_colecciones = await this.getColecciones(this.user.id_user);
         this.user_transacciones = await this.getTransacciones(this.user.id_user);
@@ -108,11 +108,11 @@ export class LoginRegisterComponent {
         return usuarios[0];
       }
       else {
-        return undefined;
+        return new Usuario('', '', '', '', '', '', '', '');
       }
     } catch (error) {
       console.error(error);
-      return undefined;
+      return new Usuario('', '', '', '', '', '', '', '');
     }
   }
   async getTarjetas( id:string ) {
