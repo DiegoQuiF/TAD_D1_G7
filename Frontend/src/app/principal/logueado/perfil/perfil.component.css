@@ -421,3 +421,15 @@ li {
 	color: #F9F9F9;
 	cursor: pointer;
 }
+
+.recargar-general button{
+	height: 38px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	padding: 0px 25px 0px 25px;
+	border: none;
+	background: #3C91E6;
+	border-radius: 36px 36px 36px 36px;
+	color: #F9F9F9;
+	cursor: pointer;
+}

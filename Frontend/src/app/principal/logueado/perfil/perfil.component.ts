@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Usuario } from '../../../models/usuario';
 import { ConnBackendService } from '../../../services/conn-backend.service';
 import { Tarjeta } from '../../../models/tarjeta';
@@ -56,7 +56,7 @@ export class PerfilComponent {
 
 
   // ACTUALIZACIÓN DE DATOS DEL USUARIO
-  refreshUsuario() {
+  async refreshUsuario() {
     this.nombre_user = this.user_input.nom_user;
     this.aPaterno_user = this.user_input.a_pat_user;
     this.aMaterno_user = this.user_input.a_mat_user;
@@ -78,11 +78,13 @@ export class PerfilComponent {
   async updateUsuario() {
     var usuario = new Usuario(this.user_input.id_user, this.nombre_user, this.aPaterno_user, this.aMaterno_user, this.correo_user, this.contra_user, this.celular_user, this.direccion_user);
     var result = await this.guardarUsuario(usuario);
-    if (result == 'COMPLETE') {
+    if (result === 'COMPLETE') {
       this.user_input = usuario;
       this.alerta('Usuario actualizado correctamente...');
+      this.cargando = false;
     }
     else {
+      this.cargando = false;
       this.alerta(result)
     }
   }
@@ -118,11 +120,14 @@ export class PerfilComponent {
         this.monto_recarga = 0.0;
         this.alerta('Se ha recargado la tarjeta solicitada...');
         await this.actualizarTarjetas();
+        this.cargando = false;
       }
       else{
+        this.cargando = false;
         this.alerta('Hubo un error al recargar la tarjeta...');
       }
     } catch (error) {
+      this.cargando = false;
       this.alerta('Error interno del sistema...')
     } finally {
       this.cargando = false;
@@ -182,8 +187,8 @@ export class PerfilComponent {
         return false;
       }
     } catch (error) {
-      console.error(error);
       this.cargando = false;
+      console.error(error);
       return false;
     }
   }
@@ -242,6 +247,88 @@ export class PerfilComponent {
   }
 
 
-  // ACTUALIZACIÓN DE MIS PUBLICACIONES
-  
+  // ACTUALIZACIONES
+  async actualizarTarjetasBD() {
+    this.cargando = true;
+    try {
+      await this.actualizarTarjetas();
+    } catch (error) {
+      this.alerta('Error interno del sistema...')
+    } finally {
+      this.cargando = false;
+    }
+  }
+  async actualizarTransaccionesBD() {
+    this.cargando = true;
+    try {
+      await this.actualizarTransacciones();
+    } catch (error) {
+      this.alerta('Error interno del sistema...')
+    } finally {
+      this.cargando = false;
+    }
+  }
+  async actualizarTransacciones(){
+    try {
+      this.cargando = true;
+      const data = await this.connBackend.getTransaccion(this.user_input.id_user).toPromise();
+      console.log(data);
+      var transacciones: Array<Transaccion> = data.transaccion;
+      if (transacciones && (transacciones.length > 0)) {
+        this.user_transacciones_input = transacciones[0];
+        return true;
+      }
+      else {
+        this.user_transacciones_input = new Transaccion('0', '0', '0');
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      this.user_transacciones_input = new Transaccion('0', '0', '0');
+      return false;
+    }
+  }
+  async actualizarCompradoresBD() {
+    this.cargando = true;
+    try {
+      await this.actualizarCompradores();
+    } catch (error) {
+      this.alerta('Error interno del sistema...')
+    } finally {
+      this.cargando = false;
+    }
+  }
+  async actualizarCompradores(){
+    try {
+      this.cargando = true;
+      const data = await this.connBackend.getCompradores(this.user_input.id_user).toPromise();
+      console.log(data);
+      var compradores: Array<Comprador> = data.compradores;
+      if (compradores && (compradores.length > 0)) {
+        this.user_compradores_input = compradores;
+        return true;
+      }
+      else {
+        this.user_compradores_input = new Array<Comprador>();
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      this.user_compradores_input = new Array<Comprador>();
+      return false;
+    }
+  }
+  async actualizarTodo(){
+    try {
+      this.cargando = true;
+      await this.refreshUsuario();
+      await this.actualizarTarjetasBD();
+      await this.actualizarCompradoresBD();
+      await this.actualizarTransaccionesBD();
+      this.cargando = false;
+    } catch (error) {
+      console.error(error);
+      this.cargando = false;
+    }
+  }
 }

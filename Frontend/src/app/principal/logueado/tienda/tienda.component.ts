@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MaterialCompleto } from '../../../models/material-completo';
 import { Usuario } from '../../../models/usuario';
 import { ConnBackendService } from '../../../services/conn-backend.service';
@@ -14,11 +14,13 @@ export class TiendaComponent {
   @Input() materiales_digitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   @Input() carrito_array: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   @Input() user_input!: Usuario;
+  @Output() mensajeActualizar = new EventEmitter<string>();
 
   constructor(private connBackend: ConnBackendService) {}
 
   async comprarMaterial(idMat:string){
     if(await this.postFactura(idMat, this.user_input.id_user)){
+      this.mensajeActualizar.emit('actualizarPerfil');
       alert("Material Comprado");
     }
     else{

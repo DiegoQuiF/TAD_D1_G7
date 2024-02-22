@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Usuario } from '../../models/usuario';
 import { ConnBackendService } from '../../services/conn-backend.service';
 import { Coleccion } from '../../models/coleccion';
@@ -7,6 +7,7 @@ import { Tarjeta } from '../../models/tarjeta';
 import { Material } from '../../models/material';
 import { Transaccion } from '../../models/transaccion';
 import { Comprador } from '../../models/comprador';
+import { PerfilComponent } from './perfil/perfil.component';
 
 @Component({
   selector: 'app-logueado',
@@ -123,6 +124,22 @@ export class LogueadoComponent {
   async continuar() {
     this.mensajeAlerta = '';
     this.mostrarAlerta = false;
+  }
+
+
+  // ACTUALIZAR PERFIL
+  recibirActualizar(mensaje:string){
+    if(mensaje === 'actualizarPerfil'){
+      this.actualizarTodoPerfil();
+    }
+  }
+  @ViewChild('perfilRef', { static: false }) perfil: PerfilComponent | undefined;
+  ngAfterViewInit() {
+  }
+  actualizarTodoPerfil() {
+    if (this.perfil) {
+      this.perfil.actualizarTodo();
+    }
   }
 
 

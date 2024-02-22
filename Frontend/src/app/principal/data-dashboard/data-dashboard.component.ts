@@ -60,7 +60,7 @@ export class DataDashboardComponent {
       //Creación del grafico y colocación de los datos 
       const graficoMatSubPorFecha: Highcharts.Options = {
         title: {
-          text: "Cantidad de materiales publicados por año"
+          text: "Cantidad de materiales publicados originalmente en un año"
         },
         xAxis: {
           categories: years, // Configurar las categorías del eje X con los años

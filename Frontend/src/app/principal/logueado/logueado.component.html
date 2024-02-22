@@ -79,7 +79,7 @@
     <section id="content">
         <div class="superior"></div>
 		<div class="contenido">
-			<app-perfil id="hojaPerfil" class="hojas"
+			<app-perfil id="hojaPerfil" class="hojas" #perfilRef
                 [user_input]="user_input"
                 [user_transacciones_input]="user_transacciones_input"
                 [user_tarjetas_input]="user_tarjetas_input"
@@ -90,7 +90,14 @@
                 [user_input]="user_input"    
                 [user_colecciones_input]="user_colecciones_input"
             ></app-colecciones>
-			<app-tienda id="hojaTienda" class="cerrado hojas" [materiales_array]="materiales_array" [materiales_fisicos]="materialesFisicos" [materiales_digitales]="materialesDigitales" [user_input]="user_input" [carrito_array]="carrito"></app-tienda>
+			<app-tienda id="hojaTienda" class="cerrado hojas"
+                [materiales_array]="materiales_array"
+                [materiales_fisicos]="materialesFisicos"
+                [materiales_digitales]="materialesDigitales"
+                [user_input]="user_input"
+                [carrito_array]="carrito"
+                (mensajeActualizar)="recibirActualizar($event)"
+            ></app-tienda>
 			<app-mensajes id="hojaMensajes" class="cerrado hojas"></app-mensajes>
 
             <!-- CARGANDO Y ALERTA -->
