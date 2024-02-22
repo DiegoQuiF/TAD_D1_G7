@@ -10,8 +10,10 @@ export class Material {
     stockFisico: string;
     dispElec: string;
     precioElec: string;
+    idColeccion: string;
 
-    constructor(id:string, tit:string, aut:string, pub:string, idi:string, pro:string, fis:string, prf:string, sto:string, elec:string, pre:string){
+    constructor(id:string, tit:string, aut:string, pub:string, idi:string, pro:string, fis:string,
+        prf:string, sto:string, elec:string, pre:string, col:string){
         this.idMaterial = id;
         this.titulo = tit;
         this.autor = aut;
@@ -23,5 +25,6 @@ export class Material {
         this.stockFisico = sto;
         this.dispElec = elec;
         this.precioElec = pre;
+        this.idColeccion = col;
     }
 }

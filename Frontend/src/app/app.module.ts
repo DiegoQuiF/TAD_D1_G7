@@ -16,8 +16,6 @@ import { ComunidadComponent } from './principal/logueado/comunidad/comunidad.com
 import { ColeccionesComponent } from './principal/logueado/colecciones/colecciones.component';
 import { TiendaComponent } from './principal/logueado/tienda/tienda.component';
 import { MensajesComponent } from './principal/logueado/mensajes/mensajes.component';
-import { CrearColeccionComponent } from './principal/logueado/colecciones/crear-coleccion/crear-coleccion.component';
-import { EditarEliminarColeccionComponent } from './principal/logueado/colecciones/editar-eliminar-coleccion/editar-eliminar-coleccion.component';
 import { DataDashboardComponent } from './principal/data-dashboard/data-dashboard.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 
@@ -32,8 +30,6 @@ import { HighchartsChartModule } from 'highcharts-angular';
       ColeccionesComponent,
       TiendaComponent,
       MensajesComponent,
-      CrearColeccionComponent,
-      EditarEliminarColeccionComponent,
       DataDashboardComponent
     ],
     imports: [

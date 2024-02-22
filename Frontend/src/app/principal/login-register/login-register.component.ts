@@ -6,6 +6,7 @@ import { Tarjeta } from '../../models/tarjeta';
 import { Coleccion } from '../../models/coleccion';
 import { Transaccion } from '../../models/transaccion';
 import { Comprador } from '../../models/comprador';
+import { Material } from '../../models/material';
 
 @Component({
   selector: 'app-login-register',
@@ -23,6 +24,7 @@ export class LoginRegisterComponent {
   @Output() user_transacciones_log = new EventEmitter<Transaccion>();
   @Output() user_compradores_log = new EventEmitter<Array<Comprador>>();
   @Output() user_colecciones_log = new EventEmitter<Array<Coleccion>>();
+  @Output() user_materiales_log = new EventEmitter<Array<Material>>();
   @Output() mensaje_log = new EventEmitter<string>();
 
   // CARGA DE LA PÁGINA
@@ -62,6 +64,7 @@ export class LoginRegisterComponent {
   user_tarjetas: Array<Tarjeta> = new Array<Tarjeta>();
   user_transacciones: Transaccion = new Transaccion('0', '0', '0');
   user_colecciones: Array<Coleccion> = new Array<Coleccion>();
+  user_materiales: Array<Material> = new Array<Material>();
   user_compradores: Array<Comprador> = new Array<Comprador>();
 
   async login( correo: string, contra: string ) {
@@ -84,6 +87,7 @@ export class LoginRegisterComponent {
       if (this.user.id_user !== '') {
         this.user_tarjetas = await this.getTarjetas(this.user.id_user);
         this.user_colecciones = await this.getColecciones(this.user.id_user);
+        this.user_materiales = await this.getMateriales(this.user.id_user);
         this.user_transacciones = await this.getTransacciones(this.user.id_user);
         this.user_compradores = await this.getCompradores(this.user.id_user);
         this.user_correo = '';
@@ -93,6 +97,7 @@ export class LoginRegisterComponent {
         this.user_transacciones_log.emit(this.user_transacciones);
         this.user_colecciones_log.emit(this.user_colecciones);
         this.user_compradores_log.emit(this.user_compradores);
+        this.user_materiales_log.emit(this.user_materiales);
         this.mensaje_log.emit('Logueado');
       } else {
         this.alerta('No se ha encontrado al usuario con las credenciales proporcionadas...');
@@ -155,6 +160,27 @@ export class LoginRegisterComponent {
     } catch (error) {
       console.error(error);
       return new Array<Coleccion>();
+    }
+  }
+  async getMateriales( id:string ) {
+    try {
+      const data = await this.connBackend.getMaterial(id).toPromise();
+      console.log(data);
+      var materiales: Array<Material> = data.material;
+      if ( data.success == true ) {
+        if ( materiales.length > 0 && materiales ) {
+          return materiales;
+        }
+        else {
+          return new Array<Material>();
+        }
+      }
+      else {
+        return new Array<Material>();
+      }
+    } catch (error) {
+      console.error(error);
+      return new Array<Material>();
     }
   }
   async getTransacciones( id:string ) {

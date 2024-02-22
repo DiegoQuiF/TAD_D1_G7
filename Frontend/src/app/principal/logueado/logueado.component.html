@@ -89,6 +89,8 @@
 			<app-colecciones id="hojaColecciones" class="cerrado hojas"
                 [user_input]="user_input"    
                 [user_colecciones_input]="user_colecciones_input"
+                [user_materiales_input]="user_materiales_input"
+                (mensajeActualizar)="recibirActualizar($event)"
             ></app-colecciones>
 			<app-tienda id="hojaTienda" class="cerrado hojas"
                 [materiales_array]="materiales_array"

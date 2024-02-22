@@ -14,9 +14,10 @@ class Material(db.db.Model):
     stockFisico     = db.db.Column(db.db.Integer)
     dispElec        = db.db.Column(db.db.String(10))
     precioElec      = db.db.Column(db.db.Float)
+    idColeccion     = db.db.Column(db.db.String(80))
 
 
-    def __init__(self, tit, aut, pub, idi, pro, fis, prf, sto, ele, pre):
+    def __init__(self, tit, aut, pub, idi, pro, fis, prf, sto, ele, pre, col):
         self.titulo         = tit
         self.autor          = aut
         self.fecha          = pub
@@ -27,18 +28,20 @@ class Material(db.db.Model):
         self.stockFisico    = sto
         self.dispElec       = ele
         self.precioElec     = pre
+        self.idColeccion    = col
     
     def to_json(self):
         return {
-            'idMaterial'  : self.idMaterial,
-            'titulo'        : self.titulo,
-            'autor'         : self.autor,
-            'fecha'           : self.fecha,
-            'idioma'        : self.idioma,
-            'procedencia'   : self.procedencia,
+            'idMaterial'        : self.idMaterial,
+            'titulo'            : self.titulo,
+            'autor'             : self.autor,
+            'fecha'             : self.fecha,
+            'idioma'            : self.idioma,
+            'procedencia'       : self.procedencia,
             'dispFisico'        : self.dispFisico,
-            'precioFisico'   : self.precioFisico,
+            'precioFisico'      : self.precioFisico,
             'stockFisico'       : self.stockFisico,
-            'dispElec'        : self.dispElec,
-            'precioElec'       : self.precioElec,
+            'dispElec'          : self.dispElec,
+            'precioElec'        : self.precioElec,
+            'idColeccion'       : self.idColeccion
         }

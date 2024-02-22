@@ -5,6 +5,7 @@
         (user_transacciones_log)="recibirUserTransaccionesLog($event)"
         (user_compradores_log)="recibirUserCompradoresLog($event)"
         (user_colecciones_log)="recibirUserColeccionesLog($event)"
+        (user_materiales_log)="recibirUserMaterialesLog($event)"
         (mensaje_log)="recibirMensajes($event)"
     ></app-login-register>
 
@@ -14,6 +15,7 @@
         [user_transacciones_input]="user_transacciones_log"
         [user_colecciones_input]="user_colecciones_log"
         [user_compradores_input]="user_compradores_log"
+        [user_materiales_input]="user_materiales_log"
         (mensajeSalir)="recibirMensajes($event)"
     ></app-logueado>
     

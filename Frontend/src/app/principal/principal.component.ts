@@ -6,6 +6,7 @@ import { Tarjeta } from '../models/tarjeta';
 import { Coleccion } from '../models/coleccion';
 import { Transaccion } from '../models/transaccion';
 import { Comprador } from '../models/comprador';
+import { Material } from '../models/material';
 
 @Component({
   selector: 'app-principal',
@@ -20,6 +21,7 @@ export class PrincipalComponent {
   user_transacciones_log: Transaccion = new Transaccion('0', '0', '0');
   user_colecciones_log: Array<Coleccion> = new Array<Coleccion>();
   user_compradores_log: Array<Comprador> = new Array<Comprador>();
+  user_materiales_log: Array<Material> = new Array<Material>();
   
   async recibirUserLog(usuario: Usuario) {
     this.user_log = usuario;
@@ -35,6 +37,9 @@ export class PrincipalComponent {
   }
   async recibirUserColeccionesLog(colecciones: Array<Coleccion>) {
     this.user_colecciones_log = colecciones;
+  }
+  async recibirUserMaterialesLog(materiales: Array<Material>) {
+    this.user_materiales_log = materiales;
   }
 
   async recibirMensajes(mensaje: string) {

@@ -9,16 +9,19 @@ def getMaterial(id):
         conn = db.connection()
         materiales = []
         inst =  '''
-                SELECT idMaterial, titulo, autor, TO_CHAR(fecha, 'DD-MM-YYYY'), idioma,
-                        procedencia, dispFisico, precioFisico, stockFisico, dispElec, precioElec
-                    FROM Material
-                    WHERE idMaterial in (SELECT idMaterial FROM coleccionMaterial WHERE idColeccion = %(id)s)
+                SELECT MA.idMaterial, MA.titulo, MA.autor, TO_CHAR(MA.fecha, 'DD-MM-YYYY'), MA.idioma,
+                        MA.procedencia, MA.dispFisico, MA.precioFisico, MA.stockFisico, MA.dispElec, MA.precioElec, CM.idColeccion
+                    FROM Material MA, ColeccionMaterial CM, UsuarioColeccion UC
+                    WHERE MA.idMaterial = CM.idMaterial
+                        AND	CM.idColeccion = UC.idColeccion
+                        AND UC.idUsuario = %(id)s
+	                ORDER BY MA.idMaterial;
                 '''
         with conn.cursor() as cursor:
-            print('      [Validación] Ejecutando consulta...')
+            print('      [Solicitud] Ejecutando consulta...')
             cursor.execute(inst, {'id': id})
             for row in cursor.fetchall():
-                material = Material(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10])
+                material = Material(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11])
                 material.idMaterial = row[0]
                 materiales.append(material.to_json())
             conn.commit()
@@ -26,5 +29,5 @@ def getMaterial(id):
         
         return materiales
     except Exception as e:
-        print('      [Validación] Error de lógica interna:', e)
+        print('      [Solicitud] Error de lógica interna:', e)
         return None

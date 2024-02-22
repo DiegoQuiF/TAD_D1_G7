@@ -378,7 +378,7 @@ def materiales():
     try:
         print('   [Backend] Recepcionando archivo JSON...')
         data = request.get_json()
-        id = data['id_coleccion']
+        id = data['id_user']
         print('   [Backend] Ejecutando solicitud...')
         material = getMaterial(id)
         if len(material)>0:

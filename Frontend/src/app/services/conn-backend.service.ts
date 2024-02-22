@@ -185,9 +185,9 @@ export class ConnBackendService {
     return this.http.get(`${this.BASE_URL}/getUsuarios`);
   }
 
-  getLibros(id:string):Observable<any>{
+  getMaterial(id:string):Observable<any>{
     const data = {
-      id_coleccion: id
+      id_user: id
     }
     return this.http.post(`${this.BASE_URL}/getMaterial`, data);
   }
