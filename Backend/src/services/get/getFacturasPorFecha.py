@@ -22,14 +22,14 @@ def getFacturasPorFecha():
             # Contar el número de facturas por fecha de compra
             conteo_facturas = defaultdict(int)
             for fecha in fechas:
-                fecha_formateada = fecha[0].strftime('%d/%m/%Y')  # Convertir la fecha a formato DD/MM/YYYY
+                fecha_formateada = fecha[0].strftime('%d-%m-%Y')  # Convertir la fecha a formato DD-MM-YYYY
                 conteo_facturas[fecha_formateada] += 1
 
             # Crear la lista con las fechas y la cantidad de facturas
-            lista = [{"fechacompra": fecha, "cantidad_facturas": cantidad} for fecha, cantidad in conteo_facturas.items()]
+            lista = [{"Fecha": str(fecha), "Cantidad": cantidad} for fecha, cantidad in conteo_facturas.items()]
 
             # Convertir la lista a JSON
-            facturas_por_fecha_json = json.dumps(lista)
+            facturas_por_fecha_json = lista
 
         conn.close()
         return facturas_por_fecha_json

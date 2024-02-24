@@ -1,80 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <title>Admin panel</title>
-</head>
-
-<body>
-    <div class="container">
-        <div class="topbar">
-            <div class="logo">
-                <h2>Informe de datos</h2>
-            </div>
-
-            <i class="fas fa-bell"></i>
-            <div class="user">
-                <img src="../../../assets/images/admin-icon.png" alt="">
-            </div>
-        </div>
+<div class="contenido">
+    <div class="navbar">
+        <h2>Informe de datos</h2>
+    </div>
+    <div class="columnas">
         <div class="sidebar">
-            <ul>
-                <li *ngFor="let item of menuItems; let i = index" (click)="cambiarGrafico(i, $event)">
-                    <a href="#">
-                        <i class="fas fa-chart-bar"></i>
-                        <div>{{ item.label }}</div>
-                    </a>
-                </li>
-            </ul>
+            <div class="botones">
+                <ul>
+                    <li class="seleccion activo" (click)="mostrarOPC('F1', 'O1')" id="O1">
+                        <div class="icono">
+                            <!--ICONO-->
+                        </div>
+                        <div class="seleccion">
+                            <p>Figura 1</p>
+                        </div>
+                    </li>
+                    <li class="seleccion" (click)="mostrarOPC('F2', 'O2')" id="O2">
+                        <div class="icono">
+                            <!--ICONO-->
+                        </div>
+                        <div class="seleccion">
+                            <p>Figura 2</p>
+                        </div>
+                    </li>
+                    <li class="seleccion" (click)="mostrarOPC('F3', 'O3')" id="O3">
+                        <div class="icono">
+                            <!--ICONO-->
+                        </div>
+                        <div class="seleccion">
+                            <p>Figura 3</p>
+                        </div>
+                    </li>
+                    <li class="seleccion" (click)="mostrarOPC('F4', 'O4')" id="O4">
+                        <div class="icono">
+                            <!--ICONO-->
+                        </div>
+                        <div class="seleccion">
+                            <p>Figura 4</p>
+                        </div>
+                    </li>
+                    <li class="seleccion" (click)="mostrarOPC('F5', 'O5')" id="O5">
+                        <div class="icono">
+                            <!--ICONO-->
+                        </div>
+                        <div class="seleccion">
+                            <p>Figura 5</p>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="seleccion" (click)="mostrarOPC('FF', 'OF')" id="OF">
+                        <div class="icono">
+                            <!--ICONO DEL DASHBOARD-->
+                        </div>
+                        <div class="seleccion">
+                            <p>Dashboard</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="salida">
+                <div class="boton">
+                    <button>Salir</button>
+                </div>
+            </div>
         </div>
-        <div class="main">
-            <div class="cards">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">1217</div>
-                        <div class="card-name">Usuarios</div>
+        <div class="graficos">
+            <div class="figura" id="F1">
+                <app-figura1></app-figura1>
+            </div>
+            <div class="figura cerrado" id="F2">
+                <app-figura2></app-figura2>
+            </div>
+            <div class="figura cerrado" id="F3">
+                <app-figura3></app-figura3>
+            </div>
+            <div class="figura cerrado" id="F4">
+                <app-figura4></app-figura4>
+            </div>
+            <div class="figura cerrado" id="F5">
+                <app-figura5></app-figura5>
+            </div>
+            <div class="figura cerrado" id="FF">
+                <div class="dashboard">
+                    <div class="dash" style="border: 1px solid #30245f49; border-radius: 15px 15px 0px 0px;">
+                        <h3>DATOS GENERALES DE LA APLICACIÓN - Sistema Social Bibliográfico</h3>
                     </div>
-                    <div class="icon-box">
-                        <i class="fas fa-users"></i>
+                    <!--<div class="filtros" style="border: 1px solid #30245f49;">
+                        <p>FILTROS</p>
+                    </div>-->
+                    <div class="figura-top" style="border: 1px solid #30245f49;">
+                        <app-figura1></app-figura1>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">42</div>
-                        <div class="card-name">Materiales</div>
+                    <div class="columnas">
+                        <div class="col-50" style="border: 1px solid #30245f49;">
+                            <app-figura2></app-figura2>
+                        </div>
+                        <div class="col-50" style="border: 1px solid #30245f49;">
+                            <app-figura3></app-figura3>
+                        </div>
                     </div>
-                    <div class="icon-box">
-                        <i class="fas fa-book"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">68</div>
-                        <div class="card-name">Numero de ventas</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">$4500</div>
-                        <div class="card-name">Movimientos</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-dollar-sign"></i>
+                    <div class="columnas">
+                        <div class="col-50" style="border: 1px solid #30245f49; border-radius: 0px 0px 0px 15px;">
+                            <app-figura4></app-figura4>
+                        </div>
+                        <div class="col-50" style="border: 1px solid #30245f49; border-radius: 0px 0px 15px 0px;">
+                            <app-figura5></app-figura5>
+                        </div>
                     </div>
                 </div>
             </div>
-            <highcharts-chart [Highcharts]="matPorFecha" [options]="graficoActual"
-                style="width: 100%; height: 400px; display: block;"></highcharts-chart>
         </div>
     </div>
-</body>
-
-</html>
+</div>

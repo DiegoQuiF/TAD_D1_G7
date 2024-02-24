@@ -5,6 +5,8 @@ from src.services.get.getMaterialesPorUsuario import getMaterialesPorUsuario
 from src.services.get.getUsuarios import getUsuarios
 from src.services.get.getMaterialCompleto import getMaterialesCompletos
 from src.services.get.getCarritoCompleto import getCarritoCompleto
+from src.services.get.getVentasTotales import getVentasTotales
+from src.services.get.getMetricas import getMetricas
 from src.services.post.getUsuario import getUsuario
 from src.services.post.getTarjetas import getTarjetas
 from src.services.post.getColeccion import getColeccion
@@ -477,6 +479,11 @@ def registrarFactura():
         print('   [Backend] Registro fallido...\n')
         return jsonify({'message':'ERROR', 'success':False})
 
+
+
+
+
+# ETL
 @main.route('/getMaterialesPorAnio')
 def obtenerMaterialesPorAnio():
     try:
@@ -487,7 +494,7 @@ def obtenerMaterialesPorAnio():
             return jsonify({'message':"NOT FOUND", 'success':True})
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
-
+    
 @main.route('/getFacturasPorFecha')
 def obtenerFacturasPorFecha():
     try:
@@ -498,8 +505,7 @@ def obtenerFacturasPorFecha():
             return jsonify({'message':"NOT FOUND", 'success':True})
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
-
-
+    
 @main.route('/getMaterialesPorUsuario')
 def obtenerMaterialesPorUsuario():
     try:
@@ -510,6 +516,30 @@ def obtenerMaterialesPorUsuario():
             return jsonify({'message':"NOT FOUND", 'success':True})
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
+
+@main.route('/getVentasTotales')
+def obtenerVentasTotales():
+    try:
+        ventasTotales = getVentasTotales()
+        if len(ventasTotales)>0 :
+            return jsonify({'ventasTotales':ventasTotales, 'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
+    
+@main.route('/getMetricas')
+def obtenerMetricas():
+    try:
+        metricas = getMetricas()
+        if len(metricas)>0 :
+            return jsonify({'metricas':metricas, 'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
+
+
 
 
 @main.route('/getUsuarios')

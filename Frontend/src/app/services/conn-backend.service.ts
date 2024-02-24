@@ -10,8 +10,8 @@ import { Material } from '../models/material';
 })
 export class ConnBackendService {
 
-  private BASE_URL = 'https://paginatad01.onrender.com';
-  //private BASE_URL = 'http://127.0.0.1:5000'
+  //private BASE_URL = 'https://paginatad01.onrender.com';
+  private BASE_URL = 'http://127.0.0.1:5000'
 
   constructor(private http:HttpClient) { }
 
@@ -207,6 +207,14 @@ export class ConnBackendService {
 
   getMaterialesPorAnio():Observable<any>{
     return this.http.get(`${this.BASE_URL}/getMaterialesPorAnio`);
+  }
+
+  getVentasTotales():Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getVentasTotales`);
+  }
+
+  getMetricas():Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getMetricas`);
   }
 
   getFacturasPorFecha():Observable<any>{

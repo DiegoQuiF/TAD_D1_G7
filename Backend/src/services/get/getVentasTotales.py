@@ -5,7 +5,7 @@ from ...database.db import DatabaseManager
 
 db = DatabaseManager().getInstancia()
 
-def getMaterialesPorAnio():
+def getVentasTotales():
     try:
         conn = db.connection()
         cursor = conn.cursor()
@@ -14,31 +14,31 @@ def getMaterialesPorAnio():
 
         # Consulta SQL para obtener el año de publicación y contar los materiales por año
         inst = '''
-                SELECT EXTRACT(YEAR FROM fecha) AS year FROM Material
-                ORDER BY year; -- Ordenar por año ascendente
+                SELECT UC.idUsuario FROM usuarioColeccion UC, coleccionMaterial CM, materialFactura MF
+                    WHERE UC.idColeccion = CM.idColeccion
+                        AND CM.idMaterial = MF.idMaterial
+                        ORDER BY UC.idUsuario;
                '''
         with conn.cursor() as cursor:
             cursor.execute(inst)
-            anios = cursor.fetchall()
+            ids = cursor.fetchall()
             
             # TRANSFORMACIÓN CONTINUA
             # Contar el número de materiales subidos por año
-            conteo_materiales = defaultdict(int)
-            for anio in anios:
-                anio_formateado = int(anio[0])  # Convertir el año a entero
-                conteo_materiales[anio_formateado] += 1
+            conteo_ventas = defaultdict(int)
+            for id in ids:
+                conteo_ventas[id] += 1
 
             # Crear la lista con los años y la cantidad de materiales
-            lista = [{"Anio": str(anio), "Total": cantidad} for anio, cantidad in conteo_materiales.items()]
+            lista = [{"Id": id[0], "Ventas": cantidad} for id, cantidad in conteo_ventas.items()]
 
             # Convertir la lista a JSON
-            materiales_por_fecha_json = lista
+            ventas_por_usuario = lista
         
         # CARGA
         # Agregar carga en una nueva BD
 
         conn.close()
-        return materiales_por_fecha_json
+        return ventas_por_usuario
     except Exception as e:
         print("(SISTEMA) Error: " + str(e))
-

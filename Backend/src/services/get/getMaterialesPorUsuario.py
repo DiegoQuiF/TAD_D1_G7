@@ -11,20 +11,20 @@ def getMaterialesPorUsuario():
 
         # Consulta SQL para contar los materiales por usuario
         inst = '''
-                SELECT uc.idusuario, COUNT(cm.idmaterial) AS cantidad_materiales
-                FROM usuariocoleccion uc
-                JOIN coleccionmaterial cm ON uc.idcoleccion = cm.idcoleccion
-                GROUP BY uc.idusuario
-                ORDER BY uc.idusuario; -- Ordenar por código del usuario ascendente
+                SELECT CONCAT(US.nombre, ' ', US.aPaterno, ' (', US.idUsuario, ')'), COUNT(CM.idmaterial) AS cantidad_materiales
+                    FROM usuariocoleccion UC, usuario US, coleccionMaterial CM
+                    WHERE US.idUsuario = UC.idUsuario
+                        AND UC.idColeccion = CM.idColeccion
+                    GROUP BY US.idusuario; -- Ordenar por código del usuario ascendente
                '''
         cursor.execute(inst)
         resultados = cursor.fetchall()
 
         # Convertir los resultados a una lista de diccionarios
-        lista = [{"idusuario": row[0], "cantidad_materiales": row[1]} for row in resultados]
+        lista = [{"name": str(row[0]), "y": row[1]} for row in resultados]
 
         # Convertir la lista a JSON
-        materiales_por_usuario_json = json.dumps(lista)
+        materiales_por_usuario_json = lista
 
         conn.close()
         return materiales_por_usuario_json
