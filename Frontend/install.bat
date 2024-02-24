@@ -1,2 +1,2 @@
 @echo off
-npm install && cls && ng serve
+npm install && cls && ng serve 
