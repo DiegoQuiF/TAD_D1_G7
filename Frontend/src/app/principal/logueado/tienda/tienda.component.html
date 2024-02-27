@@ -5,6 +5,66 @@
     <div class="subtitulo">
         <h3>> Material bibliográfico (físico)</h3>
     </div>
+    <div class="filtros">
+        <div class="filtro">
+            <p>Precio</p>
+            <div class="seleccionable">
+                <select name="precio" id="precioSel" [(ngModel)]="filtroPrecio" required>
+                    <option value="1">0-10</option>
+                    <option value="2">10-20</option>
+                    <option value="3">20-40</option>
+                    <option value="4">40-60</option>
+                    <option value="5">60-100</option>
+                    <option value="6">100+</option>
+                </select>
+            </div>
+        </div>
+        <div class="filtro">
+            <p>Idioma</p>
+            <div class="seleccionable">
+                <select name="idioma" id="idiomaSel" [(ngModel)]="filtroIdioma" required>
+                    <option value="Espanol">Español</option>
+                    <option value="Ingles">Ingles</option>
+                    <option value="Portugues">Portugues</option>
+                </select>
+            </div>
+        </div>
+        <div class="filtro">
+            <p>Categoria</p>
+            <div class="seleccionable">
+                <select name="categoria" id="categoriaSel" [(ngModel)]="filtro3" required>
+                    <option *ngFor="let categoria of filtro_categorias" value={{categoria.nombreC}}>{{categoria.nombreC}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="filtro">
+            <p>Año de pub.</p>
+            <div class="seleccionable">
+                <select name="anio" id="anioSel" [(ngModel)]="filtroAnio" required>
+                    <option value="1">1900-</option>
+                    <option value="2">1900-1925</option>
+                    <option value="3">1925-1950</option>
+                    <option value="4">1950-1975</option>
+                    <option value="5">1975-2000</option>
+                    <option value="6">2000-2025</option>
+                </select>
+            </div>
+        </div>
+        <div class="filtro">
+            <p>Colección</p>
+            <div class="seleccionable">
+                <select name="coleccion" id="coleccionSel" [(ngModel)]="filtroCol" required>
+                    <option *ngFor="let coleccion of filtro_coleccion" value={{coleccion.id_coleccion}}>{{coleccion.nombre.substring(0,14)+'...'}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="boton">
+            <button (click)="Filtrar()">Filtrar</button>
+        </div>
+        <div class="boton" style="margin-left: 15px;">
+            <button (click)="RefreshFiltrar()">Refresh</button>
+        </div>
+    </div>
     <li>
         <div class="libroFisico">
             <li class="encabezado">
@@ -35,7 +95,7 @@
             </li>
 
             <div class="contenido-tabla">
-                <li class="contenido" *ngFor="let materiales of materiales_fisicos" style="margin: 0px; padding: 0px; cursor: pointer;" (click)="abrirOpciones(materiales.idMat)">
+                <li class="contenido" *ngFor="let materiales of tienda_fisica_filtrada" style="margin: 0px; padding: 0px; cursor: pointer;" (click)="abrirOpciones(materiales.idMat)">
                     <div class="colecciones" style="grid-gap: 24px;">
                         <div class="col-10">
                             <p>{{ materiales.idMat }}</p>

@@ -480,3 +480,38 @@ form button {
 .tags .tag .x-tag:hover {
     color: #ff0000;
 }
+
+
+
+
+
+.filtros {
+	display:flex;
+	padding: 10px;
+	border: none;
+	background-color: #a3d1ff;
+	border-radius: 18px;
+	align-items: center;
+	justify-content: left;
+	margin-bottom: 10px;
+}
+
+.filtros .filtro {
+	display: flex;
+	justify-content: center;
+	margin-right: 20px;
+	padding: 10px 15px 10px 15px;
+	border: 1px solid #fff;
+	border-radius: 14px;
+	background-color: #e5f1fd;
+}
+
+.filtros .filtro p {
+	margin-right: 7px;
+}
+
+.filtros .filtro .seleccionable select {
+	border: none;
+	padding: 5px;
+	border-radius: 17px;
+}

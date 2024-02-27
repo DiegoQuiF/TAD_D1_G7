@@ -3,6 +3,8 @@ import { MaterialCompleto } from '../../../models/material-completo';
 import { Usuario } from '../../../models/usuario';
 import { ConnBackendService } from '../../../services/conn-backend.service';
 import { MaterialCategoria } from '../../../models/material-categoria';
+import { Coleccion } from '../../../models/coleccion';
+import { Categoria } from '../../../models/categoria';
 
 @Component({
   selector: 'app-tienda',
@@ -15,6 +17,9 @@ export class TiendaComponent {
   @Input() materiales_digitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   @Input() carrito_array: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   @Input() categorias_tienda: Array<MaterialCategoria> = new Array<MaterialCategoria>();
+  @Input() tienda_fisica_filtrada: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  @Input() filtro_coleccion: Array<Coleccion> = new Array<Coleccion>();
+  @Input() filtro_categorias: Array<Categoria> = new Array<Categoria>();
   @Input() user_input!: Usuario;
   @Output() mensajeActualizar = new EventEmitter<string>();
 
@@ -146,4 +151,102 @@ export class TiendaComponent {
     this.mensajeAlerta = '';
     this.mostrarAlerta = false;
   }
+
+
+
+
+
+  filtroPrecio:string = '1';
+  filtroIdioma:string = 'Espanol';
+  filtro3:string = '';
+  filtroAnio:string = '6';
+  filtroCol:string = '';
+
+  Filtrar() {
+    if(this.filtroPrecio === '1'){
+      this.tienda_fisica_filtrada = this.materiales_fisicos.filter(
+        (material: MaterialCompleto) => ((parseFloat(material.precioFMat) >= 0.0) && (parseFloat(material.precioFMat) < 10.0))
+      );
+    }
+    if(this.filtroPrecio === '2'){
+      this.tienda_fisica_filtrada = this.materiales_fisicos.filter(
+        (material: MaterialCompleto) => ((parseFloat(material.precioFMat) >= 10.0) && (parseFloat(material.precioFMat) < 20.0))
+      );
+    }
+    if(this.filtroPrecio === '3'){
+      this.tienda_fisica_filtrada = this.materiales_fisicos.filter(
+        (material: MaterialCompleto) => ((parseFloat(material.precioFMat) >= 20.0) && (parseFloat(material.precioFMat) < 40.0))
+      );
+    }
+    if(this.filtroPrecio === '4'){
+      this.tienda_fisica_filtrada = this.materiales_fisicos.filter(
+        (material: MaterialCompleto) => ((parseFloat(material.precioFMat) >= 40.0) && (parseFloat(material.precioFMat) < 60.0))
+      );
+    }
+    if(this.filtroPrecio === '5'){
+      this.tienda_fisica_filtrada = this.materiales_fisicos.filter(
+        (material: MaterialCompleto) => ((parseFloat(material.precioFMat) >= 60.0) && (parseFloat(material.precioFMat) < 100.0))
+      );
+    }
+    if(this.filtroPrecio === '6'){
+      this.tienda_fisica_filtrada = this.materiales_fisicos.filter(
+        (material: MaterialCompleto) => (parseFloat(material.precioFMat) >= 100.0)
+      );
+    }
+    this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+      (material: MaterialCompleto) => material.idiomaMat === this.filtroIdioma
+    );
+    if(this.filtro3.toString() !== '') {
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(material =>
+        this.categorias_tienda.some(categoria =>
+          categoria.idM === material.idMat && categoria.nombreC === this.filtro3
+        )
+      );
+    }
+    if(this.filtroAnio === '1'){
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+        (material: MaterialCompleto) => ((parseInt(material.originalMat.substring(material.originalMat.length-4)) < 1900))
+      );
+    }
+    if(this.filtroAnio === '2'){
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+        (material: MaterialCompleto) => ((parseInt(material.originalMat.substring(material.originalMat.length-4)) >= 1900) && (parseInt(material.originalMat.substring(material.originalMat.length-4)) < 1925))
+      );
+    }
+    if(this.filtroAnio === '3'){
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+        (material: MaterialCompleto) => ((parseInt(material.originalMat.substring(material.originalMat.length-4)) >= 1925) && (parseInt(material.originalMat.substring(material.originalMat.length-4)) < 1950))
+      );
+    }
+    if(this.filtroAnio === '4'){
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+        (material: MaterialCompleto) => ((parseInt(material.originalMat.substring(material.originalMat.length-4)) >= 1950) && (parseInt(material.originalMat.substring(material.originalMat.length-4)) < 1975))
+      );
+    }
+    if(this.filtroAnio === '5'){
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+        (material: MaterialCompleto) => ((parseInt(material.originalMat.substring(material.originalMat.length-4)) >= 1975) && (parseInt(material.originalMat.substring(material.originalMat.length-4)) < 2000))
+      );
+    }
+    if(this.filtroAnio === '6'){
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+        (material: MaterialCompleto) => ((parseInt(material.originalMat.substring(material.originalMat.length-4)) >= 2000) && (parseInt(material.originalMat.substring(material.originalMat.length-4)) < 2025))
+      );
+    }
+    if(this.filtroCol.toString() !== '') {
+      this.tienda_fisica_filtrada = this.tienda_fisica_filtrada.filter(
+        (material: MaterialCompleto) => material.idCol.toString() === this.filtroCol.toString()
+      );
+    }
+  }
+
+  RefreshFiltrar () {
+    this.filtroPrecio = '1';
+    this.filtroIdioma = 'Espanol';
+    this.filtro3 = '';
+    this.filtroAnio = '6';
+    this.filtroCol = '';
+    this.tienda_fisica_filtrada = this.materiales_fisicos;
+  }
 }
+

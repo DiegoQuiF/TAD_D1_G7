@@ -72,6 +72,7 @@ export class LogueadoComponent {
       (material: MaterialCompleto) => material.electronicoMat === 'Si'
     );
     await this.obtenerCategoriasTienda();
+    await this.getColeccionesDisp();
     this.cargando = false;
     lista?.classList.toggle('active');
     hoja?.classList?.toggle('cerrado');
@@ -102,6 +103,17 @@ export class LogueadoComponent {
       }
       else {
         //Listo
+      }
+    }
+  }
+  async getColeccionesDisp() {
+    this.filtroColeccion = new Array<Coleccion>();
+    const idSet = new Set<string>();
+    for(var i=0; i<this.materialesFisicos.length; i++){
+      if(!idSet.has(this.materialesFisicos[i].idCol)){
+        var coleccion = new Coleccion(this.materialesFisicos[i].idCol, this.materialesFisicos[i].nombreCol.substring(0, 12)+'...', '', '', '');
+        idSet.add(coleccion.id_coleccion);
+        this.filtroColeccion.push(coleccion);
       }
     }
   }
@@ -163,6 +175,7 @@ export class LogueadoComponent {
   user_colecciones: Array<Coleccion> = new Array<Coleccion>();
   materiales_array: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   materialesFisicos: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  filtroColeccion: Array<Coleccion> = new Array<Coleccion>();
   carrito: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   materialesDigitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   categorias_tienda: Array<MaterialCategoria> = new Array<MaterialCategoria>();
