@@ -3,6 +3,9 @@ import { Coleccion } from '../../../models/coleccion';
 import { Usuario } from '../../../models/usuario';
 import { ConnBackendService } from '../../../services/conn-backend.service';
 import { Material } from '../../../models/material';
+import { MaterialCompleto } from '../../../models/material-completo';
+import { MaterialCategoria } from '../../../models/material-categoria';
+import { Categoria } from '../../../models/categoria';
 
 
 @Component({
@@ -14,12 +17,104 @@ export class ColeccionesComponent {
   @Input() user_input!: Usuario;
   @Input() user_colecciones_input: Array<Coleccion> = new Array<Coleccion>();
   @Input() user_materiales_input: Array<Material> = new Array<Material>();
+  @Input() user_comprados_input:Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  @Input() user_material_categorias_input: Array<MaterialCategoria> = new Array<MaterialCategoria>();
+  @Input() categorias_input: Array<Categoria> = new Array<Categoria>();
   @Output() mensajeActualizar = new EventEmitter<string>();
 
   material_filtrado: Array<Material> = new Array<Material>();
+  categorias_filtrado: Array<MaterialCategoria> = new Array<MaterialCategoria>();
   material_nuevo: Material = new Material('', '', '', '', '', '', '', '', '', '', '', '');
+
+  titulo_material_selected = '';
+  id_material_selected = '';
+  categoria_selected = '';
   
+  mostrarAddCategoria:boolean = false;
   
+  abrirAddCategoria(id:string, titulo:string) {
+    this.id_material_selected = id;
+    this.titulo_material_selected = titulo;
+    this.mostrarAddCategoria = true;
+  }
+
+  cerrarAddCategoria() {
+    this.mostrarAddCategoria = false;
+  }
+
+  abrirPostCategoria() {
+    this.mostrarAddCategoria = true;
+  }
+
+  async agregarCategoria(idM: string, idC:string){
+    this.cerrarAddCategoria();
+    this.cargando = true;
+    if (await this.addCategoria(idM, idC)) {
+      await this.recargarCategorias(this.user_input.id_user);
+    }
+  }
+
+  async addCategoria(idM:string, idC:string) {
+    try {
+      const data = await this.connBackend.postCategoria(idM, idC).toPromise();
+      console.log(data);
+      if (data.success === true) {
+        await this.recargarCategorias(this.user_input.id_user);
+        this.cargando = false;
+        this.alerta('Tag agregado correctamente...');
+        return true;
+      }
+      else {
+        this.cargando = false;
+        this.alerta('Error al agregar el TAG...');
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      this.cargando = false;
+      this.alerta('Error al agregar el TAG...');
+      return false;
+    }
+  }
+
+  async recargarCategorias(idU:string) {
+    try {
+      const data = await this.connBackend.getMaterialCategoria(idU).toPromise();
+      console.log(data);
+      if (data.materialCategorias.length > 0 && data.materialCategorias) {
+        this.user_material_categorias_input = data.materialCategorias;
+        this.categorias_filtrado = this.user_material_categorias_input;
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  async deleteCategoria(idMC:string){
+    this.cargando = true;
+    try {
+      const data = await this.connBackend.delCategoria(idMC).toPromise();
+      console.log(data);
+      if (data.success === true) {
+        await this.recargarCategorias(this.user_input.id_user);
+        this.cargando = false;
+        this.alerta('Tag eliminado correctamente...');
+      }
+      else {
+        this.cargando = false;
+        this.alerta('Error el intentar eliminar el Tag...');
+      }
+    } catch (error) {
+      console.error(error);
+      this.cargando = false;
+      this.alerta('Error el intentar eliminar el Tag...');
+    }
+  }
 
 
   constructor(private connBackend: ConnBackendService) { }
@@ -59,6 +154,7 @@ export class ColeccionesComponent {
     if (libros?.classList.contains('oculto')){
       // Filtrado de libros
       this.material_filtrado = this.user_materiales_input.filter(material => material.idColeccion === id);
+      this.categorias_filtrado = this.user_material_categorias_input;
       this.cerrarTodosLibros();
       libros?.classList.toggle('oculto');
     }
@@ -286,6 +382,33 @@ export class ColeccionesComponent {
     }
     else {
       return false;
+    }
+  }
+
+  async actualizarTodo(){
+    try {
+      this.cargando = true;
+      this.user_comprados_input = await this.refreshUserCompradosInput();
+      this.cargando = false;
+    } catch (error) {
+      console.error(error);
+      this.cargando = false;
+    }
+  }
+  async refreshUserCompradosInput() {
+    try {
+      const data = await this.connBackend.getComprados(this.user_input.id_user).toPromise();
+      console.log(data);
+      var comprados: Array<MaterialCompleto> = data.comprados;
+      if(comprados.length > 0 && comprados){
+        return comprados;
+      }
+      else {
+        return new Array<MaterialCompleto>();
+      }
+    } catch (error) {
+      console.error(error);
+      return new Array<MaterialCompleto>();
     }
   }
 }

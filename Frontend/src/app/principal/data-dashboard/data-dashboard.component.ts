@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ConnBackendService } from '../../services/conn-backend.service';
 import Highcharts from 'highcharts';
 
@@ -7,9 +7,12 @@ import Highcharts from 'highcharts';
   templateUrl: './data-dashboard.component.html',
   styleUrl: './data-dashboard.component.css'
 })
+
 export class DataDashboardComponent {
   
   constructor( private connBackend:ConnBackendService ) {};
+
+  @Output() mensajeSalir = new EventEmitter<string>();
 
   mostrarOPC( opc:string , sel:string ){
     var hoja = document.getElementById(opc);
@@ -39,5 +42,9 @@ export class DataDashboardComponent {
         //Listo
       }
     }
+  }
+
+  salir() {
+    this.mensajeSalir.emit('Salir1');
   }
 }

@@ -276,9 +276,9 @@ li .colecciones {
 li .contenido .colecciones {
 	display: flex;
 	padding: 5px 0px 5px 0px;
-	border-radius: 15px 15px 15px 15px;
+	border-radius: 15px 15px 0px 0px;
 	background-color: #cdecff;
-	margin: 5px 0px 5px 0px;
+	margin: 5px 0px 0px 0px;
 }
 
 li .contenido .colecciones:hover {
@@ -377,4 +377,106 @@ form button {
 	border-radius: 36px 36px 36px 36px;
 	color: #F9F9F9;
 	cursor: pointer;
+}
+
+.boton button{
+    padding: 6px 15px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #fff;
+    border-radius: 18px;
+    border: 0px;
+    cursor: pointer;
+    background-color: rgb(45, 74, 221);
+}
+.boton button:hover {
+    background-color: rgb(83, 109, 239);
+}
+
+.mensaje-cargando {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	background-color: rgba(255, 255, 255, 0.527);
+	align-items: center;
+	z-index: 20;
+}
+
+.mensaje-register {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.527);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10;
+}
+
+.mensaje-alert {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.527);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 20;
+}
+
+.alerta {
+	width: 350px;
+	border-radius: 25px;
+	background: #ffffff;
+	border: 1px solid #1130ff;
+	padding: 15px;
+}
+
+
+.tags {
+    margin-bottom: 3px;
+	display: flex;
+	align-items: center;
+	padding: 2px 10px;
+	border: 1px solid #2810ff77;
+	border-radius: 0px 0px 18px 18px;
+	justify-content: left;
+}
+
+.tags .tag {
+    display: flex;
+	width: 150px;
+	align-items: center;
+	justify-content: left;
+    margin: 4px 7px 3px 10px;
+    border: none;
+    background-color: rgb(178, 153, 71);
+	padding: 4px 5px 4px 15px;
+	border-radius: 24px;
+}
+
+.tags .tag .nombre-tag {
+    display: flex;
+	width: 150px;
+	margin-right: 10px;
+    color: #fff;
+}
+
+.tags .tag .x-tag {
+    justify-content: right;
+	width: 20px;
+	cursor: pointer;
+    color: #fff;
+}
+
+.tags .tag .x-tag:hover {
+    color: #ff0000;
 }

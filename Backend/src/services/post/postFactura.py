@@ -52,6 +52,8 @@ def postRegistrarFactura(fechaC, fechaE, idMaterial, idUsuario):
                         UPDATE Tarjeta SET
                             saldo = saldo + (0.3*(SELECT precioFisico FROM Material WHERE idMaterial = %(idMaterial)s))
                             WHERE idTarjeta = '60012';
+                            
+                        DELETE FROM CARRITO WHERE idUsuario = %(idUsuario)s AND idMaterial = %(idMaterial)s;
                         '''
                 print('         [Registro] Ejecutando transacción...')
                 with conn.cursor() as cursor:

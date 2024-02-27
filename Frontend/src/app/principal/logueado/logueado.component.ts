@@ -8,6 +8,9 @@ import { Material } from '../../models/material';
 import { Transaccion } from '../../models/transaccion';
 import { Comprador } from '../../models/comprador';
 import { PerfilComponent } from './perfil/perfil.component';
+import { MaterialCategoria } from '../../models/material-categoria';
+import { Categoria } from '../../models/categoria';
+import { ColeccionesComponent } from './colecciones/colecciones.component';
 
 @Component({
   selector: 'app-logueado',
@@ -26,6 +29,10 @@ export class LogueadoComponent {
   @Input() user_colecciones_input!: Array<Coleccion>;
   @Input() user_materiales_input!: Array<Material>;
   @Input() user_compradores_input!: Array<Comprador>;
+  @Input() user_carrito_input!: Array<MaterialCompleto>;
+  @Input() user_comprados_input!: Array<MaterialCompleto>;
+  @Input() user_material_categorias_input !: Array<MaterialCategoria>;
+  @Input() categorias_input !: Array<Categoria>;
 
   @Output() mensajeSalir = new EventEmitter<string>();
   
@@ -53,6 +60,7 @@ export class LogueadoComponent {
     hoja?.classList?.toggle('cerrado');
   }
   async abrirTienda() {
+    this.cargando = true;
     var hoja = document.getElementById('hojaTienda');
     var lista = document.getElementById('listaTienda');
     await this.cerrarHojas();
@@ -63,7 +71,8 @@ export class LogueadoComponent {
     this.materialesDigitales = this.materiales_array.filter(
       (material: MaterialCompleto) => material.electronicoMat === 'Si'
     );
-    await this.getCarrito(this.user_input.id_user);
+    await this.obtenerCategoriasTienda();
+    this.cargando = false;
     lista?.classList.toggle('active');
     hoja?.classList?.toggle('cerrado');
   }
@@ -131,6 +140,7 @@ export class LogueadoComponent {
   recibirActualizar(mensaje:string){
     if(mensaje === 'actualizarPerfil'){
       this.actualizarTodoPerfil();
+      this.actualizarTodoColecciones();
     }
   }
   @ViewChild('perfilRef', { static: false }) perfil: PerfilComponent | undefined;
@@ -141,6 +151,12 @@ export class LogueadoComponent {
       this.perfil.actualizarTodo();
     }
   }
+  @ViewChild('coleccionesRef', { static: false }) colecciones: ColeccionesComponent | undefined;
+  actualizarTodoColecciones() {
+    if (this.colecciones) {
+      this.colecciones.actualizarTodo();
+    }
+  }
 
 
   // COLECCIONES
@@ -149,6 +165,8 @@ export class LogueadoComponent {
   materialesFisicos: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   carrito: Array<MaterialCompleto> = new Array<MaterialCompleto>();
   materialesDigitales: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  categorias_tienda: Array<MaterialCategoria> = new Array<MaterialCategoria>();
+  
 
 
 
@@ -162,6 +180,18 @@ export class LogueadoComponent {
     }
   }
 
+  async obtenerCategoriasTienda(){
+    try {
+      const data = await this.connBackend.getCategoriasTienda(this.user_input.id_user).toPromise();
+      console.log(data);
+      if (data.categoriasTienda.length>0 && data.categoriasTienda){
+        this.categorias_tienda = data.categoriasTienda;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async obtenerMaterialesCompletos(){
     try {
       const data = await this.connBackend.getMaterialesCompletos(this.user_input.id_user).toPromise();
@@ -169,23 +199,6 @@ export class LogueadoComponent {
       this.materiales_array = data.materiales;
     } catch (error) {
       console.error(error);
-    }
-  }
-
-  async getCarrito(idUser:string) {
-    try {
-      const data = await this.connBackend.getCarrito(idUser).toPromise();
-      console.log(data);
-      if(data.carrito.length > 0 && data.carrito){
-        this.carrito = data.carrito;
-        return true;
-      }
-      else {
-        return false;
-      }
-    } catch (error) {
-      console.error(error);
-      return false;
     }
   }
 

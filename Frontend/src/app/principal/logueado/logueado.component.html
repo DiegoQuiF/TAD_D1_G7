@@ -86,10 +86,13 @@
                 [user_compradores_input]="user_compradores_input"
             ></app-perfil>
 			<app-comunidad id="hojaComunidad" class="cerrado hojas"></app-comunidad>
-			<app-colecciones id="hojaColecciones" class="cerrado hojas"
+			<app-colecciones id="hojaColecciones" class="cerrado hojas" #coleccionesRef
                 [user_input]="user_input"    
                 [user_colecciones_input]="user_colecciones_input"
                 [user_materiales_input]="user_materiales_input"
+                [user_comprados_input]="user_comprados_input"
+                [user_material_categorias_input]="user_material_categorias_input"
+                [categorias_input]="categorias_input"
                 (mensajeActualizar)="recibirActualizar($event)"
             ></app-colecciones>
 			<app-tienda id="hojaTienda" class="cerrado hojas"
@@ -97,16 +100,13 @@
                 [materiales_fisicos]="materialesFisicos"
                 [materiales_digitales]="materialesDigitales"
                 [user_input]="user_input"
-                [carrito_array]="carrito"
+                [carrito_array]="user_carrito_input"
+                [categorias_tienda]="categorias_tienda"
                 (mensajeActualizar)="recibirActualizar($event)"
             ></app-tienda>
 			<app-mensajes id="hojaMensajes" class="cerrado hojas"></app-mensajes>
 
-            <!-- CARGANDO Y ALERTA -->
-            <div *ngIf="cargando" class="mensaje-cargando">
-                <p>Cargando...</p>
-            </div>
-        
+            <!--ALERTA -->
             <div *ngIf="mostrarAlerta" class="mensaje-alert">
                 <div class="alerta">
                     {{ mensajeAlerta }}
@@ -117,4 +117,7 @@
             </div>
 		</div>
     </section>
+</div>
+<div *ngIf="cargando" class="mensaje-cargando">
+    <p>Cargando...</p>
 </div>

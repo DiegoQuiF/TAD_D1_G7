@@ -60,6 +60,13 @@ export class ConnBackendService {
     return this.http.post(`${this.BASE_URL}/getTarjetas`, data);
   }
 
+  getMaterialCategoria(id: string):Observable<any>{
+    const data = {
+      id_user: id
+    }
+    return this.http.post(`${this.BASE_URL}/getMaterialCategoria`, data);
+  }
+
   delTarjeta(id:string):Observable<any> {
     return this.http.delete(`${this.BASE_URL}/eliminarTarjeta/${id}`);
   }
@@ -96,6 +103,13 @@ export class ConnBackendService {
       id_user: id
     }
     return this.http.post(`${this.BASE_URL}/getColeccion`, data);
+  }
+
+  getComprados(id:string):Observable<any>{
+    const data = {
+      id_user: id
+    }
+    return this.http.post(`${this.BASE_URL}/getComprados`, data);
   }
 
   postColeccion(id_user:string, nombre_col:string, tipo_col:string): Observable<any>{
@@ -162,8 +176,27 @@ export class ConnBackendService {
     return this.http.post(`${this.BASE_URL}/registrarLibro`, data)
   }
 
+  delCategoria(idMC:string): Observable<any> {
+    const data = {
+      idMC: idMC
+    }
+    return this.http.post(`${this.BASE_URL}/delCategoria`, data)
+  }
+
   getMaterialesCompletos(id:string):Observable<any>{
     return this.http.get(`${this.BASE_URL}/getMaterialesCompletos/${id}`);
+  }
+
+  getCategorias():Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getCategorias`);
+  }
+
+  postCategoria(idM:string, idC:string):Observable<any> {
+    const data = {
+      idM: idM,
+      idC: idC
+    }
+    return this.http.post(`${this.BASE_URL}/agregarCategoria`, data)
   }
 
   postFactura(idMaterial:string, idUsuario:string): Observable<any>{
@@ -237,5 +270,12 @@ export class ConnBackendService {
       id_user: id
     }
     return this.http.post(`${this.BASE_URL}/getCompradores`, data);
+  }
+
+  getCategoriasTienda(id:String):Observable<any>{
+    const data = {
+      id_user: id
+    }
+    return this.http.post(`${this.BASE_URL}/getCategoriasTienda`, data);
   }
 }

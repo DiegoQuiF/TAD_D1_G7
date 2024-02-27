@@ -6,6 +6,10 @@
         (user_compradores_log)="recibirUserCompradoresLog($event)"
         (user_colecciones_log)="recibirUserColeccionesLog($event)"
         (user_materiales_log)="recibirUserMaterialesLog($event)"
+        (user_carrito_log)="recibirUserCarritoLog($event)"
+        (user_comprados_log)="recibirUserCompradosLog($event)"
+        (user_material_categorias_log)="recibirUserMaterialCategoriasLog($event)"
+        (categorias_log)="recibirCategoriasLog($event)"
         (mensaje_log)="recibirMensajes($event)"
     ></app-login-register>
 
@@ -16,9 +20,14 @@
         [user_colecciones_input]="user_colecciones_log"
         [user_compradores_input]="user_compradores_log"
         [user_materiales_input]="user_materiales_log"
+        [user_carrito_input]="user_carrito_log"
+        [user_comprados_input]="user_comprados_log"
+        [user_material_categorias_input]="user_material_categorias_log"
+        [categorias_input]="categorias_log"
         (mensajeSalir)="recibirMensajes($event)"
     ></app-logueado>
     
     <data-dashboard class="cerrado" id="hojaAdmin"
+        (mensajeSalir)="recibirMensajes($event)"
     ></data-dashboard>
 </div>

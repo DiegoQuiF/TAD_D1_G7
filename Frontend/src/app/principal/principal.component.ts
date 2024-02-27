@@ -7,6 +7,9 @@ import { Coleccion } from '../models/coleccion';
 import { Transaccion } from '../models/transaccion';
 import { Comprador } from '../models/comprador';
 import { Material } from '../models/material';
+import { MaterialCompleto } from '../models/material-completo';
+import { MaterialCategoria } from '../models/material-categoria';
+import { Categoria } from '../models/categoria';
 
 @Component({
   selector: 'app-principal',
@@ -22,6 +25,10 @@ export class PrincipalComponent {
   user_colecciones_log: Array<Coleccion> = new Array<Coleccion>();
   user_compradores_log: Array<Comprador> = new Array<Comprador>();
   user_materiales_log: Array<Material> = new Array<Material>();
+  user_comprados_log: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  user_carrito_log: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  user_material_categorias_log: Array<MaterialCategoria> = new Array<MaterialCategoria>();
+  categorias_log: Array<Categoria> = new Array<Categoria>();
   
   async recibirUserLog(usuario: Usuario) {
     this.user_log = usuario;
@@ -41,6 +48,18 @@ export class PrincipalComponent {
   async recibirUserMaterialesLog(materiales: Array<Material>) {
     this.user_materiales_log = materiales;
   }
+  async recibirUserCarritoLog(carrito: Array<MaterialCompleto>) {
+    this.user_carrito_log = carrito;
+  }
+  async recibirUserCompradosLog(comprados: Array<MaterialCompleto>) {
+    this.user_comprados_log = comprados;
+  }
+  async recibirUserMaterialCategoriasLog(materialCategorias: Array<MaterialCategoria>) {
+    this.user_material_categorias_log = materialCategorias;
+  }
+  async recibirCategoriasLog(categorias: Array<Categoria>) {
+    this.categorias_log = categorias;
+  }
 
   async recibirMensajes(mensaje: string) {
     if(mensaje == 'Logueado'){
@@ -59,6 +78,12 @@ export class PrincipalComponent {
       var hojaLoginRegister = document.getElementById('hojaLoginRegister');
       var hojaLogueado = document.getElementById('hojaLogueado');
       hojaLogueado?.classList.toggle('cerrado');
+      hojaLoginRegister?.classList.toggle('cerrado');
+    }
+    else if(mensaje == 'Salir1'){
+      var hojaLoginRegister = document.getElementById('hojaLoginRegister');
+      var hojaDashboard = document.getElementById('hojaAdmin');
+      hojaDashboard?.classList.toggle('cerrado');
       hojaLoginRegister?.classList.toggle('cerrado');
     }
     else {

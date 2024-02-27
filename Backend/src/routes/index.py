@@ -7,12 +7,16 @@ from src.services.get.getMaterialCompleto import getMaterialesCompletos
 from src.services.get.getCarritoCompleto import getCarritoCompleto
 from src.services.get.getVentasTotales import getVentasTotales
 from src.services.get.getMetricas import getMetricas
+from src.services.get.getCategorias import getCategorias
+from src.services.post.getComprados import getComprados
 from src.services.post.getUsuario import getUsuario
 from src.services.post.getTarjetas import getTarjetas
 from src.services.post.getColeccion import getColeccion
 from src.services.post.getMaterial import getMaterial
 from src.services.post.getTransacciones import getTransacciones
 from src.services.post.getCompradores import getCompradores
+from src.services.post.getCategoriasMaterial import getCategoriasMaterial
+from src.services.post.getCategoriasTienda import getCategoriasTienda
 from src.services.post.postRegistrarUsuario import postRegistrarUsuario
 from src.services.post.postRegistrarColeccion import postRegistrarColeccion
 from src.services.post.postRegistrarLibro import postRegistrarLibro
@@ -20,6 +24,8 @@ from src.services.post.postFactura import postRegistrarFactura
 from src.services.post.postRecargarTarjeta import postRecargarTarjeta
 from src.services.post.postTarjeta import postTarjeta
 from src.services.post.postRegistrarCarrito import postRegistrarCarrito
+from src.services.post.postCategoria import postCategoria
+from src.services.post.delCategoria import delCategoria
 from src.services.put.putUsuario import putUsuario
 from src.services.put.putColeccion import putColeccion
 from src.services.put.putPredeterminadoTarjeta import putPredeterminadoTarjeta
@@ -393,6 +399,44 @@ def materiales():
     except Exception as e:
         print('   [Backend] Consulta fallida...\n')
         return jsonify({'message':'ERROR', 'success':False})
+    
+@main.route('/getComprados', methods = ['POST'])
+def comprados():
+    try:
+        data = request.get_json()
+        id = data['id_user']
+        comprados = getComprados(id)
+        if len(comprados)>0:
+            return jsonify({'comprados':comprados, 'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
+    
+@main.route('/delCategoria', methods = ['POST'])
+def deleteCategoria():
+    try:
+        data = request.get_json()
+        idMC = data['idMC']
+        if delCategoria(idMC):
+            return jsonify({'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':False})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
+    
+@main.route('/agregarCategoria', methods = ['POST'])
+def addCategoria():
+    try:
+        data = request.get_json()
+        idM = data['idM']
+        idC = data['idC']
+        if postCategoria(idM, idC):
+            return jsonify({'message':'SUCCESS', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':False})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
 
 
 @main.route('/eliminarMaterial/<string:id>', methods = ['DELETE'])
@@ -415,6 +459,17 @@ def obtenerMaterialesCompletos(id):
         libros = getMaterialesCompletos(id)
         if (len(libros)>0 and libros):
             return jsonify({'materiales': libros, 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        return jsonify({'message':'ERROR', 'success':False})
+    
+@main.route('/getCategorias')
+def obtenerCategorias():
+    try:
+        categorias = getCategorias()
+        if (len(categorias)>0 and categorias):
+            return jsonify({'categorias': categorias, 'success':True})
         else:
             return jsonify({'message':"NOT FOUND", 'success':True})
     except Exception as e:
@@ -454,6 +509,9 @@ def obtenerCarritoCompleto(id):
             return jsonify({'message':"NOT FOUND", 'success':True})
     except Exception as e:
         return jsonify({'message':'ERROR', 'success':False})
+    
+
+
 
 
 @main.route('/registrarFactura', methods = ['POST'])
@@ -604,4 +662,32 @@ def getComprador():
 
     except Exception as e:
         print('   [Backend] Solicitud fallida: ERROR'.ljust(120, '.'))
+        return jsonify({'message':'ERROR', 'success':False})
+    
+@main.route('/getMaterialCategoria', methods = ['POST'])
+def getMaterialCategorias():
+    try:
+        data = request.get_json()
+        id = data['id_user']
+        materialesCategoria = getCategoriasMaterial(str(id))
+        if len(materialesCategoria)>0:
+            return jsonify({'materialCategorias':materialesCategoria, 'message':'COMPLETE', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        print(e)
+        return jsonify({'message':'ERROR', 'success':False})
+    
+@main.route('/getCategoriasTienda', methods = ['POST'])
+def getCategoriasT():
+    try:
+        data = request.get_json()
+        id = data['id_user']
+        tiendaCategorias = getCategoriasTienda(str(id))
+        if len(tiendaCategorias)>0:
+            return jsonify({'categoriasTienda':tiendaCategorias, 'message':'COMPLETE', 'success':True})
+        else:
+            return jsonify({'message':"NOT FOUND", 'success':True})
+    except Exception as e:
+        print(e)
         return jsonify({'message':'ERROR', 'success':False})

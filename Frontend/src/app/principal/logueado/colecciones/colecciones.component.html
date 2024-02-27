@@ -68,10 +68,52 @@
                                                 <p><b>Stock físico:</b> {{ libro.stockFisico }}</p>
                                                 <p><b>Disponibilidad digital:</b> {{ libro.dispElec }}</p>
                                                 <p><b>Precio digital:</b> {{ libro.precioElec }}</p>
+                                                <p><b>Tags:</b></p>
+                                                <div class="tags">
+                                                    <div *ngFor="let categoria of categorias_filtrado">
+                                                        <div class="tag" *ngIf="categoria.idM == libro.idMaterial">
+                                                            <div class="nombre-tag">
+                                                                <p>{{ categoria.nombreC }}</p>
+                                                            </div>
+                                                            <div class="x-tag">
+                                                                <p (click)="deleteCategoria(categoria.idMC)">x</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <form action="">
                                                     <button type="submit" style="cursor: pointer; background: #e13d3d; width: 110px; margin-top: 5px;"
                                                         (click)="eliminarLibro(libro.idMaterial, coleccion.id_coleccion)">Eliminar</button>
+                                                    <button type="submit" style="cursor: pointer; background: #ddc645; width: 110px; margin-top: 5px; margin-left: 10px;"
+                                                        (click)="abrirAddCategoria(libro.idMaterial, libro.titulo)">Agregar Tag</button>
                                                 </form>
+
+                                                <div class="form-add-categoria" *ngIf="mostrarAddCategoria">
+                                                    <div class="alerta">
+                                                        <form>
+                                                            <div class="columnas" style="justify-content: center; margin-bottom: 15px; color: #1a0767;">
+                                                                <p><b>Agregar nuevo TAG al material</b></p>
+                                                            </div>
+                                                            <div class="datos">
+                                                                <p style="margin-bottom: 5px;">♦ Id Material: {{ id_material_selected }}</p>
+                                                                <p style="margin-bottom: 5px;">♦ Titulo: {{ titulo_material_selected }}</p>
+                                                            </div>
+                                                            <div class="input">
+                                                                <p style="width: 90px;">Categoria</p>
+                                                                <select id="tipoMaterial" name="tipoMaterial" [(ngModel)]="categoria_selected" required>
+                                                                    <option disabled selected>Seleccione una opción</option>
+                                                                    <option *ngFor="let categoria of categorias_input" value={{categoria.idC}}
+                                                                        >{{ categoria.nombreC }} ({{ categoria.nombreTC }})</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="columnas" style="justify-content: center;">
+                                                                <button type="submit" style="cursor: pointer; background: #34c848; width: 90px;" (click)="cerrarAddCategoria()">Cancelar</button>
+                                                                <button type="submit" style="cursor: pointer; background: #34c848; margin-left: 15px; width: 90px;"
+                                                                (click)="agregarCategoria(id_material_selected, categoria_selected)">Agregar</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </li>
                                         </div>
                                     </div>
@@ -170,6 +212,73 @@
             </div>
             <div class="columnas" style="justify-content: center;">
                 <button type="submit" style="cursor: pointer; background: #34c848; width: 140px; margin-top: 10px;" (click)="iniciarCrearColeccion()">Crear colección</button>
+            </div>
+        </li>
+    </div>
+    <div class="subtitulo" style="cursor: pointer;" (click)="abrirColecciones()">
+        <h3>> Mis materiales comprados</h3>
+    </div>
+    <div class="tablita" id="abrirColecciones">
+        <li>
+            <div class="columnas">
+                <div class="col-100" style="width: 100%;">
+                    <li class="encabezado">
+                        <div class="col-10">
+                            <p>ID</p>
+                        </div>
+                        <div class="col-20">
+                            <p>Titulo</p>
+                        </div>
+                        <div class="col-10">
+                            <p>Autor</p>
+                        </div>
+                        <div class="col-10">
+                            <p>Publicación</p>
+                        </div>
+                        <div class="col-10">
+                            <p>Idioma</p>
+                        </div>
+                        <div class="col-10">
+                            <p>Precio</p>
+                        </div>
+                        <div class="col-10">
+                            <p>Publicante</p>
+                        </div>
+                        <div class="col-20">
+                            <p>Colección</p>
+                        </div>
+                    </li>
+                    <div class="contenido-tabla">
+                        <li class="contenido" *ngFor="let comprado of user_comprados_input" style="margin: 0px; padding: 0px;">
+                            <div class="colecciones" style="grid-gap: 24px;">
+                                <div class="col-10">
+                                    <p>{{ comprado.idMat }}</p>
+                                </div>
+                                <div class="col-20" style="justify-content: left;">
+                                    <p>{{ comprado.tituloMat }}</p>
+                                </div>
+                                <div class="col-10" style="justify-content: left;">
+                                    <p>{{ comprado.autorMat }}</p>
+                                </div>
+                                <div class="col-10">
+                                    <p>{{ comprado.originalMat }}</p>
+                                </div>
+                                <div class="col-10">
+                                    <p>{{ comprado.idiomaMat }}</p>
+                                </div>
+                                <div class="col-10">
+                                    <p>{{ comprado.precioFMat }}</p>
+                                </div>
+                                <div class="col-10" style="justify-content: left;">
+                                    <p>{{ comprado.nombreUsu }} {{ comprado.aPatUsu }} {{ comprado.aMatUsu }}</p>
+                                </div>
+                                <div class="col-20">
+                                    <p>{{ comprado.nombreCol }}</p>
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                </div>
             </div>
         </li>
     </div>

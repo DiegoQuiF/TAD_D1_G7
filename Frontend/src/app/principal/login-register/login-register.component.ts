@@ -7,6 +7,9 @@ import { Coleccion } from '../../models/coleccion';
 import { Transaccion } from '../../models/transaccion';
 import { Comprador } from '../../models/comprador';
 import { Material } from '../../models/material';
+import { MaterialCompleto } from '../../models/material-completo';
+import { MaterialCategoria } from '../../models/material-categoria';
+import { Categoria } from '../../models/categoria';
 
 @Component({
   selector: 'app-login-register',
@@ -25,7 +28,12 @@ export class LoginRegisterComponent {
   @Output() user_compradores_log = new EventEmitter<Array<Comprador>>();
   @Output() user_colecciones_log = new EventEmitter<Array<Coleccion>>();
   @Output() user_materiales_log = new EventEmitter<Array<Material>>();
+  @Output() user_carrito_log = new EventEmitter<Array<MaterialCompleto>>();
+  @Output() user_comprados_log = new EventEmitter<Array<MaterialCompleto>>();
+  @Output() user_material_categorias_log = new EventEmitter<Array<MaterialCategoria>>();
+  @Output() categorias_log = new EventEmitter<Array<Categoria>>();
   @Output() mensaje_log = new EventEmitter<string>();
+
 
   // CARGA DE LA PÁGINA
   cargando: boolean = false;
@@ -66,6 +74,10 @@ export class LoginRegisterComponent {
   user_colecciones: Array<Coleccion> = new Array<Coleccion>();
   user_materiales: Array<Material> = new Array<Material>();
   user_compradores: Array<Comprador> = new Array<Comprador>();
+  user_carrito: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  user_comprados: Array<MaterialCompleto> = new Array<MaterialCompleto>();
+  user_material_categorias: Array<MaterialCategoria> = new Array<MaterialCategoria>();
+  categorias: Array<Categoria> = new Array<Categoria>;
 
   async login( correo: string, contra: string ) {
     this.cargando = true;
@@ -90,6 +102,10 @@ export class LoginRegisterComponent {
         this.user_materiales = await this.getMateriales(this.user.id_user);
         this.user_transacciones = await this.getTransacciones(this.user.id_user);
         this.user_compradores = await this.getCompradores(this.user.id_user);
+        this.user_carrito = await this.getCarrito(this.user.id_user);
+        this.user_comprados = await this.getComprados(this.user.id_user);
+        this.user_material_categorias = await this.getMaterialCategoria(this.user.id_user);
+        this.categorias = await this.getCategorias();
         this.user_correo = '';
         this.user_contra = '';
         this.user_log.emit(this.user);
@@ -98,6 +114,10 @@ export class LoginRegisterComponent {
         this.user_colecciones_log.emit(this.user_colecciones);
         this.user_compradores_log.emit(this.user_compradores);
         this.user_materiales_log.emit(this.user_materiales);
+        this.user_carrito_log.emit(this.user_carrito);
+        this.user_comprados_log.emit(this.user_comprados);
+        this.user_material_categorias_log.emit(this.user_material_categorias);
+        this.categorias_log.emit(this.categorias);
         this.mensaje_log.emit('Logueado');
       } else {
         this.alerta('No se ha encontrado al usuario con las credenciales proporcionadas...');
@@ -208,11 +228,75 @@ export class LoginRegisterComponent {
         return compradores;
       }
       else {
-        return new Array<Comprador>;
+        return new Array<Comprador>();
       }
     } catch (error) {
       console.error(error);
-      return new Array<Comprador>;
+      return new Array<Comprador>();
+    }
+  }
+  async getCarrito( id:string ) {
+    try {
+      const data = await this.connBackend.getCarrito(id).toPromise();
+      console.log(data);
+      var carrito: Array<MaterialCompleto> = data.carrito;
+      if(carrito.length > 0 && carrito){
+        return carrito;
+      }
+      else {
+        return new Array<MaterialCompleto>();
+      }
+    } catch (error) {
+      console.error(error);
+      return new Array<MaterialCompleto>();
+    }
+  }
+  async getComprados( id:string ) {
+    try {
+      const data = await this.connBackend.getComprados(id).toPromise();
+      console.log(data);
+      var comprados: Array<MaterialCompleto> = data.comprados;
+      if(comprados.length > 0 && comprados){
+        return comprados;
+      }
+      else {
+        return new Array<MaterialCompleto>();
+      }
+    } catch (error) {
+      console.error(error);
+      return new Array<MaterialCompleto>();
+    }
+  }
+  async getMaterialCategoria( id:string ) {
+    try {
+      const data = await this.connBackend.getMaterialCategoria(id).toPromise();
+      console.log(data);
+      var materialCategorias: Array<MaterialCategoria> = data.materialCategorias;
+      if(materialCategorias.length > 0 && materialCategorias){
+        return materialCategorias;
+      }
+      else {
+        return new Array<MaterialCategoria>();
+      }
+    } catch (error) {
+      console.error(error);
+      return new Array<MaterialCategoria>();
+    }
+  }
+  async getCategorias( ) {
+    try {
+      const data = await this.connBackend.getCategorias().toPromise();
+      console.log(data);
+      var categorias: Array<Categoria> = data.categorias;
+      if(categorias.length > 0 && categorias){
+        return categorias;
+      }
+      else {
+        return new Array<Categoria>();
+      }
+    } catch (error) {
+      console.error(error);
+      return new Array<Categoria>();
     }
   }
 

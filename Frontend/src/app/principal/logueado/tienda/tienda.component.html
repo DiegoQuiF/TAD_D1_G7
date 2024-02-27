@@ -3,7 +3,7 @@
         <h2>> Tienda</h2>
     </div>
     <div class="subtitulo">
-        <h3>> Libros físicos</h3>
+        <h3>> Material bibliográfico (físico)</h3>
     </div>
     <li>
         <div class="libroFisico">
@@ -62,12 +62,25 @@
                             <p>{{ materiales.nombreCol }}</p>
                         </div>
                     </div>
+                    <div class="tags">
+                        <p>TAGS: </p>
+                        <div *ngFor="let categoria of categorias_tienda">
+                            <div class="tag" *ngIf="categoria.idM == materiales.idMat">
+                                <div class="nombre-tag">
+                                    <p>{{ categoria.nombreC }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="comprar oculto" [id]="materiales.idMat">
                         <form action="">
                             <button class="botones" type="submit" style="cursor: pointer; background: #27e1a9; width: 150px; margin-top: 0px; margin-bottom: 15px;" (click)="agregarAlCarrito(materiales.idMat)">Agregar al carrito</button>
                         </form>
                     </div>
                 </li>
+                <div class="boton" style="display: flex; justify-content: center; margin-top: 10px;">
+                    <button (click)="recargarMaterialesFisicos()">Refresh</button>
+                </div>
             </div>
         </div>
     </li>
@@ -131,6 +144,16 @@
                             <p>{{ materiales.nombreCol }}</p>
                         </div>
                     </div>
+                    <div class="tags">
+                        <p>TAGS: </p>
+                        <div *ngFor="let categoria of categorias_tienda">
+                            <div class="tag" *ngIf="categoria.idM == materiales.idMat">
+                                <div class="nombre-tag">
+                                    <p>{{ categoria.nombreC }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="comprar oculto" [id]="materiales.idMat+'C'">
                         <form action="">
                             <button class="botones" type="submit" style="cursor: pointer; background: #27e1a9; width: 110px; margin-top: 0px; margin-bottom: 15px;"
@@ -141,4 +164,18 @@
             </div>
         </div>
     </li>
+</div>
+
+<!-- CARGANDO Y ALERTA -->
+<div *ngIf="cargando" class="mensaje-cargando">
+    <p>Cargando...</p>
+</div>
+
+<div *ngIf="mostrarAlerta" class="mensaje-alert">
+    <div class="alerta">
+        {{ mensajeAlerta }}
+        <div class="boton" style="display: flex; justify-content: center;">
+            <button class="btn" style="width: 110px; height: 25px; margin: 0px; padding: 0px; margin-top: 10px;" (click)="continuar()">Continuar</button>
+        </div>
+    </div>
 </div>
