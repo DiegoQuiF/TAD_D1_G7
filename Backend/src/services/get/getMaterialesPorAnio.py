@@ -1,10 +1,11 @@
 from collections import defaultdict
 import json
 from ...database.db import DatabaseManager
+from ...database.db_wh import DatabaseManager_wh
 
 
 db = DatabaseManager().getInstancia()
-
+db_wh = DatabaseManager_wh().getInstancia()
 def getMaterialesPorAnio():
     try:
         conn = db.connection()
@@ -33,10 +34,33 @@ def getMaterialesPorAnio():
 
             # Convertir la lista a JSON
             materiales_por_fecha_json = lista
-        
-        # CARGA
-        # Agregar carga en una nueva BD
 
+            #INICIAMOS LA CONEXION EN LA DWH
+            conn_wh = db_wh.connection()
+            cursor_wh = conn_wh.cursor()
+
+            # Limpiar la tabla metrica1 antes de la actualización
+            cursor_wh.execute('DELETE FROM metrica1')
+
+            # Resetear el contador de la secuencia a 1
+            cursor_wh.execute('ALTER SEQUENCE metrica1_id_seq RESTART WITH 1')
+
+            # Insertar los datos de materiales_por_fecha_json en la tabla metrica1
+            for dato in materiales_por_fecha_json:
+                anio = dato["Anio"]
+                total = dato["Total"]
+                insert_query = f'''
+                    INSERT INTO metrica1 (anio, total)
+                    VALUES ({anio}, {total});
+                '''
+                cursor_wh.execute(insert_query)
+
+
+            # Confirmar la transacción y cerrar la conexión de la bd de la data warehouse
+            conn_wh.commit()
+            cursor_wh.close()
+            conn_wh.close()
+        #Cerramos la conexion de la primera bd    
         conn.close()
         return materiales_por_fecha_json
     except Exception as e:

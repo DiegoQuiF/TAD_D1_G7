@@ -1,9 +1,10 @@
 from collections import defaultdict
 import json
 from ...database.db import DatabaseManager
-
+from ...database.db_wh import DatabaseManager_wh
 
 db = DatabaseManager().getInstancia()
+db_wh = DatabaseManager_wh().getInstancia()
 
 def getFacturasPorFecha():
     try:
@@ -12,24 +13,44 @@ def getFacturasPorFecha():
 
         # Consulta SQL para obtener la fecha de compra y contar las facturas por fecha
         inst = '''
-                SELECT fechacompra FROM factura
+                SELECT fechacompra, COUNT(*) AS cantidad
+                FROM factura
+                GROUP BY fechacompra
                 ORDER BY fechacompra; -- Ordenar por fecha de compra ascendente
                '''
-        with conn.cursor() as cursor:
-            cursor.execute(inst)
-            fechas = cursor.fetchall()
-            
-            # Contar el número de facturas por fecha de compra
-            conteo_facturas = defaultdict(int)
-            for fecha in fechas:
-                fecha_formateada = fecha[0].strftime('%d-%m-%Y')  # Convertir la fecha a formato DD-MM-YYYY
-                conteo_facturas[fecha_formateada] += 1
+        cursor.execute(inst)
+        resultados = cursor.fetchall()
 
-            # Crear la lista con las fechas y la cantidad de facturas
-            lista = [{"Fecha": str(fecha), "Cantidad": cantidad} for fecha, cantidad in conteo_facturas.items()]
+        # Convertir los resultados a una lista de diccionarios
+        lista = [{"Fecha": str(row[0]), "Cantidad": row[1]} for row in resultados]
 
-            # Convertir la lista a JSON
-            facturas_por_fecha_json = lista
+        # Convertir la lista a JSON
+        facturas_por_fecha_json = lista
+
+        # INICIAMOS LA CONEXIÓN EN LA DWH
+        conn_wh = db_wh.connection()
+        cursor_wh = conn_wh.cursor()
+
+        # Limpiar la tabla metrica3 antes de la actualización
+        cursor_wh.execute('DELETE FROM metrica3')
+
+        # Resetear el contador de la secuencia a 1
+        cursor_wh.execute('ALTER SEQUENCE metrica3_id_seq RESTART WITH 1')
+
+        # Insertar los datos de facturas_por_fecha_json en la tabla metrica3
+        for dato in facturas_por_fecha_json:
+            fecha = dato["Fecha"]
+            cantidad = dato["Cantidad"]
+            insert_query = f'''
+                INSERT INTO metrica3 (fecha, cantidad)
+                VALUES ('{fecha}', {cantidad});
+            '''
+            cursor_wh.execute(insert_query)
+
+        # Confirmar la transacción y cerrar la conexión de la bd de la data warehouse
+        conn_wh.commit()
+        cursor_wh.close()
+        conn_wh.close()
 
         conn.close()
         return facturas_por_fecha_json
